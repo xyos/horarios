@@ -1,7 +1,9 @@
 *.log
 *.pot
 *.pyc
+.Python
 local_settings.py
 bin
 lib
 var
+include
