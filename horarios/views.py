@@ -5,10 +5,20 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
+    """
+    this will render the home page
+    :param request:
+    :return: home page of the project
+    """
     return render(request, 'home.html')
 
 @csrf_exempt
 def do_deploy(request):
+    """
+    deploys on the server after github sends a POST-Receive hook.
+    This is initiated by a push on the master branch on github.
+    :param request: JSON encoded payload sent by github.
+    """
     import simplejson
     import subprocess
 

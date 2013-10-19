@@ -4,6 +4,7 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+DEPLOY_SCRIPT = "echo 0> /dev/null"
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
