@@ -48,17 +48,27 @@ class Schedule():
             else:
                 self.addGroup(arg)
 
+    def __str__(self):
+        ret = ""
+        for i in range(0,len(self.busy)):
+            ret = ret + DAYS[i] + " : " + "{0:024b}".format(self.busy[i]) + "\n"
+
     def clone(self):
-        pass
+        clone = Schedule(self.busy)
+        clone.groups = self.groups
+        return clone
 
 
-    def isCompatible(self,course):
+    def _isCompatible(self,course):
         for i in zip(self.busy,course.schedule):
             if((i[0]&i[1]) != 0):
                 return False
         return True
 
     def addGroup(self,group):
-        self.group.append(group)
+        if(not self._isCompatible(group)):
+            raise Exception("Trying to add an incompatible group to this schedule.")
+        self.groups.append(group)
         for i in range(0,len(self.busy)):
             self.busy[i] = self.busy[i] | group.schedule[i]
+        return self

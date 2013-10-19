@@ -1,6 +1,6 @@
 import json
 import urllib2
-from Models import Subject,Group
+from Models import Subject,Group,Schedule
 import Models
 
 class SIA:
@@ -16,7 +16,7 @@ class SIA:
         f.close()
         return result
 
-    def querySubjectByName(this,name,level,maxRetrieve):
+    def querySubjectsByName(this,name,level,maxRetrieve):
         data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, maxRetrieve]})
         req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
         f = urllib2.urlopen(req)
@@ -33,7 +33,7 @@ class SIA:
         return result["result"]["list"]
 
     def getSubject(this,name,level):
-        data = this.querySubjectByName(name,level,1)[0]
+        data = this.querySubjectsByName(name,level,1)[0]
         groupsData = this.queryGroupsBySubjectCode(data["codigo"])
         groups=[]
         for g in groupsData:
@@ -56,3 +56,38 @@ class SIA:
             groups.append(Group(g["codigo"],g["nombredocente"],schedule))
 
         return Subject(data["nombre"],data["codigo"],data["creditos"],groups)
+
+
+class Generator:
+
+    def generateSchedule(self,listOfListOfCourses):
+        result = []
+        if(len(listOfListOfCourses) == 1):
+            for c in listOfListOfCourses[0]:
+                result.append(Schedule(None,c))
+            return result
+
+        courses = listOfListOfCourses.pop()
+        subSchedules = self.generateSchedule(listOfListOfCourses)
+        for course in courses:
+            for schedule in subSchedules:
+                try:
+                    result.append(schedule.clone().addGroup(course))
+                except(Exception):
+                    pass
+
+        if(len(result) == 0):
+            print "No schedule can be generated so that it includes " , courses
+        return result
+                
+sia = SIA()
+print "Fetching info"
+a = sia.getSubject("Algoritmos","PRE")
+b = sia.getSubject("Seguridad en redes","PRE")
+c = sia.getSubject("Lenguajes de programacion","PRE")
+print "Generating schedules"
+gen = Generator()
+s = gen.generateSchedule([a.groups,b.groups,c.groups])
+print len(s)
+for i in s:
+    print s
