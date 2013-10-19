@@ -71,10 +71,8 @@ class Generator:
         subSchedules = self.generateSchedule(listOfListOfCourses)
         for course in courses:
             for schedule in subSchedules:
-                try:
+                if(schedule._isCompatible(course)):
                     result.append(schedule.clone().addGroup(course))
-                except(Exception):
-                    pass
 
         if(len(result) == 0):
             print "No schedule can be generated so that it includes " , courses
@@ -87,7 +85,6 @@ b = sia.getSubject("Seguridad en redes","PRE")
 c = sia.getSubject("Lenguajes de programacion","PRE")
 print "Generating schedules"
 gen = Generator()
-s = gen.generateSchedule([a.groups,b.groups,c.groups])
-print len(s)
+s = gen.generateSchedule([a.groups,b.groups])
 for i in s:
-    print s
+    print i

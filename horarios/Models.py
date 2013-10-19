@@ -52,6 +52,7 @@ class Schedule():
         ret = ""
         for i in range(0,len(self.busy)):
             ret = ret + DAYS[i] + " : " + "{0:024b}".format(self.busy[i]) + "\n"
+        return ret
 
     def clone(self):
         clone = Schedule(self.busy)
