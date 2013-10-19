@@ -5,7 +5,7 @@ class Subject():
         self.name=name
         self.code=int(code)
         self.credits=int(credits)
-        self.groups=grouops
+        self.groups=groups
 
 class Group():
     def __init__(self,code,teacher,schedule):
@@ -18,17 +18,17 @@ class Group():
         j=0
         for i in DAYS:
             try:
-                self.schedule.append(parseSchedule(schedule[i]))
+                self.schedule.append(self.parseSchedule(schedule[i]))
             except KeyError:
                 self.schedule.append(0)
         self.teacher = teacher
     
-    def parseSchedule(scheduleString):
+    def parseSchedule(self,scheduleString):
         split = scheduleString.split("-")
-        hours = "0"*24
+        hours = ["0"]*24
         for i in range(int(split[0]),int(split[1])+1):
-            hours[i-1]=1
-        return int(hours,2)
+            hours[23-i+1]="1"
+        return int("".join(hours),2)
         
 class Schedule():
     def __init__(self,busy,*args):
@@ -54,7 +54,8 @@ class Schedule():
 
     def isCompatible(self,course):
         for i in zip(self.busy,course.schedule):
-            if(i[0]&i[1] != 0) return False
+            if((i[0]&i[1]) != 0):
+                return False
         return True
 
     def addGroup(self,group):
