@@ -60,31 +60,42 @@ class SIA:
 
 class Generator:
 
-    def generateSchedule(self,listOfListOfCourses):
+    def generateSchedule(self,listOfSubjects):
         result = []
-        if(len(listOfListOfCourses) == 1):
-            for c in listOfListOfCourses[0]:
-                result.append(Schedule(None,c))
+        print len(listOfSubjects)
+        if(len(listOfSubjects) == 1):
+            print listOfSubjects[0].name
+            for g in listOfSubjects[0].groups:
+                result.append(Schedule(None,g))
             return result
 
-        courses = listOfListOfCourses.pop()
-        subSchedules = self.generateSchedule(listOfListOfCourses)
-        for course in courses:
+        subject = listOfSubjects.pop()
+        subSchedules = self.generateSchedule(listOfSubjects)
+        for group in subject.groups:
             for schedule in subSchedules:
-                if(schedule._isCompatible(course)):
-                    result.append(schedule.clone().addGroup(course))
+                if(schedule._isCompatible(group)):
+                    result.append(schedule.clone().addGroup(group))
 
         if(len(result) == 0):
-            print "No schedule can be generated so that it includes " , courses
+            print "No schedule can be generated so that it includes " , subject.name
         return result
                 
 sia = SIA()
 print "Fetching info"
 a = sia.getSubject("Algoritmos","PRE")
+print a
 b = sia.getSubject("Seguridad en redes","PRE")
+print b
 c = sia.getSubject("Lenguajes de programacion","PRE")
+print c
 print "Generating schedules"
+
+#Generating simple scheudles first will fasten the algorithm
+s = [a,b,c]
+s = sorted(s, lambda x,y: 1 if len(x.groups)>len(y.groups) else -1 if len(x.groups)<len(y.groups) else 0)
+
 gen = Generator()
-s = gen.generateSchedule([a.groups,b.groups])
+s = gen.generateSchedule(s)
+
 for i in s:
     print i
