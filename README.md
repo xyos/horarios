@@ -9,5 +9,5 @@ clone in git
     virtualenv horarios
     cd horarios
     source ./bin/activate
-    pip install django
+    pip install -r requirements.txt --no-index
     python manage.py runserver
