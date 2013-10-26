@@ -9,5 +9,5 @@ clone in git
     virtualenv horarios
     cd horarios
     source ./bin/activate
-    pip install -r requirements.txt --no-index
+    pip install -r requirements.txt
     python manage.py runserver
