@@ -1,0 +1,15 @@
+{
+  "name": "schedules",
+  "version": "0.0.1",
+  "homepage": "https://github.com/xyos/horarios",
+  "authors": [
+    "Jairo Suarez <jasuarezpr@gmail.com>"
+  ],
+  "description": "a shedule generator for the \"Universidad Nacional de Colombia\"",
+  "main": "index.js",
+  "keywords": [
+    "schedule"
+  ],
+  "license": "MIT",
+  "private": true
+}
