@@ -43,3 +43,34 @@ def do_deploy(request):
     return HttpResponse(simplejson.dumps(out_json), content_type='application/json')
 
 
+@csrf_exempt
+def random_schedules(request):
+    """
+    Random schedule generator
+    :param request: JSON encoded payload sent by github.
+    """
+    import simplejson
+
+    from django.http import HttpResponse, Http404
+
+    if request.method != 'GET':
+        raise Http404
+
+    from Helpers import SIA,Generator
+    sia = SIA()
+    a = sia.getSubject("Algoritmos","PRE")
+    b = sia.getSubject("Seguridad en redes","PRE")
+    c = sia.getSubject("Lenguajes de programacion","PRE")
+
+    #Generating simple scheudles first will fasten the algorithm
+    s = [a,b,c]
+    s = sorted(s, lambda x,y: 1 if len(x.groups)>len(y.groups) else -1 if len(x.groups)<len(y.groups) else 0)
+
+    gen = Generator()
+    s = gen.generateSchedule(s)
+
+    from serializers import ScheduleSerializer
+    serializer = ScheduleSerializer()
+    out_json = serializer.serialize(s[0])
+
+    return HttpResponse(out_json, content_type='application/json')
