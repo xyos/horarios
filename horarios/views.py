@@ -49,7 +49,6 @@ def random_schedules(request):
     Random schedule generator
     :param request: JSON encoded payload sent by github.
     """
-    import simplejson
 
     from django.http import HttpResponse, Http404
 
@@ -71,6 +70,28 @@ def random_schedules(request):
 
     from serializers import ScheduleSerializer
     serializer = ScheduleSerializer()
-    out_json = serializer.serialize(s[0])
+    return HttpResponse(serializer.serialize(s[0]), content_type='application/json')
 
-    return HttpResponse(out_json, content_type='application/json')
+@csrf_exempt
+def autocomplete_subject(request):
+    """
+    :param request: JSON with a name parameter
+    """
+    import simplejson
+
+    from django.http import HttpResponse, Http404
+
+    if request.method != 'POST':
+        raise Http404
+
+    request_data = simplejson.loads(request.body)
+    if "name" in request_data:
+        data = request_data["name"]
+        from services import SubjectsServices
+        s = SubjectsServices()
+        subjects = s.autocomplete(data)
+    
+    from serializers import SimpleSubjectsSerializer
+    serializer = SimpleSubjectsSerializer()
+
+    return HttpResponse(serializer.serialize(subjects), content_type='application/json')
