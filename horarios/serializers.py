@@ -6,8 +6,6 @@ class Serializer:
 
     def serialize(self,data):
         out={}
-        print data
-        print self.serializedClass
         if isinstance(data,list):
             out = []
             for i in data:
