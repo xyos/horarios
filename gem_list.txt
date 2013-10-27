@@ -1,0 +1,8 @@
+bigdecimal
+io-console
+json
+minitest
+psych
+rake
+rdoc
+test-unit

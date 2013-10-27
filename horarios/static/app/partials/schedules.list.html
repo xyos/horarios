@@ -1,0 +1,7 @@
+
+<h2>todos los horarios<h2>
+<ul>
+  <li ng-repeat="schedule in schedules">
+    <a ui-sref="schedules.detail({scheduleId:schedule.id})">{{schedule.name}}</a>
+  </li>
+</ul>
