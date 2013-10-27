@@ -5,6 +5,9 @@ import Models
 
 class SIA:
 
+    subjects_cache = {}
+    groups_cache = {}
+
     def existsSubject(this,name,level):
         return this.queryNumSubjectsWithName(name,level)>0
 
@@ -17,23 +20,27 @@ class SIA:
         return result
 
     def querySubjectsByName(this,name,level,maxRetrieve):
-        data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, maxRetrieve]})
-        req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
-        f = urllib2.urlopen(req)
-        result=json.loads(f.read())
-        f.close()
-        return result["result"]["asignaturas"]["list"]
+        if not (name in this.subjects_cache):
+            data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, maxRetrieve]})
+            req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
+            f = urllib2.urlopen(req)
+            result=json.loads(f.read())
+            f.close()
+            this.subjects_cache[name] = result["result"]["asignaturas"]["list"]
+
+        return this.subjects_cache[name]
 
     def queryGroupsBySubjectCode(this,code):
-        data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [code, "0"]})
-        req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
-        f = urllib2.urlopen(req)
-        result=json.loads(f.read())
-        f.close()
-        return result["result"]["list"]
+        if not (code in this.groups_cache):
+            data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [code, "0"]})
+            req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
+            f = urllib2.urlopen(req)
+            result=json.loads(f.read())
+            f.close()
+            this.groups_cache[code] = result["result"]["list"]
+        return this.groups_cache[code]
 
-    def getSubject(this,name,level):
-        data = this.querySubjectsByName(name,level,1)[0]
+    def create_subject(this,data):
         groupsData = this.queryGroupsBySubjectCode(data["codigo"])
         groups=[]
         for g in groupsData:
@@ -56,6 +63,17 @@ class SIA:
             groups.append(Group(g["codigo"],g["nombredocente"],schedule))
 
         return Subject(data["nombre"],data["codigo"],data["creditos"],groups)
+
+    def getSubject(this,name,level):
+        data = this.querySubjectsByName(name,level,1)[0]
+        return this.create_subject(data);
+
+    def get_subjects(this,name,level,maxResults=100):
+        data = this.querySubjectsByName(name,level,maxResults)
+        result = []
+        for i in data:
+            result.append(this.create_subject(i))
+        return result;
 
 
 class Generator:
