@@ -1,5 +1,79 @@
-<html>
-  <body>
-    HELLO WORLD :D
-  </body>
+{% verbatim %}
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Generador Horarios UN</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <!-- endbuild -->
+</head>
+  <body ng-app="schedulesApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner"><div class="container">
+
+          <!-- ui-sref is a great directive for linking a state location with an anchor link.
+               You should almost always use ui-sref instead of href on your links when you want
+               then to navigate to a state. When this link is clicked it will take the application
+               to the 'home' state. Behind the scenes the directive also adds the correct href attr
+               and url. -->
+          <a href="#/" class="brand" ui-sref="home">Horarios UN</a>
+          <ul class="nav">
+
+            <!-- Here you can see ui-sref in action again. Also notice the use of $state.includes, which
+               will set the links to 'active' if, for example on the first link, 'contacts' or any of
+               its descendant states are activated. -->
+            <li class="active" ng-class="{ active: $state.includes('schedules') }"><a href="#/schedules" ui-sref="schedules.list">Schedules</a></li>
+            <li ng-class="{ active: $state.includes('about') }"><a href="#/about" ui-sref="about">About</a></li>
+          </ul>
+
+          <!-- Here is a named ui-view. ui-views don't have to be named, but we'll be populate this
+               on from various different child states and we want a name to help us target. -->
+          <p ui-view="hint" class="navbar-text pull-right"><span class="ng-scope"></span></p>
+      </div></div>
+    </div>
+    <!--states are shown here-->
+    <ui-view></ui-view>
+    <hr>
+    <pre>
+      $state = {{$state.current.name}}
+      $stateParams = {{$stateParams}}
+    </pre>
+
+    <script src="/static/js/angular/angular.js"></script>
+
+        <!-- build:js scripts/modules.js -->
+        <script src="/static/js/angular-resource/angular-resource.js"></script>
+        <script src="/static/js/angular-cookies/angular-cookies.js"></script>
+        <script src="/static/js/angular-sanitize/angular-sanitize.js"></script>
+        <script src="/static/js/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.2.0.js"></script>
+
+        <!-- endbuild -->
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="/static/js/scripts/app.js"></script>
+        <script src="/static/js/scripts/states.js"></script>
+        <script src="/static/js/scripts/factory.js"></script>
+        <script src="/static/js/scripts/controllers/main.js"></script>
+        <!-- endbuild -->
+</body>
 </html>
+{% endverbatim %}

@@ -11,35 +11,22 @@ angular.module('schedulesApp').config(
         .state('schedules',{
           abstract : true,
           url : '/schedules',
-          templateUrl : '/partials/schedules.html',
-          resolve : {
-            schedules : [ 'schedules',
-              function(schedules) {
-                return schedules.all();
-              }
-            ]
-          },
-          controller : ['$scope','$state','schedules',
-            function($scope,$state,schedules){
-              $scope.schedules = schedules;
-            }
-          ]
-
+          templateUrl : '/partials/schedules.html'
         })
-        .state('schedules.list',{
+        .state('schedules.ui',{
           url : '',
-          templateUrl: '/partials/schedules.list.html'
-        })
-        .state('schedules.detail',{
-          url: '/{scheduleId:[0-9]{1,10}}',
           views: {
-            '': {
-              templateUrl: 'schedules.detail.html',
+            'subjects@schedules': {
+              templateUrl: '/partials/subjects.html',
               controller: ['$scope','$stateParams','utils',
                 function($scope,$stateParams,utils) {
                   $scope.schedule = utils.findById($scope.schedules,$stateParams.scheduleId);
-                }
-              ]
+                }]},
+            'detail@schedules': {
+              templateUrl: '/partials/schedules.detail.html',
+            },
+            'list@schedules': {
+              templateUrl: '/partials/schedules.list.html',
             }
           }
         })

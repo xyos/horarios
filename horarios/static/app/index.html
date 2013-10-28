@@ -49,12 +49,12 @@
           <p ui-view="hint" class="navbar-text pull-right"><span class="ng-scope"></span></p>
       </div></div>
     </div>
-    <div class="container" ng-animate="{enter:'fade-enter'}" ui-view></div>
+    <!--states are shown here-->
+    <ui-view></ui-view>
     <hr>
     <pre>
       $state = {{$state.current.name}}
       $stateParams = {{$stateParams}}
-      $state full url = {{$state.current.url.source}}
     </pre>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -68,37 +68,21 @@
        ga('send', 'pageview');
     </script>
 
-    <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-
-        <!-- build:js scripts/plugins.js -->
-        <script src="bower_components/bootstrap-sass/js/bootstrap-affix.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-alert.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-dropdown.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-tooltip.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-modal.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-transition.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-button.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-popover.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-typeahead.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-carousel.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-scrollspy.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-collapse.js"></script>
-        <script src="bower_components/bootstrap-sass/js/bootstrap-tab.js"></script>
-        <!-- endbuild -->
 
         <!-- build:js scripts/modules.js -->
         <script src="bower_components/angular-resource/angular-resource.js"></script>
         <script src="bower_components/angular-cookies/angular-cookies.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/states.js"></script>
         <script src="scripts/factory.js"></script>
-        <!--<script src="scripts/controllers/main.js"></script>-->
+        <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->
 </body>
 </html>
