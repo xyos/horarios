@@ -1,7 +1,7 @@
 <div class="well sidebar-nav" ng-controller="TypeaheadCtrl">
   <pre>Model: {{ selected }}</pre>
-  <pre>{{schedules | json }}</pre>
-  <input class="span13" type="text" ng-model="selected" typeahead="schedule as schedule.name for schedule in schedules($viewValue)">
+  <pre>{{subjects | json }}</pre>
+  <input class="span13" type="text" ng-model="selected" min-length="3" typeahead="subject.code as subject.name for subject in subjects($viewValue)">
     <li class="nav-header">Sidebar</li>
     <li class="active"><a href="#">Link</a></li>
     <li><a href="#">Link</a></li>

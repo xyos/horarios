@@ -18,10 +18,7 @@ angular.module('schedulesApp').config(
           views: {
             'subjects@schedules': {
               templateUrl: '/static/partials/subjects.html',
-              controller: ['$scope','$stateParams','utils',
-                function($scope,$stateParams,utils) {
-                  $scope.schedule = utils.findById($scope.schedules,$stateParams.scheduleId);
-                }]},
+            },
             'detail@schedules': {
               templateUrl: '/static/partials/schedules.detail.html',
             },

@@ -13,8 +13,7 @@ class Serializer:
         elif (data,self.serializedClass):
             out = self.serialize_single(data)
 
-        import simplejson
-        return simplejson.dumps(out)
+        return out
 
 class ScheduleSerializer(Serializer):
     

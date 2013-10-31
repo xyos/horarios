@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 def home(request):
     """
@@ -95,3 +98,13 @@ def autocomplete_subject(request):
     serializer = SimpleSubjectsSerializer()
 
     return HttpResponse(serializer.serialize(subjects), content_type='application/json')
+
+class SubjectAutocompleteView(APIView):
+    def get(self, request, *args , **kw):
+        name = kw['name']
+        from services import SubjectsServices
+        s = SubjectsServices()
+        subjects = s.autocomplete(name)
+        from serializers import SimpleSubjectsSerializer
+        serializer = SimpleSubjectsSerializer()
+        return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
