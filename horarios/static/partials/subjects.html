@@ -1,22 +1,11 @@
 <div class="well sidebar-nav" ng-controller="TypeaheadCtrl">
-  <pre>Model: {{ selected }}</pre>
-  <pre>{{subjects | json }}</pre>
-  <input class="span13" type="text" ng-model="selected" min-length="3" typeahead="subject.code as subject.name for subject in subjects($viewValue)">
-    <li class="nav-header">Sidebar</li>
-    <li class="active"><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li class="nav-header">Sidebar</li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li class="nav-header">Sidebar</li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
-    <li><a href="#">Link</a></li>
+  <input placeholder="escriba el nombre de la materia" class="span13" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" min-length="3" typeahead="subject.name for subject in subjects($viewValue)">
+  <ul class="nav bs-sidenav" ng-repeat="subject in selectedSubjects">
+    <li class="nav-header">{{ subject.name + ' - ' + subject.code }}</li>
+    <ul class="nav">
+    <li><a href="#">Grupo 1</a></li>
+    <li><a href="#">Grupo 2</a></li>
+    <li><a href="#">Grupo 3</a></li>
+    </ul>
   </ul>
 </div>
