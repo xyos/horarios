@@ -22,3 +22,6 @@ def getSchedules(subjectsCodes,busy=None):
     gen =  Generator()
     result = gen.generateSchedule(groups,busy)
     return result
+
+def getGroupsBySubjectCode(subjectCode):
+    return subjectsServices.getGroups(subjectCode)

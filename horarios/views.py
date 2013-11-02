@@ -118,3 +118,12 @@ class SubjectAutocompleteView(APIView):
         from serializers import SimpleSubjectsSerializer
         serializer = SimpleSubjectsSerializer()
         return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
+
+class GroupsView(APIView):
+    def get(self, request, *args , **kw):
+        code = kw['subjectCode']
+        import facades
+        groups = facades.getGroupsBySubjectCode(code)
+        from serializers import GroupSerializer
+        serializer = GroupSerializer()
+        return Response(serializer.serialize(groups), status = status.HTTP_200_OK)

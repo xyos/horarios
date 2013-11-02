@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from horarios.views import SubjectAutocompleteView, RandomScheduleView
+from horarios.views import SubjectAutocompleteView, RandomScheduleView,GroupsView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^test/$', 'horarios.views.random_schedules', name='random_schedules'),
     url(r'^api/v1.0/subject/autocomplete/(?P<name>\w+)[/]?$', SubjectAutocompleteView.as_view() , name='subject_autocomplete'),
     url(r'^api/v1.0/schedule/random/$', RandomScheduleView.as_view() , name='random_schedule'),
-    url(r'^json/subject$', 'horarios.views.autocomplete_subject', name='autocomplete'),
+    url(r'^api/v1.0/subject/(?P<subjectCode>\d+)/groups/$', GroupsView.as_view() , name='subjectsGroup'),
 
     # url(r'^horarios/', include('horarios.foo.urls')),
 
