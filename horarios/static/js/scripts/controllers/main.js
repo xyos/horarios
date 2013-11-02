@@ -14,7 +14,6 @@ angular.module('schedulesApp')
   }
 })
 .controller('ScheduleDetailCtrl',function($scope, $http, sharedSchedule){
-  console.log(sharedSchedule.getSchedule());
   $scope.scheduleItems = sharedSchedule.getSchedule();
   $scope.daysOfWeek =
     ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
@@ -45,8 +44,6 @@ angular.module('schedulesApp')
         hours: groupHours
       });
     });
-    console.log(groupsArray);
-    console.log(busyArray);
     for (var i = 0; i < hours.length; i++) {
       var row = [];
       row.push({text : hours[i], class : 'heading'});
@@ -72,18 +69,20 @@ angular.module('schedulesApp')
       schedule[i+1] = row;
     };
     return schedule;
-  }
-  $scope.schedule =
-    $scope.parseSchedule($scope.daysOfWeek, $scope.hours, $scope.scheduleItems);
-  console.log($scope.schedule);
-})
-.controller('ScheduleListCtrl',function($scope, $http, sharedSchedule){
-  $scope.getSchedules = function(){
-    return $http.get('/api/v1.0/schedule/random/?format=json')
-    .then(function(response){
-      return response.data;
-    });
   };
- $scope.schedules = $scope.getSchedules();
- //sharedSchedule.setSchedule($scope.schedules[0]);
+  $scope.$watch('sharedSchedule.getSchedule()', function(newValue){
+    console.log("big brother is watching you");
+    $scope.schedule = $scope.parseSchedule($scope.daysOfWeek, $scope.hours, $scope.scheduleItems);
+  });
+
+})
+.controller('ScheduleListCtrl',function($scope, $http, sharedSchedule, $q){
+  $scope.schedules = {};
+  $http.get('/api/v1.0/schedule/random/?format=json').then(function(result){
+    $scope.schedules = result.data;
+  });
+  $scope.loadSchedule = function(index){
+    console.log(index);
+    sharedSchedule.setSchedule($scope.schedules[index]);
+  }
 });

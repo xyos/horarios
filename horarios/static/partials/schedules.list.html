@@ -2,6 +2,6 @@
       <button type="button" class="btn pull-left"><i class="icon-chevron-left"></i></button>
       <button type="button" class="btn pull-right"><i class="icon-chevron-right"></i></button>
       <div class="col-md-2 btn" ng-repeat="schedule in schedules">
-        <a role="button" href="" class="btn btn-primary"> horario [{{ $index + 1 }}] </a>
+        <span ng-click="loadSchedule($index)"> horario [{{ $index + 1 }}] </span>
 </div>
 

@@ -21,6 +21,8 @@ angular.module('schedulesApp')
       return scheduleValue;
     },
     setSchedule : function(schedule){
+      console.log(schedule);
+      console.log("changed schedulle");
       scheduleValue = schedule;
     }
   }
