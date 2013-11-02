@@ -14,13 +14,14 @@ class Subject():
         return ret
 
 class Group():
-    def __init__(self,code,teacher,schedule):
+    def __init__(self,code,teacher,schedule,subjectCode):
         """ 
             rooms is a dictionary of day : room
             teacher is a string
         """
         self.teacher = teacher
         self.code = code
+        self.subjectCode = subjectCode
         self.schedule = schedule
     
 

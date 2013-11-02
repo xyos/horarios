@@ -45,7 +45,7 @@ class GroupDao:
                 schedule[Models.DAYS[5]] = g["horario_sabado"]
             if(g["horario_domingo"] != "--"):
                 schedule[Models.DAYS[6]] = g["horario_domingo"]
-            groups.append(Models.Group(g["codigo"],g["nombredocente"],self._parseSchedule(schedule)))
+            groups.append(Models.Group(g["codigo"],g["nombredocente"],self._parseSchedule(schedule),code))
         return groups
 
     def _parseSchedule(self,scheduleDict):

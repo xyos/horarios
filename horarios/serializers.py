@@ -49,4 +49,5 @@ class GroupSerializer(Serializer):
         out['teacher'] = group.teacher
         out['code'] = group.code
         out['schedule'] = group.schedule
+        out['subject'] = group.subjectCode
         return out
