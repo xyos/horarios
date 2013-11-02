@@ -17,25 +17,12 @@ class Group():
     def __init__(self,code,teacher,schedule):
         """ 
             rooms is a dictionary of day : room
-            schedule is a dictionary of day : begin-end
             teacher is a string
         """
-        self.schedule=[]
-        j=0
-        for i in DAYS:
-            try:
-                self.schedule.append(self.parseSchedule(schedule[i]))
-            except KeyError:
-                self.schedule.append(0)
         self.teacher = teacher
         self.code = code
+        self.schedule = schedule
     
-    def parseSchedule(self,scheduleString):
-        split = scheduleString.split("-")
-        hours = ["0"]*24
-        for i in range(int(split[0]),int(split[1])):
-            hours[23-i+1]="1"
-        return int("".join(hours),2)
 
     def __str__(self):
         ret = "Group " + str(self.code) + " taught by " + self.teacher + " : \n"
@@ -49,6 +36,7 @@ class Schedule():
     def __init__(self,busy,*args):
         """
         busy is an array of integers, each integer is one day's hours
+        *args is as many groups as you desire
         """
         self.groups = []
         if(busy != None):

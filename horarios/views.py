@@ -57,19 +57,14 @@ def random_schedules(request):
 
     if request.method != 'GET':
         raise Http404
+    import facades
+    a = facades.getSubjectsByName("Algoritmos","PRE")[0]
+    b = facades.getSubjectsByName("Seguridad en redes","PRE")[0]
+    c = facades.getSubjectsByName("Lenguajes de programacion","PRE")[0]
 
-    from Helpers import SIA,Generator
-    sia = SIA()
-    a = sia.getSubject("Algoritmos","PRE")
-    b = sia.getSubject("Seguridad en redes","PRE")
-    c = sia.getSubject("Lenguajes de programacion","PRE")
+    s = [a.code,b.code,c.code]
 
-    #Generating simple scheudles first will fasten the algorithm
-    s = [a,b,c]
-    s = sorted(s, lambda x,y: 1 if len(x.groups)>len(y.groups) else -1 if len(x.groups)<len(y.groups) else 0)
-
-    gen = Generator()
-    s = gen.generateSchedule(s)
+    s = facades.getSchedules(s)
 
     from serializers import ScheduleSerializer
     serializer = ScheduleSerializer()
@@ -90,9 +85,8 @@ def autocomplete_subject(request):
     request_data = simplejson.loads(request.body)
     if "name" in request_data:
         data = request_data["name"]
-        from services import SubjectsServices
-        s = SubjectsServices()
-        subjects = s.autocomplete(data)
+        import facades
+        subjects = facades.autocomplete(data)
     
     from serializers import SimpleSubjectsSerializer
     serializer = SimpleSubjectsSerializer()
@@ -103,18 +97,14 @@ def autocomplete_subject(request):
 
 class RandomScheduleView(APIView):
     def get(self, request, *args, **kw):
-        from Helpers import SIA,Generator
-        sia = SIA()
-        a = sia.getSubject("Algoritmos","PRE")
-        b = sia.getSubject("Seguridad en redes","PRE")
-        c = sia.getSubject("Lenguajes de programacion","PRE")
+        import facades
+        a = facades.getSubjectsByName("Algoritmos","PRE")[0]
+        b = facades.getSubjectsByName("Seguridad en redes","PRE")[0]
+        c = facades.getSubjectsByName("Lenguajes de programacion","PRE")[0]
 
-        #Generating simple schedules first will fasten the algorithm
-        s = [a,b,c]
-        s = sorted(s, lambda x,y: 1 if len(x.groups)>len(y.groups) else -1 if len(x.groups)<len(y.groups) else 0)
+        s = [a.code,b.code,c.code]
 
-        gen = Generator()
-        s = gen.generateSchedule(s)
+        s = facades.getSchedules(s)
 
         from serializers import ScheduleSerializer
         serializer = ScheduleSerializer()
@@ -123,9 +113,8 @@ class RandomScheduleView(APIView):
 class SubjectAutocompleteView(APIView):
     def get(self, request, *args , **kw):
         name = kw['name']
-        from services import SubjectsServices
-        s = SubjectsServices()
-        subjects = s.autocomplete(name)
+        import facades
+        subjects = facades.autocomplete(name)
         from serializers import SimpleSubjectsSerializer
         serializer = SimpleSubjectsSerializer()
         return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)

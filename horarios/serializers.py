@@ -1,5 +1,5 @@
 import Models
-
+import simplejson as json
 class Serializer:
     def __init__(self,serializedClass):
         self.serializedClass = serializedClass

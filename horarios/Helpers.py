@@ -40,58 +40,28 @@ class SIA:
             this.groups_cache[code] = result["result"]["list"]
         return this.groups_cache[code]
 
-    def create_subject(this,data):
-        groupsData = this.queryGroupsBySubjectCode(data["codigo"])
-        groups=[]
-        for g in groupsData:
-            schedule = {}
-            if(g["horario_lunes"] != "--"):
-                schedule[Models.DAYS[0]] = g["horario_lunes"]
-            if(g["horario_martes"] != "--"):
-                schedule[Models.DAYS[1]] = g["horario_martes"]
-            if(g["horario_miercoles"] != "--"):
-                schedule[Models.DAYS[2]] = g["horario_miercoles"]
-            if(g["horario_jueves"] != "--"):
-                schedule[Models.DAYS[3]] = g["horario_jueves"]
-            if(g["horario_viernes"] != "--"):
-                schedule[Models.DAYS[4]] = g["horario_viernes"]
-            if(g["horario_sabado"] != "--"):
-                schedule[Models.DAYS[5]] = g["horario_sabado"]
-            if(g["horario_domingo"] != "--"):
-                schedule[Models.DAYS[6]] = g["horario_domingo"]
-
-            groups.append(Group(g["codigo"],g["nombredocente"],schedule))
-
-        return Subject(data["nombre"],data["codigo"],data["creditos"],groups)
-
-    def getSubject(this,name,level):
-        data = this.querySubjectsByName(name,level,1)[0]
-        return this.create_subject(data);
-
-    def get_subjects(this,name,level,maxResults=100):
-        data = this.querySubjectsByName(name,level,maxResults)
-        result = []
-        for i in data:
-            result.append(this.create_subject(i))
-        return result;
-
-
 class Generator:
+    
+    def generateSchedulesFromSubjects(self,listOfSubjects):
+        groups = []
+        for s in listOfSubjects:
+            groups.append(s.groups)
+        self.generateSchedule(groups)
 
-    def generateSchedule(self,listOfSubjects):
+    def generateSchedule(self,listOfListOfGroups,busy=None):
         result = []
-        if(len(listOfSubjects) == 1):
-            for g in listOfSubjects[0].groups:
-                result.append(Schedule(None,g))
+        if(len(listOfListOfGroups) == 1):
+            for g in listOfListOfGroups[0]:
+                result.append(Schedule(busy,g))
             return result
 
-        subject = listOfSubjects.pop()
-        subSchedules = self.generateSchedule(listOfSubjects)
-        for group in subject.groups:
+        listOfGroups = listOfListOfGroups.pop()
+        subSchedules = self.generateSchedule(listOfListOfGroups,busy)
+        for group in listOfGroups:
             for schedule in subSchedules:
                 if(schedule._isCompatible(group)):
                     result.append(schedule.clone().addGroup(group))
 
         if(len(result) == 0):
-            print "No schedule can be generated so that it includes " , subject.name
+            raise Exception("No schedule can be generated" )
         return result
