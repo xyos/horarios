@@ -15,17 +15,22 @@ angular.module('schedulesApp', [
 
 angular.module('schedulesApp')
 .service('sharedSchedule',function(){
-  var scheduleValue = {"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [
+  var schedulesValue = [{"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [
     { code : "1", schedule :  [0, 0, 0, 0, 0, 0, 0] , subject : ""}
-   ]}
+   ]}];
+  var scheduleIndex = 0;
   return {
-    getSchedule : function() {
-      return scheduleValue;
+    getActiveSchedule : function() {
+      return schedulesValue[scheduleIndex];
     },
-    setSchedule : function(schedule){
-      console.log(schedule);
-      console.log("changed schedulle");
-      scheduleValue = schedule;
+    setActiveSchedule : function(schedule){
+      scheduleIndex = schedule;
+    },
+    getSchedules : function() {
+      return schedulesValue;
+    },
+    setSchedules : function(schedules){
+      schedulesValue = schedules;
     }
   }
 });

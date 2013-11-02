@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('schedulesApp')
-.controller('SubjectsCtrl', function($scope, $http, limitToFilter) {
+.controller('SubjectsCtrl', function($scope, $http, limitToFilter, sharedSchedule) {
   $scope.selectedSubjects = [];
   $scope.subjects = function(subjectName){
     return $http.get('/api/v1.0/subject/autocomplete/' + subjectName + '/?format=json')
@@ -11,10 +11,19 @@ angular.module('schedulesApp')
   };
   $scope.onSelect = function ($item, $model, $label) {
     $scope.selectedSubjects.push($item);
+    var query = "";
+    $scope.selectedSubjects.forEach(function(subject){
+      query += subject.code.toString() + ",";
+    })
+    console.log(query);
+    $http.get('/api/v1.0/schedule/subjects=' + query.substring(0,query.length-1) +'&busy=')
+    .then(function(result){
+      sharedSchedule.setSchedules(result.data);
+    });
   }
 })
 .controller('ScheduleDetailCtrl',function($scope, $http, sharedSchedule){
-  $scope.scheduleItems = sharedSchedule.getSchedule();
+  $scope.scheduleItems = sharedSchedule.getActiveSchedule();
   $scope.daysOfWeek =
     ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
   $scope.hours = [];
@@ -72,7 +81,7 @@ angular.module('schedulesApp')
     return schedule;
   };
   $scope.sharedSchedule = sharedSchedule;
-  $scope.$watch('sharedSchedule.getSchedule()', function(newValue){
+  $scope.$watch('sharedSchedule.getActiveSchedule()', function(newValue){
     console.log("big brother is watching you");
     $scope.schedule = $scope.parseSchedule($scope.daysOfWeek, $scope.hours, newValue);
   });
@@ -80,11 +89,11 @@ angular.module('schedulesApp')
 })
 .controller('ScheduleListCtrl',function($scope, $http, sharedSchedule, $q){
   $scope.schedules = {};
-  $http.get('/api/v1.0/schedule/random/?format=json').then(function(result){
-    $scope.schedules = result.data;
+  $scope.sharedSchedule = sharedSchedule;
+  $scope.$watch('sharedSchedule.getSchedules()', function(newValue){
+    $scope.schedules = newValue;
   });
   $scope.loadSchedule = function(index){
-    console.log(index);
-    sharedSchedule.setSchedule($scope.schedules[index]);
+    sharedSchedule.setActiveSchedule(index);
   }
 });
