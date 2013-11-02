@@ -15,7 +15,9 @@ angular.module('schedulesApp', [
 
 angular.module('schedulesApp')
 .service('sharedSchedule',function(){
-  var scheduleValue = {"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [["1", [0, 0, 0, 0, 0, 0, 0]], ["1", [0, 0, 0, 0, 0, 0, 0]], ["1", [0, 0, 0, 0, 0, 0, 0]]]};
+  var scheduleValue = {"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [
+    { code : "1", schedule :  [0, 0, 0, 0, 0, 0, 0] , subject : ""}
+   ]}
   return {
     getSchedule : function() {
       return scheduleValue;
