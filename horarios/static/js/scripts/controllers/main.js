@@ -70,9 +70,10 @@ angular.module('schedulesApp')
     };
     return schedule;
   };
+  $scope.sharedSchedule = sharedSchedule;
   $scope.$watch('sharedSchedule.getSchedule()', function(newValue){
     console.log("big brother is watching you");
-    $scope.schedule = $scope.parseSchedule($scope.daysOfWeek, $scope.hours, $scope.scheduleItems);
+    $scope.schedule = $scope.parseSchedule($scope.daysOfWeek, $scope.hours, newValue);
   });
 
 })
