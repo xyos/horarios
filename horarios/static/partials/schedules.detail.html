@@ -1,16 +1,14 @@
 <div class="panel-heading">horario</div>
 <!--<div class="panel-body"></div>-->
 <table class="table table-bordered table-condensed" ng-controller="ScheduleDetailCtrl">
-  <thead>
+  <thead ng-show="$first" ng-repeat="row in schedule">
     <tr class="text-center" ng-show="daysOfWeek.length > 0">
-      <th>horario</th>
-      <th ng-repeat="day in daysOfWeek">{{day}}</th>
+      <th ng-repeat="cell in row">{{cell.text}}</th>
     </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="hour in hours">
-    <td>{{hour}}</td>
-    <td  ng-repeat="day in daysOfWeek" class="text-center"><em></em></td>
+  <tr ng-show="!$first" ng-repeat="row in schedule">
+    <td ng-repeat="cell in row" class="text-center"><em>{{cell.text}}</em></td>
   </tr>
   </tbody>
 </table>
