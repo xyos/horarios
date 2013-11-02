@@ -56,11 +56,15 @@ class GroupDao:
         for i in Models.DAYS:
             try:
                 scheduleString = scheduleDict[i]
-                split = scheduleString.split("-")
                 hours = ["0"]*24
-
-                for i in range(int(split[0]),int(split[1])):
-                    hours[23-i+1]="1"
+                hourBlocks = scheduleString.split(" ")
+                for hourBlock in hourBlocks:
+                    split = hourBlock.split("-")
+                    try:
+                        for i in range(int(split[0]),int(split[1])):
+                            hours[23-i+1]="1"
+                    except Exception:
+                        print "Problem while parsing schedule described as :", scheduleString
                 schedule.append(int("".join(hours),2))
             except KeyError:
                 schedule.append(0)
