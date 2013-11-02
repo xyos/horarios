@@ -19,7 +19,7 @@ angular.module('schedulesApp')
     ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
   $scope.hours = [];
   for (var i = 1; i <= 24; i++) {
-    $scope.hours.push(i + ":00");
+    $scope.hours.push(i -1 + ":00 - " + i + ":00");
   };
   $scope.parseSchedule = function(daysOfWeek, hours, scheduleItems){
     var schedule = [];
@@ -36,11 +36,11 @@ angular.module('schedulesApp')
     var groupsArray = [];
     scheduleItems.groups.forEach(function(group,index){
       var groupHours = [];
-      group[1].forEach(function(item){
+      group.schedule.forEach(function(item){
         groupHours.push(( item + Math.pow(2,25) ).toString(2).substring(1));
       });
       groupsArray.push({
-        text: ("grupo" + index),
+        text: (group.code),
         hours: groupHours
       });
     });
