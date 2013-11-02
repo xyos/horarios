@@ -63,7 +63,6 @@ def random_schedules(request):
     c = facades.getSubjectsByName("Lenguajes de programacion","PRE")[0]
 
     s = [a.code,b.code,c.code]
-    print s
 
     s = facades.getSchedules(s)
 
