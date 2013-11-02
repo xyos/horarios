@@ -1,5 +1,5 @@
 import Models
-
+import simplejson as json
 class Serializer:
     def __init__(self,serializedClass):
         self.serializedClass = serializedClass
@@ -13,7 +13,7 @@ class Serializer:
         elif (data,self.serializedClass):
             out = self.serialize_single(data)
 
-        return out
+        return json.dumps(out)
 
 class ScheduleSerializer(Serializer):
     
