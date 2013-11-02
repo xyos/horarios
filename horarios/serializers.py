@@ -24,7 +24,7 @@ class ScheduleSerializer(Serializer):
         out = {}
         out['groups'] = []
         for g in schedule.groups:
-            out['groups'].append([g.code,g.subjectCode,g.schedule])
+            out['groups'].append({"code":g.code,"subject":g.subjectCode,"schedule":g.schedule})
         out['busy'] = schedule.busy
         return out
 
