@@ -127,3 +127,29 @@ class GroupsView(APIView):
         from serializers import GroupSerializer
         serializer = GroupSerializer()
         return Response(serializer.serialize(groups), status = status.HTTP_200_OK)
+
+class SchedulesView(APIView):
+    def get(self, request, *args , **kw):
+        def parseSubjects(string):
+            string = string.split(",")
+            codes = []
+            for i in string:
+                codes.append(str(int(i)))
+            return codes
+        def parseBusy(string):
+            ret = []
+            hours = string.split(",")
+            if(len(hours)!=7):
+                return None
+            else:
+                for i in hours:
+                    ret.append(int(i))
+                return ret
+
+        subjects = kw['subjects']
+        busy = kw['busy']
+        import facades
+        s = facades.getSchedules(parseSubjects(subjects),parseBusy(busy))
+        from serializers import ScheduleSerializer
+        serializer = ScheduleSerializer()
+        return Response(serializer.serialize(s), status = status.HTTP_200_OK)
