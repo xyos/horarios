@@ -34,15 +34,39 @@ angular.module('schedulesApp')
       //adding a 1 to the decimal to keep the preeceding zeros
       busyArray.push(( item + 4096 ).toString(2).substring(2));
     });
+    var groupsArray = [];
+    scheduleItems.groups.forEach(function(group,index){
+      var groupHours = [];
+      group[1].forEach(function(item){
+        groupHours.push(( item + 4096 ).toString(2).substring(2));
+      });
+      groupsArray.push({
+        text: ("grupo" + index),
+        hours: groupHours
+      });
+    });
+    console.log(groupsArray);
     console.log(busyArray);
     for (var i = 0; i < hours.length; i++) {
       var row = [];
       row.push({text : hours[i], class : 'heading'});
       for (var j = 0; j < daysOfWeek.length; j++) {
         //adding busy hours
-        row.push({text: ( (busyArray[j][i] == "1") ? "ocupado" : "" ),
-                 class: "",
-                 busy : ( (busyArray[j][i] == "1") ? 1 : 0 )
+        var rowGroupsText = "";
+        var busyGroups = false;
+        groupsArray.forEach(function(item){
+          if (item.hours[j][i] == "1"){
+            rowGroupsText += item.text;
+            busyGroups = busyGroups || true;
+          } 
+        });
+        var rowText = ( (busyArray[j][i] == "1") ? "" : "" );
+        var rowBusy = ( (busyArray[j][i] == "1" || busyGroups) ? 1 : 0 );
+        rowText += rowGroupsText;
+        row.push({
+          text: rowText,
+          busy: busyArray,
+          class: "",
         });
       };
       schedule[i+1] = row;
