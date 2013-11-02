@@ -13,7 +13,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
         <!-- endbuild -->
 </head>
   <body ng-app="schedulesApp">
@@ -27,28 +27,18 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner"><div class="container">
-
-          <!-- ui-sref is a great directive for linking a state location with an anchor link.
-               You should almost always use ui-sref instead of href on your links when you want
-               then to navigate to a state. When this link is clicked it will take the application
-               to the 'home' state. Behind the scenes the directive also adds the correct href attr
-               and url. -->
-          <a href="#/" class="brand" ui-sref="home">Horarios UN</a>
-          <ul class="nav">
-
-            <!-- Here you can see ui-sref in action again. Also notice the use of $state.includes, which
-               will set the links to 'active' if, for example on the first link, 'contacts' or any of
-               its descendant states are activated. -->
+    <div class="container">
+      <div class="navbar navbar-default">
+        <div class="navbar-header">
+          <a href="#/" class="navbar-brand" ui-sref="home">Horarios UN</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
             <li class="active" ng-class="{ active: $state.includes('schedules') }"><a href="#/schedules" ui-sref="schedules.list">Schedules</a></li>
             <li ng-class="{ active: $state.includes('about') }"><a href="#/about" ui-sref="about">About</a></li>
           </ul>
-
-          <!-- Here is a named ui-view. ui-views don't have to be named, but we'll be populate this
-               on from various different child states and we want a name to help us target. -->
-          <p ui-view="hint" class="navbar-text pull-right"><span class="ng-scope"></span></p>
-      </div></div>
+        </div>
+      </div>
     </div>
     <!--states are shown here-->
     <ui-view></ui-view>

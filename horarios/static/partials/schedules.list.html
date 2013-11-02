@@ -1,29 +1,7 @@
-<div class="row">
-    <button type="button" class="btn pull-left" ng-click="move(-1)"><i class="icon-chevron-left"></i></button>
-    <button type="button" class="btn pull-right" ng-click="move(1)"><i class="icon-chevron-right"></i></button>
-    <div class="thumbnail span3">
-      <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
-      </div>
-    </div>
-    <div class="thumbnail span3">
-      <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
-      </div>
-    </div>
-    <div class="thumbnail span3">
-      <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
-      </div>
-    </div>
-    <div class="thumbnail span3">
-      <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
-      </div>
-    </div>
+<div class="row" ng-controller="ScheduleListCtrl">
+      <button type="button" class="btn pull-left"><i class="icon-chevron-left"></i></button>
+      <button type="button" class="btn pull-right"><i class="icon-chevron-right"></i></button>
+      <div class="col-md-2 btn" ng-repeat="schedule in schedules">
+        <a role="button" href="" class="btn btn-primary"> horario [{{ $index + 1 }}] </a>
 </div>
 
