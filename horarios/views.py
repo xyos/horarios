@@ -99,6 +99,27 @@ def autocomplete_subject(request):
 
     return HttpResponse(serializer.serialize(subjects), content_type='application/json')
 
+
+
+class RandomScheduleView(APIView):
+    def get(self, request, *args, **kw):
+        from Helpers import SIA,Generator
+        sia = SIA()
+        a = sia.getSubject("Algoritmos","PRE")
+        b = sia.getSubject("Seguridad en redes","PRE")
+        c = sia.getSubject("Lenguajes de programacion","PRE")
+
+        #Generating simple schedules first will fasten the algorithm
+        s = [a,b,c]
+        s = sorted(s, lambda x,y: 1 if len(x.groups)>len(y.groups) else -1 if len(x.groups)<len(y.groups) else 0)
+
+        gen = Generator()
+        s = gen.generateSchedule(s)
+
+        from serializers import ScheduleSerializer
+        serializer = ScheduleSerializer()
+        return Response(serializer.serialize(s), status = status.HTTP_200_OK)
+
 class SubjectAutocompleteView(APIView):
     def get(self, request, *args , **kw):
         name = kw['name']

@@ -1,4 +1,4 @@
-<div class="well sidebar-nav" ng-controller="TypeaheadCtrl">
+<div class="well sidebar-nav" ng-controller="SubjectsCtrl">
   <input placeholder="escriba el nombre de la materia" class="span13" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" min-length="3" typeahead="subject.name for subject in subjects($viewValue)">
   <ul class="nav bs-sidenav" ng-repeat="subject in selectedSubjects">
     <li class="nav-header">{{ subject.name + ' - ' + subject.code }}</li>
