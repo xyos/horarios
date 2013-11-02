@@ -18,7 +18,7 @@ angular.module('schedulesApp')
   $scope.daysOfWeek =
     ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
   $scope.hours = [];
-  for (var i = 7; i <= 20; i++) {
+  for (var i = 1; i <= 24; i++) {
     $scope.hours.push(i + ":00");
   };
   $scope.parseSchedule = function(daysOfWeek, hours, scheduleItems){
@@ -31,13 +31,13 @@ angular.module('schedulesApp')
     var busyArray = [];
     scheduleItems.busy.forEach(function(item){
       //adding a 1 to the decimal to keep the preeceding zeros
-      busyArray.push(( item + 4096 ).toString(2).substring(2));
+      busyArray.push(( item + Math.pow(2,25) ).toString(2).substring(1));
     });
     var groupsArray = [];
     scheduleItems.groups.forEach(function(group,index){
       var groupHours = [];
       group[1].forEach(function(item){
-        groupHours.push(( item + 4096 ).toString(2).substring(2));
+        groupHours.push(( item + Math.pow(2,25) ).toString(2).substring(1));
       });
       groupsArray.push({
         text: ("grupo" + index),
