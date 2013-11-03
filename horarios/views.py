@@ -64,7 +64,7 @@ def random_schedules(request):
 
     s = [a.code,b.code,c.code]
 
-    s = facades.getSchedules(s)
+    s = facades.getSchedulesBySubjectCodes(s)
 
     from serializers import ScheduleSerializer
     serializer = ScheduleSerializer()
@@ -104,7 +104,7 @@ class RandomScheduleView(APIView):
 
         s = [a.code,b.code,c.code]
 
-        s = facades.getSchedules(s)
+        s = facades.getSchedulesBySubjectCodes(s)
 
         from serializers import ScheduleSerializer
         serializer = ScheduleSerializer()
@@ -132,10 +132,15 @@ class SchedulesView(APIView):
     def get(self, request, *args , **kw):
         def parseSubjects(string):
             string = string.split(",")
-            codes = []
+            query = []
             for i in string:
-                codes.append(str(int(i)))
-            return codes
+                parts = i.split("|")
+                subject = {"code" : str(int(parts[0])), "groups" : []}
+                for j in range(1,len(parts)):
+                    subject["groups"].append(int(parts[j]))
+                query.append(subject)
+            return query 
+
         def parseBusy(string):
             ret = []
             hours = string.split(",")
@@ -149,7 +154,7 @@ class SchedulesView(APIView):
         subjects = kw['subjects']
         busy = kw['busy']
         import facades
-        s = facades.getSchedules(parseSubjects(subjects),parseBusy(busy))
+        s = facades.getSchedulesByQuery(parseSubjects(subjects),parseBusy(busy));
         from serializers import ScheduleSerializer
         serializer = ScheduleSerializer()
         return Response(serializer.serialize(s), status = status.HTTP_200_OK)
