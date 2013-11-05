@@ -22,9 +22,7 @@ def getSchedulesByQuery(query,busy=None):
     """
     lists = []
     for subject in query:
-        print subject["code"]
         groups = subjectsServices.getGroups(subject["code"])
-        print subject["groups"]
         if(subject["groups"] != None and len(subject["groups"]) > 0):
             relevantGroups = []
             for g in groups:
