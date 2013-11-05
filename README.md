@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/xyos/horarios.png?label=ready)](https://waffle.io/xyos/horarios)  
 horarios
 ========
 Installation:
