@@ -1,6 +1,9 @@
 import json
 import urllib2
 from Models import Subject,Group,Schedule
+siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
+siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
+siaUrl=siaMedellinUrl
 import Models
 
 class SIA:
@@ -13,7 +16,7 @@ class SIA:
 
     def queryNumSubjectsWithName(this,name,level):
         data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, 1]})
-        req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
+        req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
         f = urllib2.urlopen(req)
         result = json.loads(f.read())["result"]["totalAsignaturas"]
         f.close()
@@ -22,7 +25,7 @@ class SIA:
     def querySubjectsByName(this,name,level,maxRetrieve):
         if not (name in this.subjects_cache):
             data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, maxRetrieve]})
-            req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
+            req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
             f = urllib2.urlopen(req)
             result=json.loads(f.read())
             f.close()
@@ -33,7 +36,7 @@ class SIA:
     def queryGroupsBySubjectCode(this,code):
         if not (code in this.groups_cache):
             data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [code, "0"]})
-            req = urllib2.Request("http://www.sia.unal.edu.co/buscador/JSON-RPC", data, {'Content-Type': 'application/json'})
+            req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
             f = urllib2.urlopen(req)
             result=json.loads(f.read())
             f.close()
