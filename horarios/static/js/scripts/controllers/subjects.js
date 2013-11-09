@@ -30,8 +30,6 @@ angular.module('schedulesApp')
         groups.push(teachers[k]);
       }
       $item.groups = groups;
-
-
       return $item;
     })
     .then(function(item){
@@ -49,8 +47,12 @@ angular.module('schedulesApp')
       .then(function(result){
         sharedSchedule.setSchedules(result.data);
       });
+      $scope.model = {};
     });
   };
+  $scope.formatInput = function(){
+    return "";
+  }
   $scope.addGroup = function (group, initial) {
     var s = "" + group.subject;
     var c = "" + group.code;
