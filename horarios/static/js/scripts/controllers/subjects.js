@@ -59,6 +59,7 @@ angular.module('schedulesApp')
       if ( subject.code == code ) $scope.selectedSubjects.splice(index,1);
     });
     $scope.redrawSchedule();
+    sharedColor.freeColor(code);
   };
   $scope.redrawSchedule = function(){
     var query = "";

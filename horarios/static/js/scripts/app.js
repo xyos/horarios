@@ -64,10 +64,16 @@ angular.module('schedulesApp')
   return {
     getSubjectColor : function(code){
       if(assignedColors[code] == undefined){
-        var rand = colors[Math.floor(Math.random() * colors.length)];
-        assignedColors[code] = rand;
+        var rand = Math.floor(Math.random() * colors.length);
+        var randcolor = colors[rand];
+        assignedColors[code] = randcolor;
+        colors.splice(rand,1);
       }
       return assignedColors[code];
+    },
+    freeColor : function(code){
+      colors.push(assignedColors[code]);
+      delete assignedColors[code];
     }
   }
 });
