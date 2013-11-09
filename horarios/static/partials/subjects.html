@@ -1,7 +1,4 @@
 <div class="well sidebar-nav" ng-controller="SubjectsCtrl">
-  <pre>
-    selected = {{ $scope.selectedGroups }}
-  </pre>
   <input placeholder="escriba el nombre de la materia" typeahead-input-formatter='formatInput($model)' class="form-control" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" typeahead="subject.name for subject in subjects($viewValue)">
   <hr>
   <ul class="list-group" ng-repeat="subject in selectedSubjects">
