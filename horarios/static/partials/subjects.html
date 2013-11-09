@@ -5,13 +5,14 @@
   <input placeholder="escriba el nombre de la materia" class="form-control" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" min-length="3" typeahead="subject.name for subject in subjects($viewValue)">
   <hr>
   <ul class="list-group" ng-repeat="subject in selectedSubjects">
-    <span class="badge">{{ subject.code }}</span>
-    <span>{{subject.name}}</span>
     <li class="list-group-item">
-      <ul class="nav">
-        <li ng-repeat="teacher in subject.groups" class="nav nav-header">
-          <span>{{ teacher.name }}</span>
-          <div ng-repeat="group in teacher.groups">grupo {{group.code}}
+    <span class="badge">{{ subject.code }}</span>
+    <span>{{subject.name | lowercase}}</span>
+      <ul class="list-group">
+        <li ng-repeat="teacher in subject.groups" class="list-group-item">
+          <span>{{ teacher.name | lowercase }}</span>
+          <div ng-repeat="group in teacher.groups">
+            <span class="badge">grupo {{group.code}}</span>
             <input type="checkbox" default="false" ng-model="group.check" ng-click="addGroup(group)">
           </div>
         </li>
