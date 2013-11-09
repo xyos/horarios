@@ -155,8 +155,13 @@ class SchedulesView(APIView):
 
         subjects = kw['subjects']
         busy = kw['busy']
+        if(len(subjects)<1):
+            return Response([], status = status.HTTP_200_OK)
         import facades
-        s = facades.getSchedulesByQuery(parseSubjects(subjects),parseBusy(busy));
+        try:
+            s = facades.getSchedulesByQuery(parseSubjects(subjects),parseBusy(busy));
+        except Exception:
+            return Response([], status = status.HTTP_200_OK)
         from serializers import ScheduleSerializer
         serializer = ScheduleSerializer()
         return Response(serializer.serialize(s), status = status.HTTP_200_OK)
