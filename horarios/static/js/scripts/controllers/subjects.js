@@ -11,6 +11,7 @@ angular.module('schedulesApp')
     });
   };
   $scope.onSelect = function ($item, $model, $label) {
+    if ($scope.selectedGroups[$item.code]) return;
     var query = "";
     $http.get('/api/v1.0/subject/' + $item.code +'/groups/')
     .then(function(result){
@@ -53,6 +54,38 @@ angular.module('schedulesApp')
   $scope.formatInput = function(){
     return "";
   }
+  $scope.removeSubject = function(code){
+    delete($scope.selectedGroups[code]);
+    $scope.selectedSubjects.forEach(function(subject,index){
+      if ( subject.code == code ) $scope.selectedSubjects.splice(index,1);
+    });
+    $scope.redrawSchedule();
+    sharedColor.freeColor(code);
+  };
+  $scope.redrawSchedule = function(){
+    var query = "";
+    for (var subject in $scope.selectedGroups){
+      if($scope.selectedGroups.hasOwnProperty(subject)){
+        if(Object.keys($scope.selectedGroups[subject]).length > 0){
+          query += subject + "|";
+          for (var code in $scope.selectedGroups[subject]){
+            if($scope.selectedGroups[subject].hasOwnProperty(code)){
+              query += code;
+              query += "|";
+            }
+          }
+          query = query.substring(0,query.length-1);
+          query += ",";
+        }
+      }
+    }
+    console.log(query);
+    $http.get('/api/v1.0/schedule/subjects=' + query.substring(0,query.length-1) +'&busy=')
+    .then(function(result){
+      if (result.data.length == 0) sharedSchedule.resetSchedule();
+      else sharedSchedule.setSchedules(result.data);
+    });
+  }
   $scope.addGroup = function (group, initial) {
     var s = "" + group.subject;
     var c = "" + group.code;
@@ -72,28 +105,7 @@ angular.module('schedulesApp')
       else{
         delete($scope.selectedGroups[s][c]);
       }
-      var query = "";
-      for (var subject in $scope.selectedGroups){
-        if($scope.selectedGroups.hasOwnProperty(subject)){
-          if(Object.keys($scope.selectedGroups[subject]).length > 0){
-            query += subject + "|";
-            for (var code in $scope.selectedGroups[subject]){
-              if($scope.selectedGroups[subject].hasOwnProperty(code)){
-                query += code;
-                query += "|";
-              }
-            }
-            query = query.substring(0,query.length-1);
-            query += ",";
-          }
-        }
-      }
-      console.log(query);
-      $http.get('/api/v1.0/schedule/subjects=' + query.substring(0,query.length-1) +'&busy=')
-      .then(function(result){
-        if (result.data.length == 0) sharedSchedule.resetSchedule();
-        else sharedSchedule.setSchedules(result.data);
-      });
+      $scope.redrawSchedule();
     }
   }
 });
