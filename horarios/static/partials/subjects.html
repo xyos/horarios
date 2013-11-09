@@ -3,9 +3,9 @@
   <hr>
   <ul class="list-group" ng-repeat="subject in selectedSubjects">
     <li class="list-group-item">
+    <button class="label label-danger pull-right" ng-click="removeSubject(subject.code)"><i class="fa fa-times"></i></button>
     <span class="badge {{ subject.color }}">{{ subject.code }}</span>
     <span><b>{{subject.name | lowercase}}</b></span>
-    <button class="label label-danger pull-right" ng-click="removeSubject(subject.code)"><i class="fa fa-times"></i></button>
       <ul class="list-group">
         <li ng-repeat="teacher in subject.groups" class="list-group-item">
           <span>{{ teacher.name | lowercase }}</span>
