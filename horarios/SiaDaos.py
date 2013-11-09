@@ -1,4 +1,4 @@
-import Models
+import BO as Models
 class SubjectDao:
     def __init__(self,sia):
         self.sia = sia 

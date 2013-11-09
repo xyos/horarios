@@ -1,4 +1,4 @@
-import Models
+import BO as Models
 import simplejson as json
 class Serializer:
     def __init__(self,serializedClass):

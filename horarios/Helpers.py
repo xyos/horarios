@@ -1,10 +1,12 @@
 import json
 import urllib2
-from Models import Subject,Group,Schedule
+from BO import Subject,Group,Schedule
+import Models
 siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
 siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
-siaUrl=siaMedellinUrl
-import Models
+siaUrl=siaBogotaUrl
+import Models as djangoModels
+import BO
 
 class SIA:
 
@@ -68,3 +70,22 @@ class Generator:
         if(len(result) == 0):
             raise Exception("No schedule can be generated" )
         return result
+
+
+class DatabaseCreator:
+    def __init__(self,sia):
+        self.sia = sia
+
+    def getSubjects(self,letters):
+
+        def createSubject(subject,groups):
+            djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits)
+            for i in groups:
+                t,creted = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
+                g = djangoModels.Group.objects.create(teacher=t,subject=subject,code=i.code,schedule=i.schedule)
+
+        dao = SiaDaos.SubjectDao(self.sia)
+        gDao = SiaDaos.GrouopDao(self.sia)
+        for j in letters:
+            for i in self.dao.getSubjectsByName(j):
+                createSubject(i,gDao.getGroupsBySubjectCode(i.code))
