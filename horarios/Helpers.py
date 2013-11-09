@@ -1,7 +1,6 @@
 import json
 import urllib2
 from BO import Subject,Group,Schedule
-import Models
 siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
 siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
 siaUrl=siaBogotaUrl
