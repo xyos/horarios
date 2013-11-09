@@ -8,13 +8,12 @@ class SubjectDao:
 
     def getSubjectsByName(self,name,level,maxResults):
         subjects = []
-        print models.Subject.objects.filter(name__contains=name)
-        for i in models.Subject.objects.filter(name__contains=name):
+        for i in models.Subject.objects.filter(name__icontains=name):
             subjects.append(self.BOfromDjango(i))
         return subjects
 
     def getSubjectByName(this,name,level):
-        return self.BOfromDjango(models.Subject.objects.get(name__exact=name))
+        return self.BOfromDjango(models.Subject.objects.get(name__iexact=name))
 
     def getSubjectByCode(this,name,level):
         raise Exception("Not implemented for SIA DAOs")
