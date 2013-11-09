@@ -81,13 +81,12 @@ class DatabaseCreator:
             print "Processing ", subject.name.encode('ascii','ignore')
             try:
                 djangoModels.Subject.objects.get(name__exact=subject.name)
+                print "Skipping already processed ", subject.name.encode('ascii','ignore')
+            except Exception:
                 s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits)
                 for i in groups:
                     t,creted = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
                     g = djangoModels.Group.objects.create(teacher=t,subject=s,code=i.code,schedule=i.schedule)
-            except Exception:
-                print "Skipping already processed ", subject.name.encode('ascii','ignore')
-
         dao = SiaDaos.SubjectDao(self.sia)
         gDao = SiaDaos.GroupDao(self.sia)
         for j in letters:
