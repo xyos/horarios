@@ -6,7 +6,7 @@ siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
 siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
 siaUrl=siaBogotaUrl
 import Models as djangoModels
-import BO
+import SiaDaos
 
 class SIA:
 
@@ -79,13 +79,20 @@ class DatabaseCreator:
     def getSubjects(self,letters):
 
         def createSubject(subject,groups):
-            djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits)
+            print "Processing ", subject.name
+            s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits)
             for i in groups:
                 t,creted = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
-                g = djangoModels.Group.objects.create(teacher=t,subject=subject,code=i.code,schedule=i.schedule)
+                g = djangoModels.Group.objects.create(teacher=t,subject=s,code=i.code,schedule=i.schedule)
 
         dao = SiaDaos.SubjectDao(self.sia)
-        gDao = SiaDaos.GrouopDao(self.sia)
+        gDao = SiaDaos.GroupDao(self.sia)
         for j in letters:
-            for i in self.dao.getSubjectsByName(j):
+            print "Synchronizing letter",j
+            for i in dao.getSubjectsByName(j,"",1000000):
                 createSubject(i,gDao.getGroupsBySubjectCode(i.code))
+
+def syncsia(request):
+    c = DatabaseCreator(SIA())
+    c.getSubjects("a")
+    return HttpResponse("'a'", content_type='application/json')

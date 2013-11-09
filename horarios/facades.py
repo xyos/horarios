@@ -1,6 +1,10 @@
 #Let the facades be a more stable interface to the services
+from Helpers import SIA
+globalSia = SIA()
+
 from services import SubjectsServices
-subjectsServices = SubjectsServices()
+from factories import MixedFactory,SiaFactory
+subjectsServices = SubjectsServices(SiaFactory(globalSia))
 
 def autocomplete(query):
     return subjectsServices.getSubjectsByName(query,"")
