@@ -62,7 +62,6 @@ angular.module('schedulesApp')
   };
   $scope.sharedSchedule = sharedSchedule;
   $scope.$watch('sharedSchedule.getActiveSchedule()', function(newValue){
-    console.log("big brother is watching you");
     $scope.schedule = $scope.parseSchedule($scope.daysOfWeek, $scope.hours, newValue);
   });
 

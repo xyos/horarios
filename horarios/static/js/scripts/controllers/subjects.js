@@ -89,7 +89,8 @@ angular.module('schedulesApp')
       console.log(query);
       $http.get('/api/v1.0/schedule/subjects=' + query.substring(0,query.length-1) +'&busy=')
       .then(function(result){
-        sharedSchedule.setSchedules(result.data);
+        if (result.data.length == 0) sharedSchedule.resetSchedule();
+        else sharedSchedule.setSchedules(result.data);
       });
     }
   }
