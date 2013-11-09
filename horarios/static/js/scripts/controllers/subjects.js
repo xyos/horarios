@@ -11,6 +11,7 @@ angular.module('schedulesApp')
     });
   };
   $scope.onSelect = function ($item, $model, $label) {
+    if ($scope.selectedGroups[$item.code]) return;
     var query = "";
     $http.get('/api/v1.0/subject/' + $item.code +'/groups/')
     .then(function(result){
