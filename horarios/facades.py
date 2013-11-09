@@ -4,7 +4,7 @@ globalSia = SIA()
 
 from services import SubjectsServices
 from factories import MixedFactory,SiaFactory
-subjectsServices = SubjectsServices(SiaFactory(globalSia))
+subjectsServices = SubjectsServices(MixedFactory(globalSia))
 
 def autocomplete(query):
     return subjectsServices.getSubjectsByName(query,"")

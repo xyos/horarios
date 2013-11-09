@@ -80,10 +80,14 @@ class DatabaseCreator:
 
         def createSubject(subject,groups):
             print "Processing ", subject.name
-            s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits)
-            for i in groups:
-                t,creted = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
-                g = djangoModels.Group.objects.create(teacher=t,subject=s,code=i.code,schedule=i.schedule)
+            try:
+                djangoModels.Subject.objects.get(name__exact=subject.name)
+                s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits)
+                for i in groups:
+                    t,creted = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
+                    g = djangoModels.Group.objects.create(teacher=t,subject=s,code=i.code,schedule=i.schedule)
+            except Exception:
+                print "Skipping already processed ", subject.name
 
         dao = SiaDaos.SubjectDao(self.sia)
         gDao = SiaDaos.GroupDao(self.sia)
@@ -94,5 +98,6 @@ class DatabaseCreator:
 
 def syncsia(request):
     c = DatabaseCreator(SIA())
-    c.getSubjects("a")
-    return HttpResponse("'a'", content_type='application/json')
+    c.getSubjects("abcdefghijklmnopqrstuvwxyz")
+    from django.http import HttpResponse
+    return HttpResponse(["abcdefghijklmnopqrstuvwxyz"], content_type='application/json')
