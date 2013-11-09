@@ -20,7 +20,7 @@ class Group():
             teacher is a string
         """
         self.teacher = teacher
-        self.code = code
+        self.code = int(code)
         self.subjectCode = subjectCode
         self.schedule = schedule
     

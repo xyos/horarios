@@ -135,7 +135,9 @@ class SchedulesView(APIView):
             query = []
             for i in string:
                 parts = i.split("|")
-                subject = {"code" : str(int(parts[0])), "groups" : []}
+                subject = {"code" : str(int(parts[0])), "groups" : None}
+                if(len(parts)>1):
+                    subject["groups"] = []
                 for j in range(1,len(parts)):
                     subject["groups"].append(int(parts[j]))
                 query.append(subject)
