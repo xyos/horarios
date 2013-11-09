@@ -12,4 +12,8 @@ clone in git
     source ./bin/activate
     cd ../ 
     pip install -r requirements.txt
+    python manage.py flush
+    python manage.py syncdb
     python manage.py runserver
+
+Now go to the url http://server/deploy/syncsia
