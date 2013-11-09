@@ -5,7 +5,7 @@ import Models
 siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
 siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
 siaUrl=siaBogotaUrl
-import Models as djangoModels
+import models as djangoModels
 import SiaDaos
 
 class SIA:
