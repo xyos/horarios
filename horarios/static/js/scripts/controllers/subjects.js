@@ -73,17 +73,20 @@ angular.module('schedulesApp')
       var query = "";
       for (var subject in $scope.selectedGroups){
         if($scope.selectedGroups.hasOwnProperty(subject)){
-          query += subject + "|";
-          for (var code in $scope.selectedGroups[subject]){
-            if($scope.selectedGroups[subject].hasOwnProperty(code)){
-              query += code;
-              query += "|";
+          if(Object.keys($scope.selectedGroups[subject]).length > 0){
+            query += subject + "|";
+            for (var code in $scope.selectedGroups[subject]){
+              if($scope.selectedGroups[subject].hasOwnProperty(code)){
+                query += code;
+                query += "|";
+              }
             }
+            query = query.substring(0,query.length-1);
+            query += ",";
           }
-          query = query.substring(0,query.length-1);
-          query += ",";
         }
       }
+      console.log(query);
       $http.get('/api/v1.0/schedule/subjects=' + query.substring(0,query.length-1) +'&busy=')
       .then(function(result){
         sharedSchedule.setSchedules(result.data);
