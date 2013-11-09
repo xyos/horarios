@@ -2,6 +2,7 @@
 
 angular.module('schedulesApp')
 .controller('SubjectsCtrl', function($scope, $http, limitToFilter, sharedSchedule, sharedColor) {
+  $scope.selectedGroups = {};
   $scope.selectedSubjects = [];
   $scope.subjects = function(subjectName){
     return $http.get('/api/v1.0/subject/autocomplete/' + subjectName + '/?format=json')
@@ -34,7 +35,11 @@ angular.module('schedulesApp')
       return $item;
     })
     .then(function(item){
-      item.color = "emerland";
+      item.groups.forEach(function(teacher){
+        teacher.groups.forEach(function(group){
+          $scope.addGroup({subject: group.subject, code : group.code}, true);
+        });
+      });
       item.color = sharedColor.getSubjectColor(item.code);
       $scope.selectedSubjects.push(item);
       $scope.selectedSubjects.forEach(function(subject){
@@ -46,19 +51,43 @@ angular.module('schedulesApp')
       });
     });
   };
-  $scope.selectedGroups = {};
-  $scope.addGroup = function (group) {
+  $scope.addGroup = function (group, initial) {
     var s = "" + group.subject;
     var c = "" + group.code;
-    if(group.check == undefined) group.check = false;
-    if(!group.check){i
+    if(initial){
       if($scope.selectedGroups[s] == undefined){
         $scope.selectedGroups[s] = {};
       }
       $scope.selectedGroups[s][c] = true;
-    }else{
-      delete($scope.selectedGroups[s][c]);
+    } else {
+      if(group.check === false){
+        $scope.selectedGroups[s][c] = true;
+      }
+      else if(group.check == undefined){
+        group.check = false;
+        delete($scope.selectedGroups[s][c]);
+      }
+      else{
+        delete($scope.selectedGroups[s][c]);
+      }
+      var query = "";
+      for (var subject in $scope.selectedGroups){
+        if($scope.selectedGroups.hasOwnProperty(subject)){
+          query += subject + "|";
+          for (var code in $scope.selectedGroups[subject]){
+            if($scope.selectedGroups[subject].hasOwnProperty(code)){
+              query += code;
+              query += "|";
+            }
+          }
+          query = query.substring(0,query.length-1);
+          query += ",";
+        }
+      }
+      $http.get('/api/v1.0/schedule/subjects=' + query.substring(0,query.length-1) +'&busy=')
+      .then(function(result){
+        sharedSchedule.setSchedules(result.data);
+      });
     }
-    console.log($scope.selectedGroups);
   }
 });

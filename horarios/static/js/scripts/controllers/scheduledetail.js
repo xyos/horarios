@@ -23,9 +23,6 @@ angular.module('schedulesApp')
     });
     var groupsArray = [];
     scheduleItems.groups.forEach(function(group,index){
-      console.log("---");
-      console.log(group);
-      console.log("---");
       var groupHours = [];
       group.schedule.forEach(function(item){
         groupHours.push(( item + Math.pow(2,25) ).toString(2).substring(1));

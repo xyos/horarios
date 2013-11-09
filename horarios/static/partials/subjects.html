@@ -13,7 +13,7 @@
           <span>{{ teacher.name | lowercase }}</span>
           <div ng-repeat="group in teacher.groups">
             <span class="badge">grupo {{group.code}}</span>
-            <input type="checkbox" default="false" ng-model="group.check" ng-click="addGroup(group)">
+            <input type="checkbox" ng-checked="true" ng-model="group.check" ng-click="addGroup(group)">
           </div>
         </li>
       </ul>
