@@ -8,7 +8,7 @@
   </thead>
   <tbody>
   <tr ng-show="!$first" ng-repeat="row in schedule">
-    <td ng-repeat="cell in row" class="text-center"><em>{{cell.text}}</em></td>
+    <td ng-repeat="cell in row" class="text-center {{ cell.color }}"><em>{{cell.text}}</em></td>
   </tr>
   </tbody>
 </table>

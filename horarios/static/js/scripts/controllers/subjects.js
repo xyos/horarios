@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('schedulesApp')
-.controller('SubjectsCtrl', function($scope, $http, limitToFilter, sharedSchedule) {
+.controller('SubjectsCtrl', function($scope, $http, limitToFilter, sharedSchedule, sharedColor) {
   $scope.selectedSubjects = [];
   $scope.subjects = function(subjectName){
     return $http.get('/api/v1.0/subject/autocomplete/' + subjectName + '/?format=json')
@@ -34,6 +34,8 @@ angular.module('schedulesApp')
       return $item;
     })
     .then(function(item){
+      item.color = "emerland";
+      item.color = sharedColor.getSubjectColor(item.code);
       $scope.selectedSubjects.push(item);
       $scope.selectedSubjects.forEach(function(subject){
         query += subject.code.toString() + ",";
@@ -49,7 +51,7 @@ angular.module('schedulesApp')
     var s = "" + group.subject;
     var c = "" + group.code;
     if(group.check == undefined) group.check = false;
-    if(!group.check){
+    if(!group.check){i
       if($scope.selectedGroups[s] == undefined){
         $scope.selectedGroups[s] = {};
       }

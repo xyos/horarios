@@ -16,7 +16,7 @@ angular.module('schedulesApp', [
 angular.module('schedulesApp')
 .service('sharedSchedule',function(){
   var schedulesValue = [{"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [
-    { code : "1", schedule :  [0, 0, 0, 0, 0, 0, 0] , subject : ""}
+    { code : "1", schedule :  [0, 0, 0, 0, 0, 0, 0] , subject : "", name : ""}
    ]}];
   var scheduleIndex = 0;
   return {
@@ -31,6 +31,37 @@ angular.module('schedulesApp')
     },
     setSchedules : function(schedules){
       schedulesValue = schedules;
+    }
+  }
+});
+angular.module('schedulesApp')
+.service('sharedColor',function(){
+  var assignedColors = {};
+  var colors = [
+    'turquoise',
+    'emerland',
+    'peter-river',
+    'amethyst',
+    'wet-asphalt',
+    'green-sea',
+    'nephritis',
+    'belize-hole',
+    'wisteria',
+    'midnight-blue',
+    'sun-flower',
+    'carrot',
+    'alizarin',
+    'clouds',
+    'concrete',
+    'orange',
+    'pumpkin',
+    'pomegranate',
+    'silver',
+    'asbestos'
+  ];
+  return {
+    getSubjectColor : function(code){
+      return 'sun-flower';
     }
   }
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('schedulesApp')
-.controller('ScheduleDetailCtrl',function($scope, $http, sharedSchedule){
+.controller('ScheduleDetailCtrl',function($scope, $http, sharedSchedule, sharedColor){
   $scope.scheduleItems = sharedSchedule.getActiveSchedule();
   $scope.daysOfWeek =
     ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
@@ -23,14 +23,18 @@ angular.module('schedulesApp')
     });
     var groupsArray = [];
     scheduleItems.groups.forEach(function(group,index){
+      console.log("---");
       console.log(group);
+      console.log("---");
       var groupHours = [];
       group.schedule.forEach(function(item){
         groupHours.push(( item + Math.pow(2,25) ).toString(2).substring(1));
       });
+      console.log(group);
       groupsArray.push({
         text: (group.subject),
-        hours: groupHours
+        hours: groupHours,
+        color: sharedColor.getSubjectColor(group.subject)
       });
     });
     for (var i = 0; i < hours.length; i++) {
@@ -52,7 +56,7 @@ angular.module('schedulesApp')
         row.push({
           text: rowText,
           busy: busyArray,
-          class: "",
+          color: sharedColor.getSubjectColor(rowText)
         });
       };
       schedule[i+1] = row;
