@@ -15,9 +15,10 @@ angular.module('schedulesApp', [
 
 angular.module('schedulesApp')
 .service('sharedSchedule',function(){
-  var schedulesValue = [{"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [
+  var blankSchedule = [{"busy": [0, 0, 0, 0, 0, 0, 0], "groups": [
     { code : "1", schedule :  [0, 0, 0, 0, 0, 0, 0] , subject : "", name : ""}
    ]}];
+  var schedulesValue = blankSchedule;
   var scheduleIndex = 0;
   return {
     getActiveSchedule : function() {
@@ -25,6 +26,9 @@ angular.module('schedulesApp')
     },
     setActiveSchedule : function(schedule){
       scheduleIndex = schedule;
+    },
+    resetSchedule : function() {
+      schedulesValue = blankSchedule;
     },
     getSchedules : function() {
       return schedulesValue;
@@ -51,17 +55,19 @@ angular.module('schedulesApp')
     'sun-flower',
     'carrot',
     'alizarin',
-    'clouds',
     'concrete',
     'orange',
     'pumpkin',
     'pomegranate',
-    'silver',
     'asbestos'
   ];
   return {
     getSubjectColor : function(code){
-      return 'sun-flower';
+      if(assignedColors[code] == undefined){
+        var rand = colors[Math.floor(Math.random() * colors.length)];
+        assignedColors[code] = rand;
+      }
+      return assignedColors[code];
     }
   }
 });
