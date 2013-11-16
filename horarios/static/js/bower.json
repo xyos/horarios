@@ -1,0 +1,15 @@
+{
+  "name": "AngularJS UNSchedule app",
+  "version": "0.1",
+  "main": "../../templates/home.html",
+  "ignore": [
+    "**/.*",
+    "libs",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "angular": "~1.2.0",
+    "requirejs": "~2.1.9",
+    "requirejs-domready": "~2.0.1"
+  }
+}
