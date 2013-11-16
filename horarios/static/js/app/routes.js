@@ -1,9 +1,10 @@
-angular.module('schedulesApp').config(
-  ['$stateProvider','$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider){
-      $urlRouterProvider
+define(['../app'],function (app) {
+  app.config(
+    ['$stateProvider','$urlRouterProvider',
+      function($stateProvider, $urlRouterProvider){
+        $urlRouterProvider
         .otherwise('/');
-      $stateProvider
+        $stateProvider
         .state('home' , {
           url : '/',
           template: '<h1>Hello World</h1>'
@@ -30,7 +31,7 @@ angular.module('schedulesApp').config(
         .state('about',{
           url : '/about',
           templateUrl: '/static/partials/about.html'
-        })
-        ;
-    }]
-);
+        }) ;
+      }]
+  );
+});

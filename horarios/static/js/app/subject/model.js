@@ -1,7 +1,12 @@
 'use strict';
 
-angular.module('schedulesApp')
-  .factory('Subject', function($http,$rootScope){
+/**
+* Subject controller definition
+* @scope Controllers
+*/
+define(['./module'], function (models) {
+  'use strict';
+  models.factory('Subject', function ($http) {
     var getTeachers = function(code){
       return $http.get('/api/v1.0/subject/' + code +'/groups/')
       .success(function(result){
@@ -37,4 +42,5 @@ angular.module('schedulesApp')
         });
     }
     return Subject;
+  });
 });
