@@ -8,12 +8,30 @@ angular.module('schedulesApp')
       name: 'hola',
       code: 123456,
       groups: [],
-      teachers: [{name:"hola"},{name:"mundo"}],
+      teachers: [{teachers:"hola"},{teachers:"mundo"}],
       departament: 'asddas'
     };
     angular.extend(s, Subject)
     subjects.push(s);
-    var colors = [];
+    var assignedColors = {};
+    var colors = [
+    'turquoise', 'emerland', 'peter-river', 'amethyst', 'wet-asphalt',
+    'green-sea', 'nephritis', 'belize-hole', 'wisteria', 'midnight-blue',
+    'sun-flower', 'carrot', 'alizarin', 'concrete', 'orange',
+    'pumpkin', 'pomegranate', 'asbestos' ];
+    var getColor = function(code){
+      if(assignedColors[code] == undefined){
+        var rand = Math.floor(Math.random() * colors.length);
+        var randcolor = colors[rand];
+        assignedColors[code] = randcolor;
+        colors.splice(rand,1);
+      }
+      return assignedColors[code];
+    }
+    var freeColor = function(code){
+      colors.push(assignedColors[code]);
+      delete assignedColors[code];
+    }
     return {
       // we will pick from cache first
       getByCode : function(code){
@@ -28,6 +46,7 @@ angular.module('schedulesApp')
             name : "algebra",
             code : code,
             departament : 'asdasd',
+            color: getColor(code)
           }
           return new Subject(s);
         }
