@@ -2,7 +2,6 @@
 
 angular.module('schedulesApp')
   .factory('Subject', function($http,$rootScope){
-    var resolved = false;
     var getTeachers = function(code){
       return $http.get('/api/v1.0/subject/' + code +'/groups/')
       .success(function(result){
@@ -17,7 +16,6 @@ angular.module('schedulesApp')
           }
           myTeachers[teacher]["groups"].push(item);
         });
-        resolved = true;
         return myTeachers;
       })
       .error(function(data){
