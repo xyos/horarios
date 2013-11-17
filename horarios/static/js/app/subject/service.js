@@ -2,14 +2,7 @@ define(['./module'],function (services){
   services.service('SubjectService', function($http, $q, Subject, limitToFilter){
     // we will store and cache the subjects here
     var subjects = [];
-    var s = {
-      name: 'hola',
-      code: 123456,
-      teachers: [{teachers:"hola"},{teachers:"mundo"}],
-      departament: 'asddas'
-    };
-    angular.extend(s, Subject)
-    subjects.push(s);
+    // store the colors for reuse on delete
     var assignedColors = {};
     var colors = [
       'turquoise', 'emerland', 'peter-river', 'amethyst', 'wet-asphalt',
@@ -43,7 +36,6 @@ define(['./module'],function (services){
      */
     return {
       get : function(){
-        console.log(subjects);
         return subjects;
       },
       del : function(code){
@@ -70,6 +62,9 @@ define(['./module'],function (services){
           var subject = new Subject(s);
           subjects.push(subject);
         }
+      },
+      getByCode: function(code){
+        return getSubject(parseInt(code));
       },
       autoComplete : function(name){
         return $http.get('/api/v1.0/subject/autocomplete/' + name + '/?format=json')

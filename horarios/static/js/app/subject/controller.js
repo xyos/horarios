@@ -16,7 +16,6 @@ define(['./module'], function (controllers) {
      */
     $scope.onSelect  = function($item){
       SubjectService.add($item);
-      console.log($scope.subjects);
     };
     /*
      * lists all the currently selected subjects
