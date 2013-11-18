@@ -5,14 +5,13 @@
 * @scope Controllers
 */
 define(['./module'], function (models) {
-  'use strict';
   models.factory('Schedule', function ($http, SubjectService) {
-    var daysOfWeek = 
+    var daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     var hours = [];
     for (var i = 1; i <= 24; i++) {
-      hours.push(i -1 + ":00 - " + i + ":00");
-    };
+      hours.push(i -1 + ':00 - ' + i + ':00');
+    }
 
     var Schedule = function(scheduleItems){
       var schedule = {};
@@ -36,13 +35,12 @@ define(['./module'], function (models) {
       });
 
       var groupsArray = [];
-
-      scheduleItems.groups.forEach(function(group,index){
+      scheduleItems.groups.forEach(function(group){
         var groupHours = [];
         group.schedule.forEach(function(item){
           groupHours.push(( item + Math.pow(2,25) ).toString(2).substring(1));
         });
-        g = SubjectService.getByCode(group.subject);
+        var g = SubjectService.getByCode(group.subject);
         groupsArray.push({
           text: (group.subject + '-' + group.code),
           hours: groupHours,
@@ -55,25 +53,20 @@ define(['./module'], function (models) {
         row.push({text : hours[i], class : 'heading'});
         for (var j = 0; j < daysOfWeek.length; j++) {
           //adding busy hours
-          var rowGroupsText = "";
+          var rowGroupsText = '';
           var busyGroups = false;
-          groupsArray.forEach(function(item){
-            if (item.hours[j][i] == "1"){
-              rowGroupsText += item.text;
-              busyGroups = busyGroups || true;
-            } 
-          });
-          var rowText = ( (busyArray[j][i] == "1") ? "ocupado" : "" );
-          var rowBusy = ( (busyArray[j][i] == "1" || busyGroups) ? 1 : 0 );
+          groupsArray.forEach();
+          var rowText = ( (busyArray[j][i] === '1') ? 'ocupado' : '' );
+          var rowBusy = ( (busyArray[j][i] === '1' || busyGroups) ? 1 : 0 );
           rowText += rowGroupsText;
           row.push({
             text: rowText,
-            busy: busyArray,
-            class: "busyHour"
+            busy: rowBusy,
+            class: 'busyHour'
           });
-        };
+        }
         schedule[i+1] = row;
-      };
+      }
       return schedule;
     };
   });

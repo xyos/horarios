@@ -11,5 +11,5 @@ define([
   require(['domReady!'],function (document){
     ng.bootstrap(document, ['app']);
     ng.resumeBootstrap();
-  })
+  });
 });

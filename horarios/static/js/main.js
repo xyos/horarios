@@ -1,4 +1,4 @@
-'use strict;'
+'use strict';
 require.config({
   paths: {
     'domReady' : './libs/requirejs-domready/domready',
@@ -21,7 +21,7 @@ require.config({
     }
   },
   priority : [
-    "angular"
+    'angular'
   ],
   deps : ['./bootstrap']
 });
