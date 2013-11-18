@@ -10,16 +10,20 @@
         <button class="close" ng-click="removeSubject(subject.code)">×</button>
       </div>
       <div class="panel-body">
-        <ul class="list-group">
-          <li ng-repeat="teacher in subject.teachers" class="list-group-item">
-          <input type="checkbox" ng-checked="true" ng-model="teacher.isChecked" ng-change="checkChange(teacher.groups,teacher.isChecked)">
-          <span>{{ teacher.name | lowercase }}</span>
-          <div ng-repeat="group in teacher.groups">
-            <input type="checkbox" ng-checked="true" ng-model="group.isChecked" ng-change="addGroup(group)">
-            <span class="badge">grupo {{group.code}}</span>
+        <div class="panel-group">
+          <div class="panel panel-default" ng-repeat="teacher in subject.teachers">
+            <div class="panel-heading">
+              <input type="checkbox" ng-checked="true" ng-model="teacher.isChecked" ng-change="checkChange(teacher.groups,teacher.isChecked)">
+              <span>{{ teacher.name | lowercase }}</span>
+            </div>
+            <div class="panel-body">
+              <div ng-repeat="group in teacher.groups">
+                <input type="checkbox" ng-checked="true" ng-model="group.isChecked" ng-change="addGroup(group)">
+                <span class="badge">grupo {{group.code}}</span>
+              </div>
+            </div>
           </div>
-          </li>
-        </ul>
+        </div>
       </div>
     </div>
   </div>

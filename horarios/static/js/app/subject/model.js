@@ -29,6 +29,7 @@ define(['./module'], function (models) {
         getTeachers(this.code).success(function(data){
           var myTeachers = [];
           data.forEach(function(item,index){
+            item.isChecked = true;
             var teacher = item.teacher.trim();
             if (teacher.length < 1) teacher = "Sin profesor asignado";
             var found = false;
@@ -43,6 +44,7 @@ define(['./module'], function (models) {
               var myTeacher = {};
               myTeacher.groups = [];
               myTeacher.name = teacher;
+              myTeacher.isChecked = true;
               myTeacher.groups.push(item);
               myTeachers.push(myTeacher);
             }
