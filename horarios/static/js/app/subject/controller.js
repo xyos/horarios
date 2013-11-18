@@ -34,5 +34,16 @@ define(['./module'], function (controllers) {
     $scope.removeSubject = function(code){
       SubjectService.del(code);
     };
+    /*
+     * changes the check status for the given children
+     */
+    $scope.checkChange = function(items,value){
+      items.forEach(function(item){
+        item.isChecked = value;
+        if(item.hasOwnProperty('groups')){
+          $scope.checkChange(item.groups,value);
+        }
+      });
+    }
   });
 });

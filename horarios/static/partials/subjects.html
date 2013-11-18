@@ -1,20 +1,26 @@
-<div class="well sidebar-nav" ng-controller="SubjectCtrl">
+<div ng-controller="SubjectCtrl">
   <input placeholder="escriba el nombre de la materia" typeahead-input-formatter='formatInput($model)' class="form-control" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" typeahead-wait-ms="500" typeahead="subject.name for subject in autocomplete($viewValue)">
   <hr>
-  <ul class="list-group" ng-repeat="subject in subjects">
-    <li class="list-group-item">
-    <button class="label label-danger pull-right" ng-click="removeSubject(subject.code)"><i class="fa fa-times"></i></button>
-    <span class="badge {{ subject.color }}">{{ subject.code }}</span>
-    <span><b>{{subject.name | lowercase}}</b></span>
-      <ul class="list-group">
-        <li ng-repeat="teacher in subject.teachers" class="list-group-item">
+  <div class="panel-group">
+    <div class="panel panel-default" ng-repeat="subject in subjects">
+      <div class="panel-heading">
+        <input type="checkbox" ng-model="subject.isChecked" ng-checked="true" ng-change="checkChange(subject.teachers,subject.isChecked)">
+        <span><b>{{subject.name | lowercase}}</b></span>
+        <span class="{{ subject.color }}">{{ subject.code }}</span>
+        <button class="close" ng-click="removeSubject(subject.code)">×</button>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+          <li ng-repeat="teacher in subject.teachers" class="list-group-item">
+          <input type="checkbox" ng-checked="true" ng-model="teacher.isChecked" ng-change="checkChange(teacher.groups,teacher.isChecked)">
           <span>{{ teacher.name | lowercase }}</span>
           <div ng-repeat="group in teacher.groups">
+            <input type="checkbox" ng-checked="true" ng-model="group.isChecked" ng-change="addGroup(group)">
             <span class="badge">grupo {{group.code}}</span>
-            <input type="checkbox" ng-checked="true" ng-model="group.check" ng-click="addGroup(group)">
           </div>
-        </li>
-      </ul>
-    </li>
-  </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

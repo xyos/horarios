@@ -1,7 +1,10 @@
-<div class="row" ng-controller="ScheduleListCtrl">
-      <button type="button" class="btn pull-left"><i class="icon-arrow-left"></i></button>
-      <button type="button" class="btn pull-right"><i class="icon-arrow-right"></i></button>
-      <div class="col-md-2 btn" ng-repeat="schedule in schedules">
-        <button ng-click="loadSchedule($index)"> horario [{{ $index + 1 }}] </button>
+<div class="col-md-9" ng-controller="ScheduleListCtrl">
+  <div>
+    <ul class="pagination">
+      <li class="" ng-repeat="schedule in schedules">
+        <a ng-click="loadSchedule($index)"> horario {{ $index + 1 }} </a>
+      </li>
+    </ul>
+  </div>
 </div>
 
