@@ -1,7 +1,7 @@
 define(['./module'],function (services){
   'use strict';
   services.service('ScheduleService', function($http, $q, Schedule){
-    var initialSchedule = [{
+    var initialItems = {
       'busy': [0, 0, 0, 0, 0, 0, 0],
       'groups': [{
         code : 'no hay horario',
@@ -9,8 +9,10 @@ define(['./module'],function (services){
         subject : 'no hay horario',
         name : ''
       }]
-    }];
-    var schedules = initialSchedule;
+    };
+    var initialSchedule = new Schedule(initialItems);
+    var schedules = [];
+    schedules.push(initialSchedule);
     return {
       add: function(items){
         items.forEach(function(schedule){
@@ -22,10 +24,12 @@ define(['./module'],function (services){
         return schedules.length;
       },
       reset: function(){
-        schedules = initialSchedule;
+        schedules = [];
+        schedules.push(initialSchedule);
       },
       fetch: function(){
-        schedules = initialSchedule;
+        schedules = [];
+        schedules.push(initialSchedule);
       },
       get: function(index){
         return schedules[index];

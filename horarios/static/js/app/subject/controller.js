@@ -13,7 +13,8 @@ define(['./module'], function (controllers) {
      * emits an event to rootScope when subjects are changed
      */
     $scope.$watchCollection('subjects', function() {
-      console.log("$emit");
+
+      console.log("changed");
       $scope.$emit('scheduleChange');
     });
     /*
@@ -38,12 +39,20 @@ define(['./module'], function (controllers) {
      * changes the check status for the given children
      */
     $scope.checkChange = function(items,value){
+      console.log('something changed');
+      $scope.$emit('scheduleChange');
       items.forEach(function(item){
         item.isChecked = value;
         if(item.hasOwnProperty('groups')){
           $scope.checkChange(item.groups,value);
         }
       });
-    }
+    };
+    /*
+     * toggles the group and emits the scheduleChange event
+     */
+    $scope.changeGroup = function(){
+      $scope.$emit('scheduleChange');
+    };
   });
 });

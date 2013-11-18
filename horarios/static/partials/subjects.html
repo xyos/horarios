@@ -18,7 +18,7 @@
             </div>
             <div class="panel-body">
               <div ng-repeat="group in teacher.groups">
-                <input type="checkbox" ng-checked="true" ng-model="group.isChecked" ng-change="addGroup(group)">
+                <input type="checkbox" ng-checked="true" ng-model="group.isChecked" ng-change="changeGroup()">
                 <span class="badge">grupo {{group.code}}</span>
               </div>
             </div>

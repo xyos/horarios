@@ -6,6 +6,7 @@
 */
 define(['./module'], function (models) {
   models.factory('Schedule', function ($http, SubjectService) {
+    var HEADING_ONE = Math.pow(2,25);
     var daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     var hours = [];
@@ -13,61 +14,42 @@ define(['./module'], function (models) {
       hours.push(i -1 + ':00 - ' + i + ':00');
     }
 
-    var Schedule = function(scheduleItems){
+    /*
+     * adds the heading zeros and transforms the values to binary for the
+     * busy array returns a string
+     */
+    var decimalToSchedString = function(value){
+    return ( value + HEADING_ONE ).toString(2).substring(1);
+    };
+
+    var Schedule = function(schedItems){
+      console.log(schedItems.busy);
       var schedule = {};
       /*
        * defining some constants
        */
       var dayHeaders = [{text : 'hora', class : 'heading'}];
+
       daysOfWeek.forEach(function(item){
         dayHeaders.push({text : item, class : 'heading'});
       });
-      schedule.push(dayHeaders);
 
-      /*
-       * adding the heading zeros and transforming the values to binary for the
-       * busy array
-       */
-      var busyArray = [];
-
-      scheduleItems.busy.forEach(function(item){
-        busyArray.push(( item + Math.pow(2,25) ).toString(2).substring(1));
+      schedItems.busy.forEach(function(item){
+        item = decimalToSchedString(item);
       });
 
       var groupsArray = [];
-      scheduleItems.groups.forEach(function(group){
-        var groupHours = [];
-        group.schedule.forEach(function(item){
-          groupHours.push(( item + Math.pow(2,25) ).toString(2).substring(1));
-        });
-        var g = SubjectService.getByCode(group.subject);
-        groupsArray.push({
-          text: (group.subject + '-' + group.code),
-          hours: groupHours,
-          class: g.color
-        });
-      });
+      schedItems.groups.forEach(function(group){
 
-      for (var i = 0; i < hours.length; i++) {
-        var row = [];
-        row.push({text : hours[i], class : 'heading'});
-        for (var j = 0; j < daysOfWeek.length; j++) {
-          //adding busy hours
-          var rowGroupsText = '';
-          var busyGroups = false;
-          groupsArray.forEach();
-          var rowText = ( (busyArray[j][i] === '1') ? 'ocupado' : '' );
-          var rowBusy = ( (busyArray[j][i] === '1' || busyGroups) ? 1 : 0 );
-          rowText += rowGroupsText;
-          row.push({
-            text: rowText,
-            busy: rowBusy,
-            class: 'busyHour'
-          });
-        }
-        schedule[i+1] = row;
-      }
-      return schedule;
+        group.schedule.forEach(function(item){
+          item = decimalToSchedString(item);
+        });
+
+        var g = SubjectService.getByCode(group.subject);
+        angular.extend(group, g);
+
+      });
     };
+    return Schedule;
   });
 });
