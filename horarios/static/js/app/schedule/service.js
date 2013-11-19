@@ -28,10 +28,15 @@ define(['./module'],function (services){
         schedules.push(initialSchedule);
       },
       fetch: function(query){
-        console.log(query);
-        //var throttled = _.throttle(, 5000);
         schedules = [];
-        schedules.push(initialSchedule);
+        return $http.get('/api/v1.0/schedule/subjects=' + query + '&busy=')
+        .then(function(response){
+          response.data.forEach(function(sched){
+            var schedule = new Schedule(sched);
+            schedules.push(schedule);
+          });
+          console.log(schedules);
+        });
       },
       get: function(index){
         return schedules[index];

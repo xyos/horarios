@@ -95,6 +95,7 @@ define(['./module'],function (services){
             });
           }
         });
+        if(query.length > 0) query = query.substring(1);
         return query;
       }
     };
