@@ -12,9 +12,9 @@ define(['./module'], function (controllers) {
     /*
      * emits an event to rootScope when subjects are changed
      */
-    //$scope.$watchCollection('subjects', function() {
-      //$scope.$emit('scheduleChange', SubjectService.getQuery());
-    //});
+    $scope.$watchCollection('subjects', function() {
+      $scope.changeGroup();
+    });
     /*
      * loads the autocomplete service
      */
