@@ -10,8 +10,9 @@ define(['./module'], function (controllers) {
      * refresh the view after a subject is changed
      */
     $rootScope.$on('activeScheduleChange', function(event){
+      console.log(ScheduleService.getActive());
+      ScheduleService.getActive().parseRows();
       $scope.schedule = ScheduleService.getActive();
-      console.log($scope.schedule);
     });
 
   });

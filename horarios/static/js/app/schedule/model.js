@@ -21,21 +21,39 @@ define(['./module'], function (models) {
     var decimalToSchedString = function(value){
     return ( value + HEADING_ONE ).toString(2).substring(1);
     };
+    /*
+     * transpose an schedule matrix
+     */
+    var transpose = function(arr) {
+      var trans = [];
+      _.each(arr, function(row, y){
+        _.each(row, function(col, x){
+          if (!trans[x]) trans[x] = [];
+          trans[x][y] = col;
+        });
+      });
+      return trans;
+    };
 
     var Schedule = function(schedItems){
 
+      var parseRows = function(){
+        var busyT = transpose(that.busy);
+        console.log(busyT);
+        //var groupsT = transpose(that.groups);
+      }
+      var that = this;
       angular.extend(this,{
         rows : [],
         toString: '',
         subjects: [],
         groups: [],
+        busy: [],
+        parseRows : parseRows
       });
-      var that = this;
       /*
        * lazy loading rows for better performance
        */
-      var parseRows = function(){
-      }
 
       var schedule = {};
       /*
@@ -46,20 +64,23 @@ define(['./module'], function (models) {
       daysOfWeek.forEach(function(item){
         dayHeaders.push({text : item, class : 'heading'});
       });
+      /*
+       * TODO: get the appropiate busy code here
+       */
+      var dummyBusy = [0,0,0,0,0,0,0];
 
-      schedItems.busy.forEach(function(item){
-        item = decimalToSchedString(item);
+      dummyBusy.forEach(function(item){
+        that.busy.push(decimalToSchedString(item));
       });
 
       var groupsArray = [];
       schedItems.groups.forEach(function(group){
-
+        var  s = [];
         group.schedule.forEach(function(item){
-          item = decimalToSchedString(item);
+          s.push(decimalToSchedString(item));
         });
-
         var g = SubjectService.getByCode(group.subject);
-        that.groups.push({subject: g.code, code: group.code});
+        that.groups.push({subject: g.code, code: group.code, schedule : s});
         that.subjects.push(g);
 
       });
