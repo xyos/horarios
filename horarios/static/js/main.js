@@ -4,7 +4,8 @@ require.config({
     'domReady' : './libs/requirejs-domready/domready',
     'angular' : './libs/angular/angular',
     'angular-ui-router' : './libs/angular-ui-router/release/angular-ui-router',
-    'angular-bootstrap' : './libs/angular-bootstrap/ui-bootstrap-tpls'
+    'angular-bootstrap' : './libs/angular-bootstrap/ui-bootstrap-tpls',
+    'lodash' : './libs/lodash/dist/lodash'
 
   },
   shim: {

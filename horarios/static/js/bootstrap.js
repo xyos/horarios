@@ -8,7 +8,7 @@ define([
   './app/routes'
 ], function(require,ng) {
   'use strict';
-  require(['domReady!'],function (document){
+  require(['domReady!','lodash'],function (document){
     ng.bootstrap(document, ['app']);
     ng.resumeBootstrap();
   });

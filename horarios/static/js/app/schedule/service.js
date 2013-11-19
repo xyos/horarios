@@ -27,7 +27,9 @@ define(['./module'],function (services){
         schedules = [];
         schedules.push(initialSchedule);
       },
-      fetch: function(){
+      fetch: function(query){
+        console.log(query);
+        //var throttled = _.throttle(, 5000);
         schedules = [];
         schedules.push(initialSchedule);
       },

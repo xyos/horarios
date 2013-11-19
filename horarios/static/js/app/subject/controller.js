@@ -12,11 +12,9 @@ define(['./module'], function (controllers) {
     /*
      * emits an event to rootScope when subjects are changed
      */
-    $scope.$watchCollection('subjects', function() {
-
-      console.log("changed");
-      $scope.$emit('scheduleChange');
-    });
+    //$scope.$watchCollection('subjects', function() {
+      //$scope.$emit('scheduleChange', SubjectService.getQuery());
+    //});
     /*
      * loads the autocomplete service
      */
@@ -38,21 +36,26 @@ define(['./module'], function (controllers) {
     /*
      * changes the check status for the given children
      */
-    $scope.checkChange = function(items,value){
-      console.log('something changed');
-      $scope.$emit('scheduleChange');
+    $scope.checkChange = function(items,value, isChild){
       items.forEach(function(item){
         item.isChecked = value;
         if(item.hasOwnProperty('groups')){
-          $scope.checkChange(item.groups,value);
+          $scope.checkChange(item.groups,value,true);
         }
       });
+      if ( isChild === undefined ) {
+        $scope.changeGroup();
+      }
     };
     /*
      * toggles the group and emits the scheduleChange event
      */
+    var emit = function() {
+      $scope.$emit('scheduleChange', SubjectService.getQuery());
+    };
     $scope.changeGroup = function(){
-      $scope.$emit('scheduleChange');
+      var throttledEmit = _.throttle(emit, 1000, { 'leading': false, 'trailing': true });
+      throttledEmit();
     };
   });
 });

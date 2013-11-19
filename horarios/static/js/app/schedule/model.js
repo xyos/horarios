@@ -23,7 +23,14 @@ define(['./module'], function (models) {
     };
 
     var Schedule = function(schedItems){
-      console.log(schedItems.busy);
+
+      angular.extend(this,{
+        rows : [],
+        toString: '',
+        groups: []
+      });
+      var that = this;
+
       var schedule = {};
       /*
        * defining some constants
@@ -46,7 +53,7 @@ define(['./module'], function (models) {
         });
 
         var g = SubjectService.getByCode(group.subject);
-        angular.extend(group, g);
+        that.groups.push(g);
 
       });
     };

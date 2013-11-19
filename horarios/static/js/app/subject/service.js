@@ -76,7 +76,25 @@ define(['./module'],function (services){
         });
       },
       getQuery: function(){
-        var query = '2025808,2015139';
+        var query = '';
+        subjects.forEach(function(subject){
+          var appendOnce = false;
+          if ( subject.teachers === null ){
+            return "";
+          } else {
+            subject.teachers.forEach(function(teacher){
+              teacher.groups.forEach(function(group){
+                if (group.isChecked) {
+                  if(!appendOnce) {
+                    query += ',' + group.subject;
+                    appendOnce = true;
+                  }
+                  query += '|' + group.code;
+                }
+              });
+            });
+          }
+        });
         return query;
       }
     };
