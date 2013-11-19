@@ -14,15 +14,6 @@ define(['./module'],function (services){
     var schedules = [];
     schedules.push(initialSchedule);
     return {
-      add: function(items){
-        items.forEach(function(schedule){
-          var sched = new Schedule.Schedule(schedule);
-          schedules.push(sched);
-        });
-      },
-      getCount: function(){
-        return schedules.length;
-      },
       reset: function(){
         schedules = [];
         schedules.push(initialSchedule);
@@ -35,7 +26,6 @@ define(['./module'],function (services){
             var schedule = new Schedule(sched);
             schedules.push(schedule);
           });
-          console.log(schedules);
         });
       },
       get: function(index){
@@ -43,9 +33,6 @@ define(['./module'],function (services){
       },
       getList: function(){
         return schedules;
-      },
-      getThumbnail : function(index){
-        return schedules.thumbnail;
       }
     };
   });
