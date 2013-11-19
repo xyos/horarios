@@ -5,6 +5,15 @@
 define(['./module'], function (controllers) {
   'use strict';
   controllers.controller('ScheduleDetailCtrl', function ($scope, $rootScope, ScheduleService) {
+    $scope.schedule = ScheduleService.getActive();
+    /*
+     * refresh the view after a subject is changed
+     */
+    $rootScope.$on('activeScheduleChange', function(event){
+      $scope.schedule = ScheduleService.getActive();
+      console.log($scope.schedule);
+    });
+
   });
   controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService) {
     /*
@@ -14,6 +23,10 @@ define(['./module'], function (controllers) {
     $scope.$watch('ScheduleService.getList()', function(newVal, oldVal) {
       $scope.schedules = newVal;
     });
+    $scope.loadSchedule = function(index){
+      ScheduleService.setActive(index);
+      $scope.$emit('activeScheduleChange');
+    };
     /*
      * refresh the view after a subject is changed
      */

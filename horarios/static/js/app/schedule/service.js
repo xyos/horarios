@@ -13,7 +13,14 @@ define(['./module'],function (services){
     var initialSchedule = new Schedule(initialItems);
     var schedules = [];
     schedules.push(initialSchedule);
+    var activeSchedule = schedules[0];
     return {
+      getActive: function(index){
+        return activeSchedule;
+      },
+      setActive: function(index){
+        activeSchedule = schedules[index];
+      },
       reset: function(){
         schedules = [];
         schedules.push(initialSchedule);

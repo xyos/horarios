@@ -27,9 +27,15 @@ define(['./module'], function (models) {
       angular.extend(this,{
         rows : [],
         toString: '',
-        groups: []
+        subjects: [],
+        groups: [],
       });
       var that = this;
+      /*
+       * lazy loading rows for better performance
+       */
+      var parseRows = function(){
+      }
 
       var schedule = {};
       /*
@@ -53,7 +59,8 @@ define(['./module'], function (models) {
         });
 
         var g = SubjectService.getByCode(group.subject);
-        that.groups.push(g);
+        that.groups.push({subject: g.code, code: group.code});
+        that.subjects.push(g);
 
       });
     };
