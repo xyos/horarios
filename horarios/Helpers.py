@@ -94,8 +94,6 @@ class DatabaseCreator:
             for i in dao.getSubjectsByName(j,"",1000000):
                 createSubject(i,gDao.getGroupsBySubjectCode(i.code))
 
-def syncsia(request):
+def syncsia():
     c = DatabaseCreator(SIA())
     c.getSubjects("abcdefghijklmnopqrstuvwxyz")
-    from django.http import HttpResponse
-    return HttpResponse(["abcdefghijklmnopqrstuvwxyz"], content_type='application/json')

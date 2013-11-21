@@ -10,3 +10,7 @@ var
 include
 
 *.un~
+
+*.sqlite
+
+database.sqlite
