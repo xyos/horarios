@@ -1,7 +1,7 @@
 'use strict';
 require.config({
   paths: {
-    'domReady' : './libs/requirejs-domready/domready',
+    'domReady' : './libs/requirejs-domready/domReady',
     'angular' : './libs/angular/angular',
     'angular-ui-router' : './libs/angular-ui-router/release/angular-ui-router',
     'angular-bootstrap' : './libs/angular-bootstrap/ui-bootstrap-tpls',
