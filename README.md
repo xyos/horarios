@@ -12,6 +12,10 @@ clone in git
     source ./bin/activate
     cd ../ 
     pip install -r requirements.txt
+    cd horarios/static/js/
+    #this step requires node.js and bower (npm install -g bower)
+    bower install
+    cd -
     python manage.py flush
     python manage.py syncdb
     python manage.py runserver
