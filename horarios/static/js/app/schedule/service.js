@@ -4,16 +4,24 @@ define(['./module'],function (services){
     var initialItems = {
       'busy': [0, 0, 0, 0, 0, 0, 0],
       'groups': [{
-        code : 'no hay horario',
+        code : '',
         schedule :  [33554431, 33554431, 33554431, 33554431, 33554431 ,33554431, 33554431],
-        subject : 'no hay horario',
+        subject : '-no hay horario',
         name : ''
       }]
     };
+
     var initialSchedule = new Schedule(initialItems);
+    initialSchedule.parseRows();
+
     var schedules = [];
     schedules.push(initialSchedule);
     var activeSchedule = schedules[0];
+    var reset  = function(){
+      schedules = [];
+      schedules.push(initialSchedule);
+      var activeSchedule = schedules[0];
+    };
     return {
       getActive: function(index){
         return activeSchedule;
@@ -21,10 +29,7 @@ define(['./module'],function (services){
       setActive: function(index){
         activeSchedule = schedules[index];
       },
-      reset: function(){
-        schedules = [];
-        schedules.push(initialSchedule);
-      },
+      reset: reset,
       fetch: function(query){
         schedules = [];
         return $http.get('/api/v1.0/schedule/subjects=' + query + '&busy=')
@@ -39,6 +44,9 @@ define(['./module'],function (services){
         return schedules[index];
       },
       getList: function(){
+        if(_.isEmpty(schedules)){
+          reset();
+        }
         return schedules;
       }
     };

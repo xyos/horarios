@@ -7,44 +7,64 @@
 define(['./module'], function (models) {
   models.factory('Schedule', function ($http, SubjectService) {
     var HEADING_ONE = Math.pow(2,25);
-    var daysOfWeek =
-      ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-    var hours = [];
-    for (var i = 1; i <= 24; i++) {
-      hours.push(i -1 + ':00 - ' + i + ':00');
-    }
 
     /*
      * adds the heading zeros and transforms the values to binary for the
      * busy array returns a string
      */
     var decimalToSchedString = function(value){
-    return ( value + HEADING_ONE ).toString(2).substring(1);
+      return ( value + HEADING_ONE ).toString(2).substring(2);
     };
     /*
      * transpose an schedule matrix
      */
-    var transpose = function(arr) {
+    var transpose = function(arr, schedItem) {
       var trans = [];
-      _.each(arr, function(row, y){
-        _.each(row, function(col, x){
-          if (!trans[x]) trans[x] = [];
-          trans[x][y] = col;
+      _.each(arr, function(row, x){
+        _.each(row, function(col, y){
+          if (!trans[y]) { trans[y] = [] };
+          if (col === '1'){
+            trans[y][x] = schedItem;
+          } else {
+            trans[y][x] = {};
+          }
         });
       });
       return trans;
     };
+    /*
+     * concatenates 2 schedules
+     * this does not validate the schedules
+     */
+    var sumMatrix = function(arr1, arr2) {
+      _.each(arr1, function(col, x){
+        _.each(col, function(row, y){
+          if (!_.isEmpty(arr2[x][y])) {
+            arr1[x][y] = arr2[x][y];
+          }
+        });
+      });
+      return arr1;
+    };
 
     var Schedule = function(schedItems){
 
-      var parseRows = function(){
-        var busyT = transpose(that.busy);
-        console.log(busyT);
-        //var groupsT = transpose(that.groups);
-      }
       var that = this;
+      var parseRows = function(){
+        var scheduleMatrix = transpose(that.busy, { name : 'busy', class : 'busy'});
+        _.each(that.groups, function(group){
+          var gName = (_.isUndefined(group.subject)) ? "no hay horario" : group.subject + '-' + group.code;
+          var gClass = (_.isUndefined(group.color)) ? "warning" : group.color;
+          var schedT = transpose(group.schedule, {name: gName , color : gClass});
+          scheduleMatrix = sumMatrix(scheduleMatrix, schedT);
+        });
+        that.rows = scheduleMatrix;
+
+
+        //var groupsT = transpose(that.groups);
+      };
       angular.extend(this,{
-        rows : [],
+        rows : schedule,
         toString: '',
         subjects: [],
         groups: [],
@@ -54,16 +74,13 @@ define(['./module'], function (models) {
       /*
        * lazy loading rows for better performance
        */
-
-      var schedule = {};
-      /*
-       * defining some constants
-       */
-      var dayHeaders = [{text : 'hora', class : 'heading'}];
-
-      daysOfWeek.forEach(function(item){
-        dayHeaders.push({text : item, class : 'heading'});
+      var rows =  new Array(24);
+      _.each(rows, function(row){
+        row = [];
+        var cols = new Array(7);
+        row.push(cols);
       });
+      var schedule = rows;
       /*
        * TODO: get the appropiate busy code here
        */
@@ -73,14 +90,19 @@ define(['./module'], function (models) {
         that.busy.push(decimalToSchedString(item));
       });
 
-      var groupsArray = [];
       schedItems.groups.forEach(function(group){
         var  s = [];
         group.schedule.forEach(function(item){
           s.push(decimalToSchedString(item));
         });
         var g = SubjectService.getByCode(group.subject);
-        that.groups.push({subject: g.code, code: group.code, schedule : s});
+        that.groups.push({
+          subject: g.code,
+          code: group.code,
+          schedule: s ,
+          color: g.color,
+          dept : g.departament
+        });
         that.subjects.push(g);
 
       });

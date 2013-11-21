@@ -5,12 +5,20 @@
 define(['./module'], function (controllers) {
   'use strict';
   controllers.controller('ScheduleDetailCtrl', function ($scope, $rootScope, ScheduleService) {
+    $scope.daysOfWeek =
+      ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+    $scope.hours = [];
+    for (var i = 1; i <= 24; i++) {
+      $scope.hours.push(i -1 + ':00 - ' + i + ':00');
+    }
     $scope.schedule = ScheduleService.getActive();
+    $scope.$watch('ScheduleService.getActive()', function(newVal, oldVal) {
+      $scope.schedules = newVal;
+    });
     /*
      * refresh the view after a subject is changed
      */
     $rootScope.$on('activeScheduleChange', function(event){
-      console.log(ScheduleService.getActive());
       ScheduleService.getActive().parseRows();
       $scope.schedule = ScheduleService.getActive();
     });
@@ -32,8 +40,11 @@ define(['./module'], function (controllers) {
      * refresh the view after a subject is changed
      */
     $rootScope.$on('scheduleChange', function(event, query){
-      ScheduleService.fetch(query);
-      $scope.schedules = ScheduleService.getList();
+      ScheduleService.fetch(query).then(function(){
+        $scope.schedules = ScheduleService.getList();
+        ScheduleService.setActive(0);
+        $scope.$emit('activeScheduleChange');
+      });
     });
   });
 });
