@@ -65,6 +65,8 @@ define(['./module'], function (models) {
       };
       angular.extend(this,{
         rows : schedule,
+        zeroToSeven: false,
+        EigthToMidnigth: false,
         toString: '',
         subjects: [],
         groups: [],
