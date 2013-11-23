@@ -16,6 +16,19 @@ define(['./module'], function (controllers) {
       $scope.schedules = newVal;
     });
     /*
+     * Shows if a row should be shown or not depends on the early, late hours
+     */
+    $scope.showRow = function(index){
+      if(index >= 0 && index < 7) {
+        return false;
+      } 
+      else if (index >= 20 && index < 24) {
+        return false;
+      } else {
+        return true
+      };
+    }
+    /*
      * refresh the view after a subject is changed
      */
     $rootScope.$on('activeScheduleChange', function(event){

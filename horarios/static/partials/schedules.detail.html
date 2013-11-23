@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="row in schedule.rows">
+  <tr ng-repeat="row in schedule.rows" ng-show="showRow($index)">
     <th>{{ hours[$index] }}</th>
     <td ng-repeat="cell in row track by $index" class="text-center {{ cell.color }}"><em>{{cell.name}}</em></td>
   </tr>

@@ -89,13 +89,19 @@ define(['./module'], function (models) {
       var dummyBusy = [0,0,0,0,0,0,0];
 
       dummyBusy.forEach(function(item){
-        that.busy.push(decimalToSchedString(item));
+        var binary = decimalToSchedString(item);
+        if(binary & '0'){
+        }
+        if(binary & '0'){
+        }
+        that.busy.push(binary);
       });
 
       schedItems.groups.forEach(function(group){
         var  s = [];
         group.schedule.forEach(function(item){
-          s.push(decimalToSchedString(item));
+          var binary = decimalToSchedString(item);
+          s.push(binary);
         });
         var g = SubjectService.getByCode(group.subject);
         that.groups.push({
