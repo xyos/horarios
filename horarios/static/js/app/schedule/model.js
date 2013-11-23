@@ -13,7 +13,7 @@ define(['./module'], function (models) {
      * busy array returns a string
      */
     var decimalToSchedString = function(value){
-      return ( value + HEADING_ONE ).toString(2).substring(2);
+      return ( value + HEADING_ONE ).toString(2).substring(2).split("").reverse().join("");
     };
     /*
      * transpose an schedule matrix
