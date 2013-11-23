@@ -51,6 +51,7 @@ class GroupDao:
     def _parseSchedule(self,scheduleDict):
         """
                 schedule is a dictionary of {day : begin-end}*
+                returns an array of ints which follows : The i-th (for i = [1,24]) less significant bit represents the time period between i-1 hours and i hours.
         """
         schedule=[]
         for i in Models.DAYS:
@@ -62,7 +63,8 @@ class GroupDao:
                     split = hourBlock.split("-")
                     try:
                         for i in range(int(split[0]),int(split[1])):
-                            hours[23-i+1]="1"
+                            #from i%24 to (i%24)+1
+                            hours[23-(i%24)]="1"
                     except Exception:
                         print "Problem while parsing schedule described as :", scheduleString
                 schedule.append(int("".join(hours),2))
