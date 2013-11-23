@@ -20,14 +20,14 @@ define(['./module'], function (controllers) {
      */
     $scope.showRow = function(index){
       if(index >= 0 && index < 7) {
-        return false;
-      } 
+        return false || ScheduleService.getActive().earlyHours;
+      }
       else if (index >= 20 && index < 24) {
-        return false;
+        return false || ScheduleService.getActive().lateHours;
       } else {
-        return true
-      };
-    }
+        return true;
+      }
+    };
     /*
      * refresh the view after a subject is changed
      */

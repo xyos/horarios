@@ -64,9 +64,9 @@ define(['./module'], function (models) {
         //var groupsT = transpose(that.groups);
       };
       angular.extend(this,{
-        rows : schedule,
-        zeroToSeven: false,
-        EigthToMidnigth: false,
+        rows: schedule,
+        earlyHours: false,
+        lateHours: false,
         toString: '',
         subjects: [],
         groups: [],
