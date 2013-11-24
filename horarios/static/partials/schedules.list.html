@@ -1,4 +1,4 @@
-<div class="col-md-9" ng-controller="ScheduleListCtrl" ng-model="schedules">
+<div class="col-md-9" ng-controller="ScheduleListCtrl">
   <div>
     <ul class="pagination">
       <li class="{{ $index === index ? 'active' : '' }}" ng-repeat="schedule in schedules">
@@ -10,12 +10,12 @@
           rx="15" ry="15" style="fill: white; stroke: black; stroke-width: {{ lineWidth }}"/>
 
         <!--<g ng-repeat="row in schedule.rows" stroke-width="0">
-            <rect ng-repeat="cell in row" class="{{ cell.color }}" width="{{width / 7}}" height="{{ height/24 }}" x="{{ lineWidth/2 + padding + ($index*width/7) }}" y="{{ lineWidth/2 + padding + ($parent.$index*height/24) }}"/>
+            <rect ng-repeat="cell in row track by $index" class="{{ cell.color }}" width="{{width / 7}}" height="{{ height/24 }}" x="{{ lineWidth/2 + padding + ($index*width/7) }}" y="{{ lineWidth/2 + padding + ($parent.$index*height/24) }}"/>
         </g>-->
 
         <g ng-repeat="group in schedule.groups">
-            <g ng-repeat="day in group.schedule track by $index"  stroke-width="0">
-                <rect ng-repeat="hour in day track by $index"  width="{{width / 7}}" height="{{ height/24 }}" x="{{ lineWidth/2 + padding + ($parent.$index*width/7) }}" y="{{ lineWidth/2 + padding + ($index*height/24) }}" class="{{ group.color }}" ng-show="hour=='1'"/>
+            <g ng-repeat="(i,day) in group.schedule track by $index"  stroke-width="0">
+                <rect ng-repeat="(j,hour) in day track by $index"  width="{{width / 7}}" height="{{ height/24 }}" x="{{ lineWidth/2 + padding + (i*width/7) }}" y="{{ lineWidth/2 + padding + (j*height/24) }}" class="{{ group.color }}" ng-if="hour"/>
             </g>
         </g>
 
