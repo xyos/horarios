@@ -5,7 +5,7 @@ define(['./module'],function (services){
       'busy': [0, 0, 0, 0, 0, 0, 0],
       'groups': [{
         code : '',
-        schedule :  [33554431, 33554431, 33554431, 33554431, 33554431 ,33554431, 33554431],
+        schedule :  [1048448, 1048448, 1048448, 1048448, 1048448 ,1048448, 1048448],
         subject : '-no hay horario',
         name : ''
       }]
@@ -28,6 +28,7 @@ define(['./module'],function (services){
       },
       setActive: function(index){
         activeSchedule = schedules[index];
+        console.log(activeSchedule.earlyHours);
       },
       reset: reset,
       fetch: function(query){

@@ -9,13 +9,6 @@ define(['./module'], function (models) {
     var HEADING_ONE = Math.pow(2,25);
 
     /*
-     * adds the heading zeros and transforms the values to binary for the
-     * busy array returns a string
-     */
-    var decimalToSchedString = function(value){
-      return ( value + HEADING_ONE ).toString(2).substring(2).split("").reverse().join("");
-    };
-    /*
      * transpose an schedule matrix
      */
     var transpose = function(arr, schedItem) {
@@ -50,11 +43,23 @@ define(['./module'], function (models) {
     var Schedule = function(schedItems){
 
       var that = this;
+      /*
+       * adds the heading zeros and transforms the values to binary for the
+       * busy array returns a string
+       */
+      var decimalToSchedString = function(value){
+
+        that.earlyHours = (value & 127) > 0 || false || that.earlyHours;
+        that.lateHours  = (value & 15728640) > 0 || false || that.lateHours;
+        console.log( value  + "--" + that.earlyHours);
+        return ( value + HEADING_ONE ).toString(2).substring(2).split('').reverse().join('');
+      };
+
       var parseRows = function(){
         var scheduleMatrix = transpose(that.busy, { name : 'busy', class : 'busy'});
         _.each(that.groups, function(group){
-          var gName = (_.isUndefined(group.subject)) ? "no hay horario" : group.subject + '-' + group.code;
-          var gClass = (_.isUndefined(group.color)) ? "warning" : group.color;
+          var gName = (_.isUndefined(group.subject)) ? 'no hay horario' : group.subject + '-' + group.code;
+          var gClass = (_.isUndefined(group.color)) ? 'warning' : group.color;
           var schedT = transpose(group.schedule, {name: gName , color : gClass});
           scheduleMatrix = sumMatrix(scheduleMatrix, schedT);
         });
@@ -89,19 +94,13 @@ define(['./module'], function (models) {
       var dummyBusy = [0,0,0,0,0,0,0];
 
       dummyBusy.forEach(function(item){
-        var binary = decimalToSchedString(item);
-        if(binary & '0'){
-        }
-        if(binary & '0'){
-        }
-        that.busy.push(binary);
+        that.busy.push(decimalToSchedString(item));
       });
 
       schedItems.groups.forEach(function(group){
         var  s = [];
         group.schedule.forEach(function(item){
-          var binary = decimalToSchedString(item);
-          s.push(binary);
+          s.push(decimalToSchedString(item));
         });
         var g = SubjectService.getByCode(group.subject);
         that.groups.push({
