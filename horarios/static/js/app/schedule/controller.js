@@ -43,6 +43,10 @@ define(['./module'], function (controllers) {
      */
     $scope.schedules = ScheduleService.getList();
     $scope.index = 0;
+    $scope.height = 50;
+    $scope.width = 100;
+    $scope.padding = 1;
+    $scope.lineWidth = 1;
     $scope.$watch('ScheduleService.getList()', function(newVal, oldVal) {
       $scope.schedules = newVal;
     });
