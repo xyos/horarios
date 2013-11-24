@@ -8,9 +8,12 @@ define(['./module'], function (controllers) {
     $scope.daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     $scope.hours = [];
+    $scope.busy = [];
     for (var i = 1; i <= 24; i++) {
       $scope.hours.push(i -1 + ':00 - ' + i + ':00');
+      $scope.busy.push([false,false,false,false,false,false,false]);
     }
+
     $scope.schedule = ScheduleService.getActive();
     $scope.$watch('ScheduleService.getActive()', function(newVal, oldVal) {
       $scope.schedules = newVal;
@@ -35,6 +38,17 @@ define(['./module'], function (controllers) {
       ScheduleService.getActive().parseRows();
       $scope.schedule = ScheduleService.getActive();
     });
+    /*
+     * toggles the row status
+     */
+    $scope.toggleRow = function(row,col){
+      console.log(row);
+      console.log(col);
+      console.log($scope.busy)
+      $scope.busy[row][col] = !$scope.busy[row][col];
+      console.log($scope.busy[row][col]);
+      $scope.$emit('activeScheduleChange');
+    };
 
   });
   controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService) {

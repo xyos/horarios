@@ -10,7 +10,9 @@
   <tbody>
   <tr ng-repeat="row in schedule.rows" ng-show="showRow($index)">
     <th>{{ hours[$index] }}</th>
-    <td ng-repeat="cell in row track by $index" class="text-center {{ cell.color }}"><em>{{cell.name}}</em></td>
+    <td ng-click="toggleRow($parent.$index, $index)" ng-repeat="cell in row track by $index" class="text-center {{ cell.color }} {{ busy[$parent.$index][$index] ? 'orange' : '' }}">
+      <em>{{cell.name}} {{busy[$parent.$index][$index] |json}}</em>
+    </td>
   </tr>
   </tbody>
 </table>
