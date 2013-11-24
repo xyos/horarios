@@ -42,11 +42,13 @@ define(['./module'], function (controllers) {
      * retrieves the schedules from the service
      */
     $scope.schedules = ScheduleService.getList();
+    $scope.index = 0;
     $scope.$watch('ScheduleService.getList()', function(newVal, oldVal) {
       $scope.schedules = newVal;
     });
     $scope.loadSchedule = function(index){
       ScheduleService.setActive(index);
+      $scope.index = index;
       $scope.$emit('activeScheduleChange');
     };
     /*
@@ -56,6 +58,7 @@ define(['./module'], function (controllers) {
       ScheduleService.fetch(query).then(function(){
         $scope.schedules = ScheduleService.getList();
         ScheduleService.setActive(0);
+        $scope.index = 0;
         $scope.$emit('activeScheduleChange');
       });
     });

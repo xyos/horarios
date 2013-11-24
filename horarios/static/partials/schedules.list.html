@@ -1,7 +1,7 @@
 <div class="col-md-9" ng-controller="ScheduleListCtrl">
   <div>
     <ul class="pagination">
-      <li class="" ng-repeat="schedule in schedules">
+      <li class="{{ $index === index ? 'active' : '' }}" ng-repeat="schedule in schedules">
         <a ng-click="loadSchedule($index)"> horario {{ $index + 1 }} </a>
       </li>
     </ul>
