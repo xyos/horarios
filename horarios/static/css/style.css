@@ -1,20 +1,20 @@
-.turquoise    { color:  #1abc9c  }
-.emerland     { color:  #2ecc71  }
-.peter-river  { color:  #3498db  }
-.amethyst     { color:  #9b59b6  }
-.wet-asphalt  { color:  #34495e  }
-.green-sea    { color:  #16a085  }
-.nephritis    { color:  #27ae60  }
-.belize-hole  { color:  #2980b9  }
-.wisteria     { color:  #8e44ad  }
-.midnight-blue{ color:  #2c3e50  }
-.sun-flower   { color:  #f1c40f  }
-.carrot       { color:  #e67e22  }
-.alizarin     { color:  #e74c3c  }
-.clouds       { color:  #ecf0f1  }
-.concrete     { color:  #95a5a6  }
-.orange       { color:  #f39c12  }
-.pumpkin      { color:  #d35400  }
-.pomegranate  { color:  #c0392b  }
-.silver       { color:  #bdc3c7  }
-.asbestos     { color:  #7f8c8d  }
+.turquoise    { background-color:  #1abc9c; color: #FFF  }
+.emerland     { background-color:  #2ecc71; color: #FFF  }
+.peter-river  { background-color:  #3498db; color: #FFF  }
+.amethyst     { background-color:  #9b59b6; color: #FFF  }
+.wet-asphalt  { background-color:  #34495e; color: #FFF  }
+.green-sea    { background-color:  #16a085; color: #FFF  }
+.nephritis    { background-color:  #27ae60; color: #FFF  }
+.belize-hole  { background-color:  #2980b9; color: #FFF  }
+.wisteria     { background-color:  #8e44ad; color: #FFF  }
+.midnight-blue{ background-color:  #2c3e50; color: #FFF  }
+.sun-flower   { background-color:  #f1c40f; color: #FFF  }
+.carrot       { background-color:  #e67e22; color: #FFF  }
+.alizarin     { background-color:  #e74c3c; color: #FFF  }
+.clouds       { background-color:  #ecf0f1; color: #FFF  }
+.concrete     { background-color:  #95a5a6; color: #FFF  }
+.orange       { background-color:  #f39c12; color: #FFF  }
+.pumpkin      { background-color:  #d35400; color: #FFF  }
+.pomegranate  { background-color:  #c0392b; color: #FFF  }
+.silver       { background-color:  #bdc3c7; color: #FFF  }
+.asbestos     { background-color:  #7f8c8d; color: #FFF  }
