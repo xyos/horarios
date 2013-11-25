@@ -67,25 +67,28 @@ define(['./module'], function (models) {
     }
 
     ScheduleThumbnail.prototype.draw = function (context,schedules,x,y,lineWidth){
-        context.beginPath();
-        context.rect(x, y, this.w, this.h);
+
+        function roundedRect(x, y, w, h, r,context){
+            context.beginPath();
+            context.moveTo(x+r, y);
+            context.lineTo(x+w-r, y);
+            context.quadraticCurveTo(x+w, y, x+w, y+r);
+            context.lineTo(x+w, y+h-r);
+            context.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+            context.lineTo(x+r, y+h);
+            context.quadraticCurveTo(x, y+h, x, y+h-r);
+            context.lineTo(x, y+r);
+            context.quadraticCurveTo(x, y, x+r, y);
+        }
+
         context.fillStyle = 'white';
-        context.fill();
         context.lineWidth = lineWidth;
-        context.strokeStyle = 'black';
+        context.strokeStyle = 'gray';
+        roundedRect(x, y, this.w, this.h,10,context);
+        context.fill();
         context.stroke();
         var dayWidth = this.w / 7.0;
         var hourHeight = this.h / 24.0;
-        context.beginPath();
-        context.lineWidth = lineWidth/2;
-        for(var i=0;i<7;i++){
-            context.moveTo(x+(i*dayWidth),y);
-            context.lineTo(x+(i*dayWidth),y+this.h);
-            context.stroke();
-        }
-        context.moveTo(x,y+this.h/2);
-        context.lineTo(x+this.w,y+this.h/2);
-        context.stroke();
         
         context.lineWidth = 0;
         for(var s in schedules){
@@ -108,11 +111,22 @@ define(['./module'], function (models) {
                 context.fill();
             }             
         }
+        context.linWidth = lineWidth;
+        context.beginPath();
+        context.lineWidth = lineWidth/2;
+        for(var i=1;i<7;i++){
+            context.moveTo(x+(i*dayWidth),y);
+            context.lineTo(x+(i*dayWidth),y+this.h);
+            context.stroke();
+        }
+        context.moveTo(x,y+this.h/2);
+        context.lineTo(x+this.w,y+this.h/2);
+        context.stroke();
     }
 
     var canvas = document.createElement("canvas");
-    canvas.width = 100;
-    canvas.height= 50;
+    canvas.width = 110;
+    canvas.height= 55;
     var context = canvas.getContext('2d');
     var generator = new ScheduleThumbnail(100,50);
 
@@ -146,7 +160,7 @@ define(['./module'], function (models) {
 
       var draw = function(){
         console.log(that.groups);
-        generator.draw(context,that.groups,0,0,1);
+        generator.draw(context,that.groups,1,1,0.5);
         return canvas.toDataURL();
       }
       
