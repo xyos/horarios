@@ -1,11 +1,10 @@
-<div class="col-md-9" ng-controller="ScheduleListCtrl">
-  <div>
-    <ul class="pagination">
-      <li class="{{ $index === index ? 'active' : '' }}" ng-repeat="schedule in schedules">
-        <span ng-click="loadSchedule($index)">horario {{ $index + 1 }} </span>
-        <img src="{{schedule.thumbnail()}}" height="{{height}}" width="{{width}}"/>
-      </li>
-    </ul>
+<div class="row" ng-controller="ScheduleListCtrl">
+  <div class="col-sm-2 col-md-2" ng-repeat="schedule in schedules">
+    <div ng-click="loadSchedule($index)" class="thumbnail" class="{{ $index === index ? 'active' : '' }}">
+      <img src="{{schedule.thumbnail()}}" height="{{height}}" width="{{width}}">
+      <div class="caption">
+        <p><a  class="btn btn-primary" role="button">Horario {{ $index + 1}}</a></p>
+      </div>
+    </div>
   </div>
 </div>
-
