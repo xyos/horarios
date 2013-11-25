@@ -3,23 +3,7 @@
     <ul class="pagination">
       <li class="{{ $index === index ? 'active' : '' }}" ng-repeat="schedule in schedules">
         <span ng-click="loadSchedule($index)">horario {{ $index + 1 }} </span>
-        <svg  xmlns="http://www.w3.org/2000/svg" version="1.1" height="{{ height + lineWidth + 2 }}" width="{{ width + lineWidth + 2 }}">
-
-        <rect x="{{ lineWidth/2 + padding }}" y="{{ lineWidth/2 + padding }}" 
-          width="{{ width }}" height="{{ height }}"
-          rx="15" ry="15" style="fill: white; stroke: black; stroke-width: {{ lineWidth }}"/>
-
-        <!--<g ng-repeat="row in schedule.rows" stroke-width="0">
-            <rect ng-repeat="cell in row track by $index" class="{{ cell.color }}" width="{{width / 7}}" height="{{ height/24 }}" x="{{ lineWidth/2 + padding + ($index*width/7) }}" y="{{ lineWidth/2 + padding + ($parent.$index*height/24) }}"/>
-        </g>-->
-
-        <g ng-repeat="group in schedule.groups">
-            <g ng-repeat="(i,day) in group.schedule track by $index"  stroke-width="0">
-                <rect ng-repeat="(j,hour) in day track by $index"  width="{{width / 7}}" height="{{ height/24 }}" x="{{ lineWidth/2 + padding + (i*width/7) }}" y="{{ lineWidth/2 + padding + (j*height/24) }}" class="{{ group.color }}" ng-if="hour"/>
-            </g>
-        </g>
-
-        </svg>
+        <img src="{{schedule.thumbnail()}}" height="{{height}}" width="{{width}}"/>
       </li>
     </ul>
   </div>

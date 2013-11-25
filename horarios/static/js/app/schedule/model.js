@@ -40,6 +40,82 @@ define(['./module'], function (models) {
       return arr1;
     };
 
+    function ScheduleThumbnail(w,h){
+        this.w = w;
+        this.h = h;
+        this.color = { 
+                    "turquoise": "#1abc9c",
+                    "emerland": "#2ecc71",
+                    "peter-river": "#3498db",
+                    "amethyst": "#9b59b6",
+                    "wet-asphalt": "#34495e",
+                    "green-sea": "#16a085",
+                    "nephritis": "#27ae60",
+                    "belize-hole": "#2980b9",
+                    "wisteria": "#8e44ad",
+                    "midnight-blue": "#2c3e50",
+                    "sun-flower": "#f1c40f",
+                    "carrot": "#e67e22",
+                    "alizarin": "#e74c3c",
+                    "clouds": "#ecf0f1",
+                    "concrete": "#95a5a6",
+                    "orange": "#f39c12",
+                    "pumpkin": "#d35400",
+                    "pomegranate": "#c0392b",
+                    "silver": "#bdc3c7",
+                    "asbestos": "#7f8c8d"};
+    }
+
+    ScheduleThumbnail.prototype.draw = function (context,schedules,x,y,lineWidth){
+        context.beginPath();
+        context.rect(x, y, this.w, this.h);
+        context.fillStyle = 'white';
+        context.fill();
+        context.lineWidth = lineWidth;
+        context.strokeStyle = 'black';
+        context.stroke();
+        var dayWidth = this.w / 7.0;
+        var hourHeight = this.h / 24.0;
+        context.beginPath();
+        context.lineWidth = lineWidth/2;
+        for(var i=0;i<7;i++){
+            context.moveTo(x+(i*dayWidth),y);
+            context.lineTo(x+(i*dayWidth),y+this.h);
+            context.stroke();
+        }
+        context.moveTo(x,y+this.h/2);
+        context.lineTo(x+this.w,y+this.h/2);
+        context.stroke();
+        
+        context.lineWidth = 0;
+        for(var s in schedules){
+            
+            var lx = x;
+            var ly = y;
+            context.beginPath();
+            context.fillStyle= this.color[schedules[s]["color"]];
+            for (var t in schedules[s]["schedule"]){                
+                var hours = schedules[s]["schedule"][t];
+                ly = y;
+                for (var h in hours){
+                    if(hours[h] == '1'){
+                        context.rect(lx,ly,dayWidth,hourHeight);
+                        context.fill();
+                    }
+                    ly += hourHeight;
+                }
+                lx += dayWidth;
+                context.fill();
+            }             
+        }
+    }
+
+    var canvas = document.createElement("canvas");
+    canvas.width = 100;
+    canvas.height= 50;
+    var context = canvas.getContext('2d');
+    var generator = new ScheduleThumbnail(100,50);
+
     var Schedule = function(schedItems){
 
       var that = this;
@@ -51,7 +127,6 @@ define(['./module'], function (models) {
 
         that.earlyHours = (value & 127) > 0 || false || that.earlyHours;
         that.lateHours  = (value & 15728640) > 0 || false || that.lateHours;
-        console.log( value  + "--" + that.earlyHours);
         return ( value + HEADING_ONE ).toString(2).substring(2).split('').reverse().join('');
       };
 
@@ -68,6 +143,13 @@ define(['./module'], function (models) {
 
         //var groupsT = transpose(that.groups);
       };
+
+      var draw = function(){
+        console.log(that.groups);
+        generator.draw(context,that.groups,0,0,1);
+        return canvas.toDataURL();
+      }
+      
       angular.extend(this,{
         rows: schedule,
         earlyHours: false,
@@ -76,8 +158,10 @@ define(['./module'], function (models) {
         subjects: [],
         groups: [],
         busy: [],
+        thumbnail : draw,
         parseRows : parseRows
       });
+      canvas.width = canvas.width;
       /*
        * lazy loading rows for better performance
        */
