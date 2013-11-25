@@ -1,9 +1,9 @@
 <div class="row" ng-controller="ScheduleListCtrl">
   <div class="col-sm-2 col-md-2" ng-repeat="schedule in schedules">
-    <div ng-click="loadSchedule($index)" class="thumbnail" class="{{ $index === index ? 'active' : '' }}">
+    <div ng-click="loadSchedule($index)" class="thumbnail" >
       <img src="{{schedule.thumbnail()}}" height="{{height}}" width="{{width}}">
       <div class="caption">
-        <p><a  class="btn btn-primary" role="button">Horario {{ $index + 1}}</a></p>
+        <p><a  class="btn {{ $index === index ? 'btn-primary' : 'btn-default' }}" role="button">Horario {{ $index + 1}}</a></p>
       </div>
     </div>
   </div>
