@@ -23,10 +23,10 @@ define(['./module'], function (controllers) {
      */
     $scope.showRow = function(index){
       if(index >= 0 && index < 7) {
-        return false || ScheduleService.getActive().earlyHours;
+        return ScheduleService.getActive().earlyHours;
       }
       else if (index >= 20 && index < 24) {
-        return false || ScheduleService.getActive().lateHours;
+        return ScheduleService.getActive().lateHours;
       } else {
         return true;
       }

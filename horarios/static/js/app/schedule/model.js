@@ -15,7 +15,7 @@ define(['./module'], function (models) {
       var trans = [];
       _.each(arr, function(row, x){
         _.each(row, function(col, y){
-          if (!trans[y]) { trans[y] = [] };
+          if (!trans[y]) { trans[y] = [] }
           if (col === '1'){
             trans[y][x] = schedItem;
           } else {

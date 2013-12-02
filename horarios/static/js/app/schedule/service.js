@@ -20,10 +20,10 @@ define(['./module'],function (services){
     var reset  = function(){
       schedules = [];
       schedules.push(initialSchedule);
-      var activeSchedule = schedules[0];
+      activeSchedule = schedules[0];
     };
     return {
-      getActive: function(index){
+      getActive: function(){
         return activeSchedule;
       },
       setActive: function(index){
