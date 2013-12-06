@@ -18,13 +18,13 @@ define(['../app'],function (app) {
           url : '',
           views: {
             'subjects@schedules': {
-              templateUrl: '/static/partials/subjects.html',
+              templateUrl: '/static/partials/subjects.html'
             },
             'detail@schedules': {
-              templateUrl: '/static/partials/schedules.detail.html',
+              templateUrl: '/static/partials/schedules.detail.html'
             },
             'list@schedules': {
-              templateUrl: '/static/partials/schedules.list.html',
+              templateUrl: '/static/partials/schedules.list.html'
             }
           }
         })

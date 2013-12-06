@@ -15,7 +15,7 @@ define(['./module'], function (controllers) {
     }
 
     $scope.schedule = ScheduleService.getActive();
-    $scope.$watch('ScheduleService.getActive()', function(newVal, oldVal) {
+    $scope.$watch('ScheduleService.getActive()', function(newVal) {
       $scope.schedules = newVal;
     });
     /*
@@ -44,7 +44,6 @@ define(['./module'], function (controllers) {
     $scope.toggleRow = function(row,col){
       console.log(row);
       console.log(col);
-      console.log($scope.busy)
       $scope.busy[row][col] = !$scope.busy[row][col];
       console.log($scope.busy[row][col]);
       $scope.$emit('activeScheduleChange');
@@ -61,7 +60,22 @@ define(['./module'], function (controllers) {
     $scope.width = 100;
     $scope.padding = 1;
     $scope.lineWidth = 1;
-    $scope.$watch('ScheduleService.getList()', function(newVal, oldVal) {
+    $scope.currentPage = 0;
+    $scope.pageSize = 12;
+    $scope.numberOfPages = function(){
+      if(_.isUndefined($scope.schedules)){
+          return 1;
+      }
+      return Math.ceil($scope.schedules.length/$scope.pageSize);
+    };
+    $scope.range = function(n){
+        var r = [0];
+        for(var i = 1; i<n; i++){
+            r.push(i);
+        }
+        return r;
+    }
+    $scope.$watch('ScheduleService.getList()', function(newVal) {
       $scope.schedules = newVal;
     });
     $scope.loadSchedule = function(index){
@@ -77,6 +91,7 @@ define(['./module'], function (controllers) {
         $scope.schedules = ScheduleService.getList();
         ScheduleService.setActive(0);
         $scope.index = 0;
+        $scope.currentPage = 0;
         $scope.$emit('activeScheduleChange');
       });
     });

@@ -7,7 +7,9 @@ define(['./module'],function (services){
         code : '',
         schedule :  [1048448, 1048448, 1048448, 1048448, 1048448 ,1048448, 1048448],
         subject : '-no hay horario',
-        name : ''
+        name : '',
+        lateHours: false,
+        earlyHours: false
       }]
     };
 
@@ -28,15 +30,15 @@ define(['./module'],function (services){
       },
       setActive: function(index){
         activeSchedule = schedules[index];
-        console.log(activeSchedule.earlyHours);
       },
       reset: reset,
       fetch: function(query){
         schedules = [];
         return $http.get('/api/v1.0/schedule/subjects=' + query + '&busy=')
         .then(function(response){
-          response.data.forEach(function(sched){
+          response.data.forEach(function(sched,index){
             var schedule = new Schedule(sched);
+            schedule.index = index;
             schedules.push(schedule);
           });
         });

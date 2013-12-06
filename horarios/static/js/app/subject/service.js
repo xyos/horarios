@@ -69,6 +69,22 @@ define(['./module'],function (services){
       getByCode: function(code){
         return getSubject(parseInt(code));
       },
+      getTooltip: function(subjectCode,groupCode){
+          console.log(subjectCode);
+          console.log(groupCode);
+
+        var subject = getSubject(subjectCode);
+        console.log(subject);
+        var teacherName = "";
+        _.forEach(subject.teachers,function(teacher){
+          _.forEach(teacher.groups,function(group){
+            if(group.code === groupCode){
+              teacherName = teacher.name;
+            }
+          });
+        });
+        return teacherName;
+      },
       autoComplete : function(name){
         return $http.get('/api/v1.0/subject/autocomplete/' + name + '/?format=json')
         .then(function(response){

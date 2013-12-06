@@ -1,1 +1,1 @@
-define(['./model','./service','./controller'], function (){});
+define(['./model','./service','./controller','./filter','./directive'], function (){});

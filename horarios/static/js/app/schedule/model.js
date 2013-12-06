@@ -122,7 +122,7 @@ define(['./module'], function (models) {
         context.moveTo(x,y+this.h/2);
         context.lineTo(x+this.w,y+this.h/2);
         context.stroke();
-    }
+    };
 
     var canvas = document.createElement("canvas");
     canvas.width = 110;
@@ -149,7 +149,8 @@ define(['./module'], function (models) {
         _.each(that.groups, function(group){
           var gName = (_.isUndefined(group.subject)) ? 'no hay horario' : group.subject + '-' + group.code;
           var gClass = (_.isUndefined(group.color)) ? 'warning' : group.color;
-          var schedT = transpose(group.schedule, {name: gName , color : gClass});
+          var gTooltip = SubjectService.getTooltip(group.subject,group.code);
+          var schedT = transpose(group.schedule, {name: gName , color : gClass, tooltip: gTooltip});
           scheduleMatrix = sumMatrix(scheduleMatrix, schedT);
         });
         that.rows = scheduleMatrix;
@@ -159,10 +160,9 @@ define(['./module'], function (models) {
       };
 
       var draw = function(){
-        console.log(that.groups);
-        generator.draw(context,that.groups,1,1,0.5);
+          generator.draw(context,that.groups,1,1,0.5);
         return canvas.toDataURL();
-      }
+      };
       
       angular.extend(this,{
         rows: schedule,
@@ -173,9 +173,10 @@ define(['./module'], function (models) {
         groups: [],
         busy: [],
         thumbnail : draw,
-        parseRows : parseRows
+        parseRows : parseRows,
+        index: 0
       });
-      canvas.width = canvas.width;
+      //canvas.width = canvas.width;
       /*
        * lazy loading rows for better performance
        */
