@@ -82,6 +82,16 @@ define(['./module'],function (services){
         });
         return teacherName;
       },
+      getSubjectSimplifiedName: function(subjectCode){
+
+        var subject = getSubject(subjectCode);
+        var name = subject.name.split(' ')
+        var ret = ""
+        for(var i in name){
+            ret += name[i].charAt(0).toUpperCase()
+        }
+        return ret;
+      },
       autoComplete : function(name){
         return $http.get('/api/v1.0/subject/autocomplete/' + name + '/?format=json')
         .then(function(response){
