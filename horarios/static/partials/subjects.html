@@ -7,7 +7,7 @@
         <input type="checkbox" ng-model="subject.isChecked" ng-checked="true" ng-change="checkChange(subject.teachers,subject.isChecked)">
         <span><b>{{subject.name | lowercase}}</b></span>
         <span class="{{ subject.color }}">{{ subject.code }}</span>
-        <button class="close" ng-click="removeSubject(subject.code)">×</button>
+        <button class="close" tooltip="Eliminar materia" ng-click="removeSubject(subject.code)">×</button>
       </div>
       <div class="panel-body">
         <div class="panel-group">
