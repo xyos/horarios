@@ -1,6 +1,7 @@
 <div ng-controller="SubjectCtrl">
-  <input placeholder="escriba el nombre de la materia" typeahead-input-formatter="formatInput($model)" typeahead-min-length="3" class="form-control" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" typeahead-wait-ms="500" typeahead="subject.name for subject in autocomplete($viewValue)">
+  <input placeholder="escriba el nombre de la materia" typeahead-input-formatter="formatInput($model)" typeahead-min-length="3" class="form-control" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" typeahead-wait-ms="500" typeahead="subject.name for subject in autocomplete($viewValue)" typeahead-loading="isLoading">
   <hr>
+  <img src="static/img/loading.gif" ng-show="!!isLoading"/>
   <div class="panel-group">
     <div class="panel panel-default" ng-repeat="subject in subjects">
       <div class="panel-heading">
