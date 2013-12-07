@@ -15,7 +15,12 @@ class SIA:
     cache = CacheManager(**parse_cache_config_options({
         'cache.type': 'file',
         'cache.data_dir': '/tmp/horariossiacache/data',
-        'cache.lock_dir': '/tmp/horariossiacache/lock'
+        'cache.lock_dir': '/tmp/horariossiacache/lock',
+        'cache.regions': 'short_term, long_term',
+        'cache.short_term.type': 'memory',
+        'cache.short_term.expire': '3600',
+        'cache.long_term.type': 'file',
+        'cache.long_term.expire': '86400'
     }))
 
     def existsSubject(this,name,level):
@@ -29,7 +34,7 @@ class SIA:
         f.close()
         return result
 
-    @cache.cache(expire=60*60*24)
+    @cache.region('short_term')
     def querySubjectsByName(this,name,level,maxRetrieve):
         data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, maxRetrieve]})
         req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
@@ -38,7 +43,7 @@ class SIA:
         f.close()
         return result["result"]["asignaturas"]["list"]
 
-    @cache.cache(expire=60*60*24)
+    @cache.region('short_term')
     def queryGroupsBySubjectCode(this,code):
         data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [code, "0"]})
         req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
@@ -47,7 +52,7 @@ class SIA:
         f.close()
         return result["result"]["list"]
 
-    @cache.cache(expire=60*60*24)
+    @cache.region('short_term')
     def queryGroupsProfessions(this,code,group):
         import re
         f = urllib2.urlopen("http://www.sia.unal.edu.co/buscador/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
