@@ -72,7 +72,6 @@ define(['./module'],function (services){
       getTooltip: function(subjectCode,groupCode){
 
         var subject = getSubject(subjectCode);
-        console.log(subject);
         var teacherName = "";
         _.forEach(subject.teachers,function(teacher){
           _.forEach(teacher.groups,function(group){
