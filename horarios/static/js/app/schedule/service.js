@@ -36,7 +36,11 @@ define(['./module'],function (services){
         schedules = [];
         return $http.get('/api/v1.0/schedule/subjects=' + query + '&busy=')
         .then(function(response){
+          if(_.isEmpty(response.data)){
+              schedules.push(initialSchedule);
+          }
           response.data.forEach(function(sched,index){
+
             var schedule = new Schedule(sched);
             schedule.index = index;
             schedules.push(schedule);

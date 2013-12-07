@@ -133,6 +133,7 @@ define(['./module'], function (models) {
     var Schedule = function(schedItems){
 
       var that = this;
+      that.url = "";
       /*
        * adds the heading zeros and transforms the values to binary for the
        * busy array returns a string
@@ -160,8 +161,14 @@ define(['./module'], function (models) {
       };
 
       var draw = function(){
+
+        if(that.url === ""){
           generator.draw(context,that.groups,1,1,0.5);
-        return canvas.toDataURL();
+          that.url = canvas.toDataURL()
+          return that.url;
+        } else {
+          return that.url;
+        }
       };
       
       angular.extend(this,{

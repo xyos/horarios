@@ -8,6 +8,7 @@ define(['./module'], function (controllers) {
     $scope.daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     $scope.hours = [];
+    $scope.scheduleNumber = ScheduleService.getActive().index;
     $scope.busy = [];
     for (var i = 1; i <= 24; i++) {
       $scope.hours.push(i -1 + ':00 - ' + i + ':00');
@@ -15,7 +16,7 @@ define(['./module'], function (controllers) {
     }
 
     $scope.schedule = ScheduleService.getActive();
-    $scope.$watch('ScheduleService.getActive()', function(newVal) {
+    $scope.$watch('ScheduleService.getActive()', function(newVal, oldVal) {
       $scope.schedules = newVal;
     });
     /*

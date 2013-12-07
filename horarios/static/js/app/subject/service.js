@@ -70,8 +70,6 @@ define(['./module'],function (services){
         return getSubject(parseInt(code));
       },
       getTooltip: function(subjectCode,groupCode){
-          console.log(subjectCode);
-          console.log(groupCode);
 
         var subject = getSubject(subjectCode);
         console.log(subject);

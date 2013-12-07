@@ -53,6 +53,12 @@ define(['./module'], function (controllers) {
     var emit = function() {
       $scope.$emit('scheduleChange', SubjectService.getQuery());
     };
+    /*
+     * Formats the input on the typeahead
+     */
+    $scope.formatInput = function(model){
+          return "";
+    }
     $scope.changeGroup = function(){
       var throttledEmit = _.throttle(emit, 1000, { 'leading': false, 'trailing': true });
       throttledEmit();
