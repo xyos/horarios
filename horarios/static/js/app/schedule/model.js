@@ -148,8 +148,8 @@ define(['./module'], function (models) {
       var parseRows = function(){
         var scheduleMatrix = transpose(that.busy, { name : 'busy', class : 'busy'});
         _.each(that.groups, function(group){
-          var gName = (_.isUndefined(group.subject)) ? 'no hay horario' : group.subject + '-' + group.code;
-          var gClass = (_.isUndefined(group.color)) ? 'warning' : group.color;
+          var gName = (_.isUndefined(group.subject)) ? '' : group.subject + '-' + group.code;
+          var gClass = (_.isUndefined(group.color)) ? '' : group.color;
           var gTooltip = SubjectService.getTooltip(group.subject,group.code);
           var schedT = transpose(group.schedule, {name: gName , color : gClass, tooltip: gTooltip});
           scheduleMatrix = sumMatrix(scheduleMatrix, schedT);

@@ -10,6 +10,7 @@ define(['./module'], function (controllers) {
     $scope.hours = [];
     $scope.scheduleNumber = ScheduleService.getActive().index;
     $scope.busy = [];
+    $scope.busySelect = false;
     for (var i = 1; i <= 24; i++) {
       $scope.hours.push(i -1 + ':00 - ' + i + ':00');
       $scope.busy.push([false,false,false,false,false,false,false]);
@@ -43,10 +44,7 @@ define(['./module'], function (controllers) {
      * toggles the row status
      */
     $scope.toggleRow = function(row,col){
-      console.log(row);
-      console.log(col);
       $scope.busy[row][col] = !$scope.busy[row][col];
-      console.log($scope.busy[row][col]);
       $scope.$emit('activeScheduleChange');
     };
 

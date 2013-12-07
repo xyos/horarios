@@ -18,6 +18,13 @@
 .pomegranate  { background-color:  #c0392b; fill:  #c0392b; color: #FFF  }
 .silver       { background-color:  #bdc3c7; fill:  #bdc3c7; color: #FFF  }
 .asbestos     { background-color:  #7f8c8d; fill:  #7f8c8d; color: #FFF  }
+.white        { background-color:  #FFFFFF; fill:  #EEEEEE; color: #222  }
+.busy > a {
+    color: #c0392b;
+}
+.free > a {
+    color: #2ecc71;
+}
 .schedule-list {
     margin-left: 0px;
     margin-right: 0px;
@@ -60,4 +67,7 @@
     background-color: rgb(247, 247, 249);
     border: 1px solid rgb(225, 225, 232);
     border-radius: 4px;
+}
+.busy{
+  content: "ocupado";
 }
