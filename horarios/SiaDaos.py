@@ -12,7 +12,7 @@ class SubjectDao:
 
     def _createSubject(this,data):
         groups=[]
-        return Models.Subject(data["nombre"],data["codigo"],data["creditos"],groups)
+        return Models.Subject(data["nombre"],data["codigo"],data["creditos"],groups,data["tipologia"])
 
     def getSubjectByName(this,name,level):
         data = self.sia.querySubjectsByName(name,level,1)[0]
@@ -45,7 +45,12 @@ class GroupDao:
                 schedule[Models.DAYS[5]] = g["horario_sabado"]
             if(g["horario_domingo"] != "--"):
                 schedule[Models.DAYS[6]] = g["horario_domingo"]
-            groups.append(Models.Group(g["codigo"],g["nombredocente"],self._parseSchedule(schedule),code))
+            
+            professions = []
+            for i in self.sia.queryGroupsProfessions(code,g["codigo"]):
+                professions.append(Models.Profession(i[0],i[1]))
+
+            groups.append(Models.Group(g["codigo"],g["nombredocente"],self._parseSchedule(schedule),code,professions,g["cuposdisponibles"],g["cupostotal"]))
         return groups
 
     def _parseSchedule(self,scheduleDict):

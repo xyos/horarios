@@ -4,7 +4,7 @@ class SubjectDao:
     
     def BOfromDjango(self,data):
         groups = []
-        return BO.Subject(data.name,data.code,data.credits,groups)
+        return BO.Subject(data.name,data.code,data.credits,groups,data.stype)
 
     def getSubjectsByName(self,name,level,maxResults):
         subjects = []
@@ -25,5 +25,8 @@ class GroupDao:
         groups = []
         s = models.Subject.objects.get(code__exact=code)
         for i in s.group_set.all():
-            groups.append(BO.Group(i.code,i.teacher.name,i.schedule,s.code))
+            prof = []
+            for j in i.professions.all():
+                prof.append(BO.Profession(j.code,j.name))
+            groups.append(BO.Group(i.code,i.teacher.name,i.schedule,s.code,prof))
         return groups

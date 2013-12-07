@@ -1,12 +1,18 @@
 import copy
 DAYS=["LUNES","MARTES","MIERCOLES","JUEVES","VIERNES","SABADO","DOMINGO"]
 
+class Profession:
+    def __init__(self,code,name):
+        self.name = name
+        self.code = code
+
 class Subject():
-    def __init__(self,name,code,credits,groups):
+    def __init__(self,name,code,credits,groups,type):
         self.name=name
         self.code=int(code)
         self.credits=int(credits)
         self.groups=groups
+        self.type =type
     def __str__(self):
         ret = self.name + " has " + str(len(self.groups)) + ":\n"
         for g in self.groups:
@@ -14,19 +20,23 @@ class Subject():
         return ret
 
 class Group():
-    def __init__(self,code,teacher,schedule,subjectCode):
+    def __init__(self,code,teacher,schedule,subjectCode,professions,share=-1,totalShare=-1):
         """ 
             rooms is a dictionary of day : room
             teacher is a string
+            share is an integer with the num. of available shares
+            totalShare is an integer with the totla num. of shares
         """
         self.teacher = teacher
         self.code = int(code)
         self.subjectCode = subjectCode
         self.schedule = schedule
-    
+        self.professions = professions
+        self.share = share
+        self.totalShare = totalShare
 
     def __str__(self):
-        ret = "Group " + str(self.code) + " taught by " + self.teacher + " : \n"
+        ret = "Group " + str(self.code) + " taught by " + self.teacher + " for professions " + ",".join(map(professions,lambda p : p.name)) + " : \n"
         for i in range(0,len(self.schedule)):
             if (self.schedule[i] != 0):
                 ret = ret + DAYS[i] + " : " + "{0:024b}".format(self.schedule[i]) + "\n"
