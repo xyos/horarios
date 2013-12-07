@@ -72,10 +72,10 @@ define(['./module'], function (controllers) {
     $scope.range = function(n){
         var r = [0];
         for(var i = 1; i<n; i++){
-            r.push(i);
+          r.push(i);
         }
         return r;
-    }
+      };
     $scope.$watch('ScheduleService.getList()', function(newVal) {
       $scope.schedules = newVal;
     });
@@ -96,5 +96,9 @@ define(['./module'], function (controllers) {
         $scope.$emit('activeScheduleChange');
       });
     });
+
+    $scope.update = function() {
+      $scope.$apply();
+    };
   });
 });

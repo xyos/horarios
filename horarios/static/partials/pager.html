@@ -1,0 +1,14 @@
+<div class="col-md-12">
+    <ul class="pagination pagination-centered">
+        <li ng-class="{disabled : currentPage == 0 }">
+            <a a-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">&laquo</a>
+        </li>
+        <li ng-repeat="page in range(numberOfPages())"
+            ng-class="{active: (page == $parent.currentPage) }">
+            <a ng-click="$parent.currentPage=page">{{ page + 1 }}</a>
+        </li>
+        <li ng-class="{disabled : (currentPage >= items.length/pageSize - 1) }">
+            <a a-disabled="currentPage >= items.length/pageSize - 1" ng-click="currentPage=currentPage+1">»</a>
+        </li>
+    </ul>
+</div>
