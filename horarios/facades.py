@@ -12,6 +12,9 @@ def autocomplete(query):
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)
 
+def getSubjectsByCode(code):
+    return subjectsServices.getSubjectsByCode(code)
+
 def getSchedulesByLists(lists,busy=None):
     #Generating simple scheudles first will fasten the algorithm
     lists = sorted(lists, lambda x,y: 1 if len(x)>len(y) else -1 if len(x)<len(y) else 0)

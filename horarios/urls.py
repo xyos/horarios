@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^api/v1.0/schedule/random/$', RandomScheduleView.as_view() , name='random_schedule'),
     url(r'^api/v1.0/subject/(?P<subjectCode>\d+)/groups/$', GroupsView.as_view() , name='subjectsGroup'),
     url(r'^api/v1.0/schedule/subjects=(?P<subjects>[\d,|]*)&busy=(?P<busy>[\d,]*)$', SchedulesView.as_view() , name='schedules'),
+    url(r'^api/v1.0/schedule/subjects=(?P<subjects>[\d,|]*)&busy=(?P<busy>[\d,]*)/(?P<schedule>\d+)/ics$', 'horarios.views.getICS' , name='scheduleICS'),
 
     # url(r'^horarios/', include('horarios.foo.urls')),
 

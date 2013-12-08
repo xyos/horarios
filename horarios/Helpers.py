@@ -127,4 +127,77 @@ class DatabaseCreator:
 
 def syncsia():
     c = DatabaseCreator(SIA())
-    c.getSubjects("abcdefghijklmnopqrstuvwxyz")
+    alphabet="abcdefghijklmnopqrstuvwxyz"
+    c.getSubjects(alphabet)
+
+
+def getIcsFromSchedule(schedule):
+    import BO
+    import datetime
+    def next_weekday(d, weekday):
+        # Taken from http://stackoverflow.com/questions/6558535/python-find-the-date-for-the-first-monday-after-a-given-a-date
+        # 0 = Monday, 1=Tuesday, 2=Wednesday...
+        days_ahead = weekday - d.weekday()
+        if days_ahead <= 0: # Target day already happened this week
+            days_ahead += 7
+        return d + datetime.timedelta(days_ahead)
+
+    def getDaysStart():
+        import pytz
+        tz = pytz.timezone('America/Bogota')
+        starts = dict()
+        if datetime.date.today().month<6:
+            beginning = datetime.datetime(datetime.date.today().year,02,01,0,0,0,tzinfo=tz)
+        else:
+            beginning = datetime.datetime(datetime.date.today().year,07,01,0,0,0,tzinfo=tz)
+            
+        for i in range(0,len(BO.DAYS)):
+            starts[i] = next_weekday(beginning,i)
+
+        return starts
+
+    def getEvent(startHour,endHour,start):
+        starts = getDaysStart()
+        if datetime.date.today().month<6:
+            period = 1
+        else:
+            period = 2
+
+        event = Event()
+        event.add('summary', facades.getSubjectsByCode(group.subjectCode).name)
+        event.add('dtstart', datetime.datetime.replace(starts[start],hour=startHour))
+        event.add('dtend', datetime.datetime.replace(starts[start],hour=endHour))
+        event.add('rrule',{'FREQ':'WEEKLY','COUNT':'14'})
+        event['uid'] = str(group.subjectCode) + '/' + str(group.code) + '/' + BO.DAYS[start] + '/' + str(startHour) + '-' + str(endHour) + '/UN' + str(datetime.date.today().year)  +  '-' + str(period) + '@horariosUN@nomeroben.com'
+
+        event.add('priority', 5)
+        return event
+
+    from icalendar import Calendar, Event
+    cal = Calendar()
+    cal.add('prodid', '-//Horario producido usando HorariosUN//mxm.dk//')
+    cal.add('version', '2.0')
+    import facades
+    for group in schedule.groups:
+        for i in range(0,len(group.schedule)):
+            hours = "{0:024b}".format(group.schedule[i])
+            hours = hours[::-1]
+            j = 0
+            activeChunk = False
+            while (j < len(hours)):
+                if (not activeChunk) and hours[j] == '1':
+                    startHour = j
+                    activeChunk=True
+                else:
+                    if(activeChunk):
+                        endHour = j+1
+                        cal.add_component(getEvent(startHour,endHour,i))
+                        activeChunk=False
+                j += 1
+            if(activeChunk):
+                endHour = 24
+                cal.add_component(getEvent(startHour,endHour,i))
+                activeChunk=False
+                
+            #event.add('dtstamp', datetime.datetime(2005,4,4,0,10,0,tzinfo=tz))
+    return cal.to_ical()

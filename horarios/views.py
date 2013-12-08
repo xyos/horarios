@@ -128,40 +128,63 @@ class GroupsView(APIView):
         serializer = GroupSerializer()
         return Response(serializer.serialize(groups), status = status.HTTP_200_OK)
 
+
+def getScheduleFromQuery(subjects,busy):
+
+    def parseSubjects(string):
+        string = string.split(",")
+        query = []
+        for i in string:
+            parts = i.split("|")
+            subject = {"code" : str(int(parts[0])), "groups" : None}
+            if(len(parts)>1):
+                subject["groups"] = []
+            for j in range(1,len(parts)):
+                subject["groups"].append(int(parts[j]))
+            query.append(subject)
+        return query 
+
+    def parseBusy(string):
+        ret = []
+        hours = string.split(",")
+        if(len(hours)!=7):
+            return None
+        else:
+            for i in hours:
+                ret.append(int(i))
+            return ret
+
+    import facades
+    return facades.getSchedulesByQuery(parseSubjects(subjects),parseBusy(busy));
+
 class SchedulesView(APIView):
     def get(self, request, *args , **kw):
-        def parseSubjects(string):
-            string = string.split(",")
-            query = []
-            for i in string:
-                parts = i.split("|")
-                subject = {"code" : str(int(parts[0])), "groups" : None}
-                if(len(parts)>1):
-                    subject["groups"] = []
-                for j in range(1,len(parts)):
-                    subject["groups"].append(int(parts[j]))
-                query.append(subject)
-            return query 
-
-        def parseBusy(string):
-            ret = []
-            hours = string.split(",")
-            if(len(hours)!=7):
-                return None
-            else:
-                for i in hours:
-                    ret.append(int(i))
-                return ret
-
         subjects = kw['subjects']
         busy = kw['busy']
         if(len(subjects)<1):
             return Response([], status = status.HTTP_200_OK)
-        import facades
         try:
-            s = facades.getSchedulesByQuery(parseSubjects(subjects),parseBusy(busy));
+            s = getScheduleFromQuery(subjects,busy)
         except Exception:
             return Response([], status = status.HTTP_200_OK)
         from serializers import ScheduleSerializer
         serializer = ScheduleSerializer()
         return Response(serializer.serialize(s), status = status.HTTP_200_OK)
+
+def getICS(request,*args,**kw):
+    from django.http import HttpResponse
+    subjects = kw['subjects']
+    busy = kw['busy']
+    schedule = int(kw['schedule'])
+    if(len(subjects)<1):
+        return Response([], status = status.HTTP_200_OK)
+    try:
+        s = getScheduleFromQuery(subjects,busy)
+    except Exception:
+        return Response([], status = status.HTTP_200_OK)
+    if(len(s) < schedule):
+        return HttpResponse("Wrong schedule number. There are " + str(len(s)) + " < " + str(schedule) + " schedules", status = status.HTTP_200_OK)
+    import Helpers
+    response = HttpResponse(Helpers.getIcsFromSchedule(s[schedule]),mimetype='application/ics')
+    response['Content-Disposition'] = 'attachment; filename=horario.ics' 
+    return response

@@ -16,3 +16,7 @@ class SubjectsServices:
         for i in range(0,len(subjects)):
             subjects[i].gropus = self.getGroups(subjects[i].code)
         return subjects
+
+    def getSubjectsByCode(self,code):
+        dao = self.factory.getSubjectDao()
+        return dao.getSubjectByCode(code)
