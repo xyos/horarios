@@ -12,11 +12,11 @@ class SubjectDao:
             subjects.append(self.BOfromDjango(i))
         return subjects
 
-    def getSubjectByName(this,name,level):
+    def getSubjectByName(self,name,level):
         return self.BOfromDjango(models.Subject.objects.get(name__iexact=name))
 
-    def getSubjectByCode(this,name,level):
-        raise Exception("Not implemented for SIA DAOs")
+    def getSubjectByCode(self,code):
+        return self.BOfromDjango(models.Subject.objects.get(code__exact=code))
 
 
 class GroupDao:

@@ -18,7 +18,7 @@ class SubjectDao:
         data = self.sia.querySubjectsByName(name,level,1)[0]
         return this.createSubject(data);
 
-    def getSubjectByCode(this,name,level):
+    def getSubjectByCode(this,code):
         raise Exception("Not implemented for SIA DAOs")
 
 
