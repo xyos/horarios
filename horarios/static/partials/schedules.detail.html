@@ -1,6 +1,5 @@
 <div class="panel panel-default" ng-controller="ScheduleDetailCtrl">
-    <div class="panel-heading"> horario {{ schedule.index + 1 }}
-
+    <div class="panel-heading"><a href="api/v1.0/schedule/<query>/{{schedule.index}}/ics"> horario {{ schedule.index + 1 }} </a>
         <button type="button" class="btn btn-xs btn-primary pull-right" ng-class="{'btn-danger': busySelect}" ng-model="busySelect" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
             Horas ocupadas  <i class="fa fa-minus-circle"></i>
         </button>

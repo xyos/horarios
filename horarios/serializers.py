@@ -50,4 +50,6 @@ class GroupSerializer(Serializer):
         out['code'] = group.code
         out['schedule'] = group.schedule
         out['subject'] = group.subjectCode
+        out['available'] = group.share
+        out['totalShare'] = group.totalShare
         return out
