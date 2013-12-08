@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .turquoise    { background-color:  #1abc9c !important; fill:  #1abc9c; color: #FFF  }
 .emerland     { background-color:  #2ecc71 !important; fill:  #2ecc71; color: #FFF  }
 .peter-river  { background-color:  #3498db !important; fill:  #3498db; color: #FFF  }
@@ -18,6 +19,13 @@
 .pomegranate  { background-color:  #c0392b !important; fill:  #c0392b; color: #FFF  }
 .silver       { background-color:  #bdc3c7 !important; fill:  #bdc3c7; color: #FFF  }
 .asbestos     { background-color:  #7f8c8d !important; fill:  #7f8c8d; color: #FFF  }
+.white        { background-color:  #FFFFFF; fill:  #EEEEEE; color: #222  }
+.busy > a {
+    color: #c0392b;
+}
+.free > a {
+    color: #2ecc71;
+}
 .schedule-list {
     margin-left: 0px;
     margin-right: 0px;
@@ -63,4 +71,7 @@
 }
 .color-panel{
     color: #FFF;
+}
+.busy{
+  content: "ocupado";
 }

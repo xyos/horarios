@@ -88,7 +88,9 @@ define(['./module'],function (services){
         var name = subject.name.split(' ')
         var ret = ""
         for(var i in name){
-            ret += name[i].charAt(0).toUpperCase()
+            if(name[i].length > 3){
+                ret += name[i].charAt(0).toUpperCase()
+            }
         }
         return ret;
       },
