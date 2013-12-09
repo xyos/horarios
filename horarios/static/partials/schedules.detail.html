@@ -16,7 +16,8 @@
         <tr ng-repeat="row in schedule.rows" ng-show="showRow($index)">
             <th>{{ hours[$index] }}</th>
             <td ng-repeat="cell in row track by $index"
-                class="text-center {{ cell.color }} {{ busy[$parent.$index][$index] ? 'busy' : 'free' }} {{ busySelect ? 'white' : '' }}">
+                ng-class="{ busy: busy[$parent.$index][$index] }"
+                class="text-center {{ busySelect ? '' : cell.color }}">
                 <span ng-show="!busySelect">
                   <em>
                       <span ng-show="busy[$parent.$index][$index]"> Ocupado <i class="fa fa-minus-circle"></i></span>
