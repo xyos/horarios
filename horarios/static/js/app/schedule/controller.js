@@ -4,13 +4,20 @@
 */
 define(['./module'], function (controllers) {
   'use strict';
-  controllers.controller('ScheduleDetailCtrl', function ($scope, $rootScope, ScheduleService) {
+  controllers.controller('ScheduleDetailCtrl', function ($scope, $rootScope, ScheduleService, SubjectService) {
     $scope.daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     $scope.hours = [];
     $scope.scheduleNumber = ScheduleService.getActive().index;
     $scope.busy = [];
     $scope.busySelect = false;
+    $scope.$watch('busySelect', function(value){
+      console.log(value);
+      if(!value){
+        ScheduleService.setBusy($scope.busy);
+        $scope.$emit('scheduleChange', SubjectService.getQuery());
+      }
+    });
     for (var i = 1; i <= 24; i++) {
       $scope.hours.push(i -1 + ':00 - ' + i + ':00');
       $scope.busy.push([false,false,false,false,false,false,false]);
@@ -63,7 +70,7 @@ define(['./module'], function (controllers) {
     $scope.pageSize = 12;
     $scope.numberOfPages = function(){
       if(_.isUndefined($scope.schedules)){
-          return 1;
+        return 1;
       }
       return Math.ceil($scope.schedules.length/$scope.pageSize);
     };
