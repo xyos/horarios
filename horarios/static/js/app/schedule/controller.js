@@ -51,8 +51,10 @@ define(['./module'], function (controllers) {
      * toggles the row status
      */
     $scope.toggleRow = function(row,col){
-      $scope.busy[row][col] = !$scope.busy[row][col];
-      $scope.$emit('activeScheduleChange');
+      if($scope.busySelect){
+        $scope.busy[row][col] = !$scope.busy[row][col];
+        $scope.$emit('activeScheduleChange');
+      }
     };
 
   });
