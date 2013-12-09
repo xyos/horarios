@@ -68,7 +68,6 @@ class SIA:
         return professions
 
 class Generator:
-    
     def generateSchedulesFromSubjects(self,listOfSubjects):
         groups = []
         for s in listOfSubjects:
@@ -77,10 +76,8 @@ class Generator:
 
     def generateSchedule(self,listOfListOfGroups,busy=None):
         result = []
-        if(len(listOfListOfGroups) == 1):
-            for g in listOfListOfGroups[0]:
-                result.append(Schedule(busy,g))
-            return result
+        if(len(listOfListOfGroups) == 0):
+            return [Schedule(busy)]
 
         listOfGroups = listOfListOfGroups.pop()
         subSchedules = self.generateSchedule(listOfListOfGroups,busy)
