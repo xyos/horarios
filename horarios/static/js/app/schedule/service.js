@@ -74,6 +74,9 @@ define(['./module'],function (services){
       setBusy: function(busy) {
         busyRows = busy;
       },
+      getBusy: function(busy) {
+        return busyRows;
+      },
       getList: function(){
         if(_.isEmpty(schedules)){
           reset();
