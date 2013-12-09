@@ -39,7 +39,7 @@ define(['./module'],function (services){
         });
       });
       _.forEach(days,function(day){
-        query += parseInt(day, 2).split('').reverse().join('') + ',';
+        query += ('' + parseInt(day, 2)).split('').reverse().join('') + ',';
       });
       console.log(query);
       console.log(days);
