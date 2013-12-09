@@ -69,7 +69,7 @@ define(['./module'], function (controllers) {
     $scope.padding = 1;
     $scope.lineWidth = 1;
     $scope.currentPage = 0;
-    $scope.pageSize = 12;
+    $scope.pageSize = 6;
     $scope.numberOfPages = function(){
       if(_.isUndefined($scope.schedules)){
         return 1;
