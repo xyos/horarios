@@ -7,7 +7,21 @@
 define(['./module'], function (models) {
   models.factory('Schedule', function ($http, SubjectService) {
     var HEADING_ONE = Math.pow(2, 25);
-
+    var initialSchedule = [];
+    var getInitialSchedule = function(){
+      if(_.isEmpty(initialSchedule)){
+        initialSchedule = new Array(24);
+        for(var i = 0; i < 24; i++){
+          initialSchedule[i] = [];
+          for(var j = 0; j < 7; j++){
+            initialSchedule[i].push({id: '' + i + j });
+          }
+        }
+        return initialSchedule;
+      }else{
+        return initialSchedule;
+      }
+    };
     /*
      * transpose an schedule matrix
      */
@@ -35,7 +49,8 @@ define(['./module'], function (models) {
       _.each(arr1, function (col, x) {
         _.each(col, function (row, y) {
           if (!_.isEmpty(arr2[x][y])) {
-            arr1[x][y] = arr2[x][y];
+            angular.extend(arr1[x][y], arr2[x][y]);
+            arr1[x][y].id = arr1[x][y].id + arr2[x][y].color;
           }
         });
       });
@@ -147,17 +162,23 @@ define(['./module'], function (models) {
         return ( value + HEADING_ONE ).toString(2).substring(2).split('').reverse().join('');
       };
 
+      var parsed = false;
       var parseRows = function () {
-        var scheduleMatrix = transpose(that.busy, { name: 'busy', class: 'busy'});
-        _.each(that.groups, function (group) {
-          var gName = (_.isUndefined(group.subject)) ? '' : SubjectService.getSubjectSimplifiedName(group.subject) + '-' + group.code;
-          var gClass = (_.isUndefined(group.color)) ? '' : group.color;
-          var gTooltip = SubjectService.getTooltip(group.subject, group.code);
-          var schedT = transpose(group.schedule, {name: gName, color: gClass, tooltip: gTooltip});
-          scheduleMatrix = sumMatrix(scheduleMatrix, schedT);
-        });
-        that.rows = scheduleMatrix;
+        if (!parsed) {
 
+          var scheduleMatrix = getInitialSchedule();
+          scheduleMatrix = sumMatrix(scheduleMatrix, transpose(that.busy, { name: 'busy', class: 'busy'}));
+
+          _.each(that.groups, function (group) {
+            var gName = (_.isUndefined(group.subject)) ? '' : SubjectService.getSubjectSimplifiedName(group.subject) + '-' + group.code;
+            var gClass = (_.isUndefined(group.color)) ? '' : group.color;
+            var gTooltip = SubjectService.getTooltip(group.subject, group.code);
+            var schedT = transpose(group.schedule, {name: gName, color: gClass, tooltip: gTooltip});
+            scheduleMatrix = sumMatrix(scheduleMatrix, schedT);
+          });
+          that.rows = scheduleMatrix;
+          parsed = true;
+        }
 
         //var groupsT = transpose(that.groups);
       };
@@ -196,12 +217,10 @@ define(['./module'], function (models) {
         row.push(cols);
       });
       var schedule = rows;
-      /*
-       * TODO: get the appropiate busy code here
-       */
-      var dummyBusy = [0, 0, 0, 0, 0, 0, 0];
 
-      dummyBusy.forEach(function (item) {
+      var initialBusy = [0, 0, 0, 0, 0, 0, 0];
+
+      initialBusy.forEach(function (item) {
         that.busy.push(decimalToSchedString(item));
       });
 
