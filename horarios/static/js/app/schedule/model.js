@@ -7,8 +7,8 @@
 define(['./module'], function (models) {
   models.factory('Schedule', function ($http, SubjectService) {
     var HEADING_ONE = Math.pow(2, 25);
-    var initialSchedule = [];
     var getInitialSchedule = function(){
+      var initialSchedule = [];
       if(_.isEmpty(initialSchedule)){
         initialSchedule = new Array(24);
         for(var i = 0; i < 24; i++){
@@ -50,7 +50,6 @@ define(['./module'], function (models) {
         _.each(col, function (row, y) {
           if (!_.isEmpty(arr2[x][y])) {
             angular.extend(arr1[x][y], arr2[x][y]);
-            arr1[x][y].id = arr1[x][y].id + arr2[x][y].color;
           }
         });
       });
@@ -180,14 +179,13 @@ define(['./module'], function (models) {
           parsed = true;
         }
 
-        //var groupsT = transpose(that.groups);
       };
 
       var draw = function () {
 
         if (that.url === '') {
           generator.draw(context, that.groups, 1, 1, 0.5);
-          that.url = canvas.toDataURL()
+          that.url = canvas.toDataURL();
           return that.url;
         } else {
           return that.url;
