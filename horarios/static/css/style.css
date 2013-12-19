@@ -74,3 +74,49 @@
 .busy{
   content: "ocupado";
 }
+.animate-enter-setup, 
+.animate-leave-setup { 
+    -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    position: relative;
+    display: block;
+} 
+
+.animate-leave-setup.animate-leave-active,
+.animate-enter-setup {
+    -webkit-transform: rotateX(-180deg) translatez(30px);
+    -moz-transform: rotateX(-180deg) translatez(30px);
+    -ms-transform: rotateX(-180deg) translatez(30px);
+    -o-transform: rotateX(-180deg) translatez(30px);
+    transform: rotateX(-180deg) translatez(30px);
+    opacity: 0;
+    height: 0px;
+}        
+
+.animate-enter-setup.animate-enter-active,
+.animate-leave-setup {
+    -webkit-transform: rotateX(0deg) translatez(30px);
+    -moz-transform: rotateX(0deg) translatez(30px);
+    -ms-transform: rotateX(0deg) translatez(30px);
+    -o-transform: rotateX(0deg) translatez(30px);
+    transform: rotateX(0deg) translatez(30px);
+    opacity: 1;
+    height: 30px;
+}
+.teacher-heading {
+  padding: 10px 15px;
+  border-bottom: 0;
+  color: #333;
+  background-color: #e5e5e5;
+  border-color: #ddd;
+}
+.group-heading {
+  padding: 10px 15px;
+  border-bottom: 1px;
+  color: #222;
+  background-color: #fdfdfd;
+  border-color: #ddd;
+}
