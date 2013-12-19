@@ -1,11 +1,13 @@
 <div class="panel panel-default" ng-controller="ScheduleDetailCtrl">
-    <div class="panel-heading"><a href="api/v1.0/schedule/<query>/{{schedule.index}}/ics"> horario {{ schedule.index + 1 }} </a>
-        <button type="button" class="btn btn-xs btn-primary pull-right" ng-class="{'btn-danger': busySelect}" ng-model="busySelect" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
-            Horas ocupadas  <i class="fa fa-minus-circle"></i>
+    <div class="panel-heading"><a href="api/v1.0/schedule/<query>/{{ schedule.index }}/ics"> horario
+        {{ schedule.index + 1 }} </a>
+        <button type="button" class="btn btn-xs btn-primary pull-right" ng-class="{'btn-danger': busySelect}"
+                ng-model="busySelect" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+            Horas ocupadas <i class="fa fa-minus-circle"></i>
         </button>
     </div>
 
-    <table class="table table-bordered table-condensed">
+    <table class="table table-bordered table-condensed" ng-show="!busySelect">
         <thead>
         <tr class="text-center">
             <th class="text-center">hora</th>
@@ -15,27 +17,39 @@
         <tbody>
         <tr ng-repeat="row in schedule.rows" ng-show="showRow($index)">
             <th>{{ hours[$index] }}</th>
-            <td ng-repeat="cell in row track by $index"
+            <td ng-repeat="cell in row track by cell.id"
                 ng-class="{ busy: busy[$parent.$index][$index] }"
                 class="text-center {{ busySelect ? '' : cell.color }}">
-                <span ng-show="!busySelect">
                   <em>
                       <span ng-show="busy[$parent.$index][$index]"> Ocupado <i class="fa fa-minus-circle"></i></span>
                       <!-- TODO: cambiar esto cuando se autogeneren los horarios -->
-                      <span ng-show="!busy[$parent.$index][$index]" tooltip="{{ cell.tooltip || 'ocupado' }}">{{ cell.name }}</span>
+                      <span ng-show="!busy[$parent.$index][$index]"
+                            tooltip="{{ cell.tooltip || 'ocupado' }}">{{ cell.name }}</span>
                   </em>
-                </span>
-
-
-
-
-                <a ng-click="toggleRow($parent.$index, $index)" ng-show="busySelect">
-                    <span ng-show="busy[$parent.$index][$index]">Ocupado <i class="fa fa-minus-circle"></i></span>
-                    <span ng-show="!busy[$parent.$index][$index]">Libre <i class="fa fa-check"></i></span>
-                </a>
             </td>
         </tr>
         </tbody>
     </table>
-
+    <table class="table table-bordered table-condensed" ng-show="busySelect">
+        <thead>
+        <tr class="text-center">
+            <th class="text-center">hora</th>
+            <th class="text-center" ng-repeat="day in daysOfWeek">{{ day }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in schedule.rows" ng-show="showRow($index)">
+            <th>{{ hours[$index] }}</th>
+            <td ng-repeat="cell in row track by cell.id"
+                ng-class="{ busy: busy[$parent.$index][$index] }"
+                class="text-center {{ busySelect ? '' : cell.color }}"
+                ng-click="toggleRow($parent.$index, $index)">
+                <span>
+                    <span ng-show="busy[$parent.$index][$index]">Ocupado <i class="fa fa-minus-circle"></i></span>
+                    <span ng-show="!busy[$parent.$index][$index]">Libre <i class="fa fa-check"></i></span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
