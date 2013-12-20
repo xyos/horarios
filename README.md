@@ -20,3 +20,4 @@ clone in git
     python manage.py syncsia
     python manage.py runserver
 
+for stylesheet development sass 3.3 is required (gem install sass --pre)
