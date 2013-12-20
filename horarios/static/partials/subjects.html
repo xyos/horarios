@@ -12,7 +12,7 @@
           ng-init="subject.toggle=false">
           <b>{{subject.name | lowercase}}</b> {{ subject.code }}
         </span>
-        <button class="close" tooltip="Eliminar materia" ng-click="removeSubject(subject.code)">×</button>
+        <button class="close" tooltip="Eliminar materia" ng-click="removeSubject(subject.code)"><i class="fa fa-times"></i></button>
       </div>
       <div class="subject-body" ng-animate="'animate'" ng-show="subject.toggle">
         <div class="teacher-group" ng-repeat="teacher in subject.teachers">

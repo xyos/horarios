@@ -12,7 +12,6 @@ define(['./module'], function (controllers) {
     $scope.busy = [];
     $scope.busySelect = false;
     $scope.$watch('busySelect', function(value){
-      console.log(value);
       if(!value){
         ScheduleService.setBusy($scope.busy);
         $scope.$emit('scheduleChange', SubjectService.getQuery());

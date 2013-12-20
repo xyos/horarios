@@ -7,8 +7,8 @@
 define(['./module'], function (models) {
   models.factory('Schedule', function ($http, SubjectService) {
     var HEADING_ONE = Math.pow(2, 25);
+    var initialSchedule = [];
     var getInitialSchedule = function(){
-      var initialSchedule = [];
       if(_.isEmpty(initialSchedule)){
         initialSchedule = new Array(24);
         for(var i = 0; i < 24; i++){
@@ -48,12 +48,10 @@ define(['./module'], function (models) {
     var sumMatrix = function (arr1, arr2) {
       _.each(arr1, function (col, x) {
         _.each(col, function (row, y) {
-          if (!_.isEmpty(arr2[x][y])) {
-            angular.extend(arr1[x][y], arr2[x][y]);
-          }
+          angular.extend(arr2[x][y], arr1[x][y]);
         });
       });
-      return arr1;
+      return arr2;
     };
 
     function ScheduleThumbnail(w, h) {
@@ -173,7 +171,7 @@ define(['./module'], function (models) {
             var gClass = (_.isUndefined(group.color)) ? '' : group.color;
             var gTooltip = SubjectService.getTooltip(group.subject, group.code);
             var schedT = transpose(group.schedule, {name: gName, color: gClass, tooltip: gTooltip});
-            scheduleMatrix = sumMatrix(scheduleMatrix, schedT);
+            scheduleMatrix = sumMatrix(schedT, scheduleMatrix);
           });
           that.rows = scheduleMatrix;
           parsed = true;

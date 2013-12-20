@@ -41,8 +41,6 @@ define(['./module'],function (services){
       _.forEach(days,function(day){
         query += parseInt(day.split('').reverse().join(''), 2) + ',';
       });
-      console.log(query);
-      console.log(days);
       return query.substring(0, query.length - 1);
     };
     return {
