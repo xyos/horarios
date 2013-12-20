@@ -10,7 +10,7 @@
           tooltip="Haga click para expandir"
           ng-click="subject.toggle = !subject.toggle"
           ng-init="subject.toggle=false">
-          <b>{{subject.name | lowercase}}</b> {{ subject.code }}
+          <b>{{subject.name | humanize}}</b> {{ subject.code }}
         </span>
         <button class="close" tooltip="Eliminar materia" ng-click="removeSubject(subject.code)"><i class="fa fa-times"></i></button>
       </div>
@@ -22,7 +22,7 @@
               tooltip="Haga click para ver los grupos"
               ng-click="teacher.toggle = !teacher.toggle"
               ng-init ="teacher.toggle=false">
-              {{ teacher.name | lowercase }}
+              {{ teacher.name | humanize }}
             </span>
           </div>
           <div class="teacher-body" ng-show="teacher.toggle" ng-animate="'animate'">
