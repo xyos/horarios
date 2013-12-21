@@ -4,6 +4,7 @@
   color: #c0392b;
 }
 
+
 .schedule-list {
   margin-left: 0px;
   margin-right: 0px;
@@ -108,10 +109,14 @@
 .teacher-heading {
   padding: 10px 15px;
   border-bottom: 0;
-  color: #333;
-  background-color: #e5e5e5;
-  border-color: #ddd;
-
+  color: #222;
+  background-color: #DDD;
+  border-color: #777;
+  border-bottom: 1px;
+  &:hover {
+    background-color: #AAA;
+    cursor: pointer;
+  }
 }
 
 .group-heading {

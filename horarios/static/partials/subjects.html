@@ -4,11 +4,10 @@
   <img src="static/img/loading.gif" ng-show="!!isLoading"/>
   <div class="panel-group">
     <div class="panel panel-default" ng-animate="'animate'" ng-repeat="subject in subjects">
-      <div class="{{ subject.color }} panel-heading color-panel">
+      <div class="{{ subject.color }} panel-heading color-panel" ng-click="subject.toggle = !subject.toggle">
         <input type="checkbox" ng-model="subject.isChecked" ng-checked="true" ng-change="checkChange(subject.teachers,subject.isChecked)">
         <span
           tooltip="Haga click para expandir"
-          ng-click="subject.toggle = !subject.toggle"
           ng-init="subject.toggle=false">
           <b>{{subject.name | humanize}}</b> {{ subject.code }}
         </span>
@@ -16,11 +15,10 @@
       </div>
       <div class="subject-body" ng-animate="'animate'" ng-show="subject.toggle">
         <div class="teacher-group" ng-repeat="teacher in subject.teachers">
-          <div class="teacher-heading">
+          <div class="teacher-heading" ng-click="teacher.toggle = !teacher.toggle">
             <input type="checkbox" ng-checked="true" ng-model="teacher.isChecked" ng-change="checkChange(teacher.groups,teacher.isChecked)">
             <span
               tooltip="Haga click para ver los grupos"
-              ng-click="teacher.toggle = !teacher.toggle"
               ng-init ="teacher.toggle=false">
               {{ teacher.name | humanize }}
             </span>

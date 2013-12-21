@@ -2,101 +2,181 @@
   background-color: #1abc9c !important;
   fill: #1abc9c;
   color: #FFF; }
+  .turquoise:hover {
+    background-color: rgba(26, 188, 156, 0.8) !important;
+    fill: rgba(26, 188, 156, 0.8);
+    cursor: pointer; }
 
 .emerland {
   background-color: #2ecc71 !important;
   fill: #2ecc71;
   color: #FFF; }
+  .emerland:hover {
+    background-color: rgba(46, 204, 113, 0.8) !important;
+    fill: rgba(46, 204, 113, 0.8);
+    cursor: pointer; }
 
 .peter-river {
   background-color: #3498db !important;
   fill: #3498db;
   color: #FFF; }
+  .peter-river:hover {
+    background-color: rgba(52, 152, 219, 0.8) !important;
+    fill: rgba(52, 152, 219, 0.8);
+    cursor: pointer; }
 
 .amethyst {
-  background-color: amethyst !important;
-  fill: amethyst;
+  background-color: #9b59b6 !important;
+  fill: #9b59b6;
   color: #FFF; }
+  .amethyst:hover {
+    background-color: rgba(155, 89, 182, 0.8) !important;
+    fill: rgba(155, 89, 182, 0.8);
+    cursor: pointer; }
 
 .wet-asphalt {
   background-color: #34495e !important;
   fill: #34495e;
   color: #FFF; }
+  .wet-asphalt:hover {
+    background-color: rgba(52, 73, 94, 0.8) !important;
+    fill: rgba(52, 73, 94, 0.8);
+    cursor: pointer; }
 
 .green-sea {
   background-color: #16a085 !important;
   fill: #16a085;
   color: #FFF; }
+  .green-sea:hover {
+    background-color: rgba(22, 160, 133, 0.8) !important;
+    fill: rgba(22, 160, 133, 0.8);
+    cursor: pointer; }
 
 .nephritis {
   background-color: #27ae60 !important;
   fill: #27ae60;
   color: #FFF; }
+  .nephritis:hover {
+    background-color: rgba(39, 174, 96, 0.8) !important;
+    fill: rgba(39, 174, 96, 0.8);
+    cursor: pointer; }
 
 .belize-hole {
   background-color: #2980b9 !important;
   fill: #2980b9;
   color: #FFF; }
+  .belize-hole:hover {
+    background-color: rgba(41, 128, 185, 0.8) !important;
+    fill: rgba(41, 128, 185, 0.8);
+    cursor: pointer; }
 
 .wisteria {
   background-color: #8e44ad !important;
   fill: #8e44ad;
   color: #FFF; }
+  .wisteria:hover {
+    background-color: rgba(142, 68, 173, 0.8) !important;
+    fill: rgba(142, 68, 173, 0.8);
+    cursor: pointer; }
 
 .midnight-blue {
   background-color: #2c3e50 !important;
   fill: #2c3e50;
   color: #FFF; }
+  .midnight-blue:hover {
+    background-color: rgba(44, 62, 80, 0.8) !important;
+    fill: rgba(44, 62, 80, 0.8);
+    cursor: pointer; }
 
 .sun-flower {
   background-color: #f1c40f !important;
   fill: #f1c40f;
   color: #FFF; }
+  .sun-flower:hover {
+    background-color: rgba(241, 196, 15, 0.8) !important;
+    fill: rgba(241, 196, 15, 0.8);
+    cursor: pointer; }
 
 .carrot {
   background-color: #e67e22 !important;
   fill: #e67e22;
   color: #FFF; }
+  .carrot:hover {
+    background-color: rgba(230, 126, 34, 0.8) !important;
+    fill: rgba(230, 126, 34, 0.8);
+    cursor: pointer; }
 
 .alizarin {
   background-color: #e74c3c !important;
   fill: #e74c3c;
   color: #FFF; }
+  .alizarin:hover {
+    background-color: rgba(231, 76, 60, 0.8) !important;
+    fill: rgba(231, 76, 60, 0.8);
+    cursor: pointer; }
 
 .clouds {
   background-color: #ecf0f1 !important;
   fill: #ecf0f1;
   color: #FFF; }
+  .clouds:hover {
+    background-color: rgba(236, 240, 241, 0.8) !important;
+    fill: rgba(236, 240, 241, 0.8);
+    cursor: pointer; }
 
 .concrete {
   background-color: #95a5a6 !important;
   fill: #95a5a6;
   color: #FFF; }
+  .concrete:hover {
+    background-color: rgba(149, 165, 166, 0.8) !important;
+    fill: rgba(149, 165, 166, 0.8);
+    cursor: pointer; }
 
 .orange {
   background-color: #f39c12 !important;
   fill: #f39c12;
   color: #FFF; }
+  .orange:hover {
+    background-color: rgba(243, 156, 18, 0.8) !important;
+    fill: rgba(243, 156, 18, 0.8);
+    cursor: pointer; }
 
 .pumpkin {
   background-color: #d35400 !important;
   fill: #d35400;
   color: #FFF; }
+  .pumpkin:hover {
+    background-color: rgba(211, 84, 0, 0.8) !important;
+    fill: rgba(211, 84, 0, 0.8);
+    cursor: pointer; }
 
 .pomegranate {
   background-color: #c0392b !important;
   fill: #c0392b;
   color: #FFF; }
+  .pomegranate:hover {
+    background-color: rgba(192, 57, 43, 0.8) !important;
+    fill: rgba(192, 57, 43, 0.8);
+    cursor: pointer; }
 
 .silver {
   background-color: #bdc3c7 !important;
   fill: #bdc3c7;
   color: #FFF; }
+  .silver:hover {
+    background-color: rgba(189, 195, 199, 0.8) !important;
+    fill: rgba(189, 195, 199, 0.8);
+    cursor: pointer; }
 
 .asbestos {
   background-color: #7f8c8d !important;
   fill: #7f8c8d;
   color: #FFF; }
+  .asbestos:hover {
+    background-color: rgba(127, 140, 141, 0.8) !important;
+    fill: rgba(127, 140, 141, 0.8);
+    cursor: pointer; }
 
 .busy {
   color: #c0392b; }
@@ -183,9 +263,13 @@
 .teacher-heading {
   padding: 10px 15px;
   border-bottom: 0;
-  color: #333;
-  background-color: #e5e5e5;
-  border-color: #ddd; }
+  color: #222;
+  background-color: #DDD;
+  border-color: #777;
+  border-bottom: 1px; }
+  .teacher-heading:hover {
+    background-color: #AAA;
+    cursor: pointer; }
 
 .group-heading {
   padding: 10px 15px;
