@@ -48,7 +48,7 @@ define(['./module'],function (services){
       schedule.parseRows();
       for(var i = 0; i < activeSchedule.rows.length; i++){
         for(var j = 0; j < activeSchedule.rows[i].length; j++){
-          if(activeSchedule.rows[i][j].name !== schedule.rows[i][j].name){
+          if(activeSchedule.rows[i][j].code !== schedule.rows[i][j].code){
             activeSchedule.rows[i][j] = schedule.rows[i][j];
           }
         }

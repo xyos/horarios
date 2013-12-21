@@ -169,8 +169,9 @@ define(['./module'], function (models) {
           _.each(that.groups, function (group) {
             var gName = (_.isUndefined(group.subject)) ? '' : SubjectService.getSubjectSimplifiedName(group.subject) + '-' + group.code;
             var gClass = (_.isUndefined(group.color)) ? '' : group.color;
+            var gCode = (_.isUndefined(group.subject)) ? '' : group.subject;
             var gTooltip = SubjectService.getTooltip(group.subject, group.code);
-            var schedT = transpose(group.schedule, {name: gName, color: gClass, tooltip: gTooltip});
+            var schedT = transpose(group.schedule, {name: gName, color: gClass, tooltip: gTooltip, code: gCode});
             scheduleMatrix = sumMatrix(schedT, scheduleMatrix);
           });
           that.rows = scheduleMatrix;
