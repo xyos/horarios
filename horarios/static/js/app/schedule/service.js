@@ -43,12 +43,27 @@ define(['./module'],function (services){
       });
       return query.substring(0, query.length - 1);
     };
+
+    var mergeSchedule = function(schedule) {
+      schedule.parseRows();
+      for(var i = 0; i < activeSchedule.rows.length; i++){
+        for(var j = 0; j < activeSchedule.rows[i].length; j++){
+          if(activeSchedule.rows[i][j].name !== schedule.rows[i][j].name){
+            activeSchedule.rows[i][j] = schedule.rows[i][j];
+          }
+        }
+      }
+      //activeSchedule.rows = schedule.rows;
+      activeSchedule.index = schedule.index;
+      console.log(schedule);
+      return schedule;
+    };
     return {
       getActive: function(){
         return activeSchedule;
       },
       setActive: function(index){
-        activeSchedule = schedules[index];
+        mergeSchedule(schedules[index]);
       },
       reset: reset,
       fetch: function(query){
