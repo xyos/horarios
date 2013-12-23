@@ -26,6 +26,7 @@ define(['./module'], function (models) {
      * ------------------
      */
     var Subject = function(data) {
+      // preloads the subject attributes
       angular.extend(this,{
         code: null,
         name: '',

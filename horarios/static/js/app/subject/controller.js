@@ -4,7 +4,7 @@
 */
 define(['./module'], function (controllers) {
   'use strict';
-  controllers.controller('SubjectCtrl', function ($scope,SubjectService) {
+  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService) {
     /*
      * lists all the currently selected subjects
      */
@@ -51,13 +51,14 @@ define(['./module'], function (controllers) {
      * toggles the group and emits the scheduleChange event
      */
     var emit = function() {
-      $scope.$emit('scheduleChange', SubjectService.getQuery());
+      ScheduleService.setSubjectQuery(SubjectService.getQuery());
+      $scope.$emit('scheduleChange');
     };
     /*
      * Formats the input on the typeahead
      */
     $scope.formatInput = function(model){
-          return "";
+          return '';
     }
     $scope.changeGroup = function(){
       var throttledEmit = _.throttle(emit, 1000, { 'leading': false, 'trailing': true });

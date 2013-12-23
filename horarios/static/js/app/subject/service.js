@@ -87,10 +87,9 @@ define(['./module'],function (services){
       },
       getSubjectSimplifiedName: function(subjectCode){
 
-        console.log(getSubject(subjectCode).name);
         return getSubject(subjectCode).name
           .toLowerCase()
-          .replace(/(?!\b\w)([a-z]*)((\b )|\.|$)/g, "")
+          .replace(/(?!\b\w)([a-z]*)((\b )|\.|$)/g, '')
           .toUpperCase();
       },
       autoComplete : function(name){

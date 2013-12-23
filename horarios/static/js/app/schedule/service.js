@@ -43,7 +43,10 @@ define(['./module'],function (services){
       });
       return query.substring(0, query.length - 1);
     };
-
+    var subjectQuery = '';
+    var getScheduleQuery = function(){
+      return '/api/v1.0/schedule/subjects=' + subjectQuery + '&busy=' + busyQuery();
+    };
     var mergeSchedule = function(schedule) {
       schedule.parseRows();
       for(var i = 0; i < activeSchedule.rows.length; i++){
@@ -53,22 +56,25 @@ define(['./module'],function (services){
           }
         }
       }
-      //activeSchedule.rows = schedule.rows;
       activeSchedule.index = schedule.index;
-      console.log(schedule);
       return schedule;
     };
+
     return {
       getActive: function(){
         return activeSchedule;
       },
+      setSubjectQuery: function(query){
+        subjectQuery = query;
+      },
+      getQuery: getScheduleQuery,
       setActive: function(index){
         mergeSchedule(schedules[index]);
       },
       reset: reset,
-      fetch: function(query){
+      fetch: function(){
         schedules = [];
-        return $http.get('/api/v1.0/schedule/subjects=' + query + '&busy=' + busyQuery())
+        return $http.get(getScheduleQuery())
         .then(function(response){
           if(_.isEmpty(response.data)){
             schedules.push(initialSchedule);
