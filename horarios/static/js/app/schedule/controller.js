@@ -10,6 +10,11 @@ define(['./module'], function (controllers) {
     $scope.hours = [];
     $scope.scheduleNumber = ScheduleService.getActive().index;
     $scope.busy = [];
+    $scope.query = '';
+    $scope.$watch('ScheduleService.getQuery()', function (newVal) {
+      console.log(newVal);
+      $scope.query = newVal;
+    });
     $scope.busySelect = false;
     $scope.$watch('busySelect', function (value) {
       if (!value) {
@@ -23,7 +28,7 @@ define(['./module'], function (controllers) {
     }
 
     $scope.schedule = ScheduleService.getActive();
-    $scope.$watch('ScheduleService.getActive()', function (newVal, oldVal) {
+    $scope.$watch('ScheduleService.getActive()', function (newVal) {
       $scope.schedules = newVal;
     });
     /*
@@ -54,6 +59,13 @@ define(['./module'], function (controllers) {
         $scope.busy[row][col] = !$scope.busy[row][col];
         $scope.$emit('activeScheduleChange');
       }
+    };
+    /*
+     * Loads the calender on *.ics format
+     */
+    $scope.loadCalendar = function(index) {
+      window.location = 'api/v1.0/schedule/' +
+        ScheduleService.getQuery().replace('/api/v1.0/schedule/', '') + '/0/ics';
     };
 
   });
@@ -95,7 +107,6 @@ define(['./module'], function (controllers) {
      */
     var lastQuery = '';
     $rootScope.$on('scheduleChange', function (event, query) {
-      console.log(ScheduleService.getQuery());
       if (ScheduleService.getQuery() !== lastQuery) {
         ScheduleService.fetch(query).then(function () {
           $scope.schedules = ScheduleService.getList();

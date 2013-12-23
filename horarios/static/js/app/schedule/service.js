@@ -67,7 +67,9 @@ define(['./module'],function (services){
       setSubjectQuery: function(query){
         subjectQuery = query;
       },
-      getQuery: getScheduleQuery,
+      getQuery: function(){
+        return getScheduleQuery();
+      },
       setActive: function(index){
         mergeSchedule(schedules[index]);
       },

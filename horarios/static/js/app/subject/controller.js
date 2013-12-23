@@ -57,9 +57,9 @@ define(['./module'], function (controllers) {
     /*
      * Formats the input on the typeahead
      */
-    $scope.formatInput = function(model){
-          return '';
-    }
+    $scope.formatInput = function(){
+      return '';
+    };
     $scope.changeGroup = function(){
       var throttledEmit = _.throttle(emit, 1000, { 'leading': false, 'trailing': true });
       throttledEmit();
