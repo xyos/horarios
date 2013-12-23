@@ -1,7 +1,7 @@
 define(['./module'],function (services){
   'use strict';
   services.service('SubjectService', function($http, $q, Subject, limitToFilter){
-    // we will store and cache the subjects here
+    // stores the subjects here
     var subjects = [];
     // store the colors for reuse on delete
     var assignedColors = {};
@@ -11,6 +11,7 @@ define(['./module'],function (services){
       'sun-flower', 'carrot', 'alizarin', 'concrete', 'orange',
       'pumpkin', 'pomegranate', 'asbestos'
     ];
+    // picks a random color from unused colors
     var getColor = function(code){
       if(assignedColors[code] === undefined){
         var rand = Math.floor(Math.random() * colors.length);
@@ -20,10 +21,12 @@ define(['./module'],function (services){
       }
       return assignedColors[code];
     };
+    // returns a color to the avalaible colors 
     var freeColor = function(code){
       colors.push(assignedColors[code]);
       delete assignedColors[code];
     };
+    // returns a subject from subjects array by code
     var getSubject = function(code){
       var search = subjects.filter(function(subject){
         return parseInt(subject.code) === parseInt(code);
@@ -85,12 +88,12 @@ define(['./module'],function (services){
       getSubjectSimplifiedName: function(subjectCode){
 
         var subject = getSubject(subjectCode);
-        var name = subject.name.split(' ')
-        var ret = ""
+        var name = subject.name.split(' ');
+        var ret = '';
         for(var i in name){
-            if(name[i].length > 3){
-                ret += name[i].charAt(0).toUpperCase()
-            }
+          if(name[i].length > 3){
+            ret += name[i].charAt(0).toUpperCase();
+          }
         }
         return ret;
       },

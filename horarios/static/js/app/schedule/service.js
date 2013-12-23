@@ -71,7 +71,7 @@ define(['./module'],function (services){
         return $http.get('/api/v1.0/schedule/subjects=' + query + '&busy=' + busyQuery())
         .then(function(response){
           if(_.isEmpty(response.data)){
-              schedules.push(initialSchedule);
+            schedules.push(initialSchedule);
           }
           response.data.forEach(function(sched,index){
 
