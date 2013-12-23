@@ -21,7 +21,7 @@ define(['./module'],function (services){
       }
       return assignedColors[code];
     };
-    // returns a color to the avalaible colors 
+    // returns a color to the avalaible colors
     var freeColor = function(code){
       colors.push(assignedColors[code]);
       delete assignedColors[code];
@@ -87,15 +87,11 @@ define(['./module'],function (services){
       },
       getSubjectSimplifiedName: function(subjectCode){
 
-        var subject = getSubject(subjectCode);
-        var name = subject.name.split(' ');
-        var ret = '';
-        for(var i in name){
-          if(name[i].length > 3){
-            ret += name[i].charAt(0).toUpperCase();
-          }
-        }
-        return ret;
+        console.log(getSubject(subjectCode).name);
+        return getSubject(subjectCode).name
+          .toLowerCase()
+          .replace(/(?!\b\w)([a-z]*)((\b )|\.|$)/g, "")
+          .toUpperCase();
       },
       autoComplete : function(name){
         return $http.get('/api/v1.0/subject/autocomplete/' + name + '/?format=json')
