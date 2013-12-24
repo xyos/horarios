@@ -5,3 +5,4 @@ djangorestframework==2.3.8
 beaker==1.6.4
 icalendar
 pytz
+south

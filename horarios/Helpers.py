@@ -1,4 +1,6 @@
 import json
+import logging
+import httplib
 import urllib2
 from BO import Subject,Group,Schedule
 siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
@@ -29,27 +31,50 @@ class SIA:
     def queryNumSubjectsWithName(this,name,level):
         data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, 1]})
         req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
-        f = urllib2.urlopen(req)
-        result = json.loads(f.read())["result"]["totalAsignaturas"]
-        f.close()
+        try:
+            f = urllib2.urlopen(req)
+            result = json.loads(f.read())["result"]["totalAsignaturas"]
+            f.close()
+        except urllib2.HTTPerror, e:
+            logging.warning('HTTPError = ' + str(e.code))
+        except urllib2.URLError, e:
+            logging.warning('URLError = ' + e.reason)
+        except httplib.HTTPException, e:
+            logging.warn('HTTPException')
         return result
 
     @cache.region('short_term')
     def querySubjectsByName(this,name,level,maxRetrieve):
         data = json.dumps({"method": "buscador.obtenerAsignaturas", "params": [name, level, "", level, "", "", 1, maxRetrieve]})
         req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
-        f = urllib2.urlopen(req)
-        result=json.loads(f.read())
-        f.close()
+        try:
+            f = urllib2.urlopen(req)
+            result = json.loads(f.read())
+            f.close()
+        except urllib2.HTTPerror, e:
+            logging.warning('HTTPError = ' + str(e.code))
+        except urllib2.URLError, e:
+            logging.warning('URLError = ' + e.reason)
+        except httplib.HTTPException, e:
+            logging.warn('HTTPException')
+
         return result["result"]["asignaturas"]["list"]
 
     @cache.region('short_term')
     def queryGroupsBySubjectCode(this,code):
         data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [code, "0"]})
         req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
-        f = urllib2.urlopen(req)
-        result=json.loads(f.read())
-        f.close()
+        try:
+            f = urllib2.urlopen(req)
+            result = json.loads(f.read())
+            f.close()
+        except urllib2.HTTPerror, e:
+            logging.warning('HTTPError = ' + str(e.code))
+        except urllib2.URLError, e:
+            logging.warning('URLError = ' + e.reason)
+        except httplib.HTTPException, e:
+            logging.warn('HTTPException')
+
         return result["result"]["list"]
 
     @cache.region('short_term')
@@ -98,9 +123,9 @@ class DatabaseCreator:
     def getSubjects(self,letters):
 
         def createSubject(subject,groups):
-            print "Processing ", subject.name.encode('ascii','ignore')
+            print "Processing ", subject.name.encode('ascii','ignore'), subject.code
             try:
-                djangoModels.Subject.objects.get(name__exact=subject.name)
+                djangoModels.Subject.objects.get(code__exact=subject.code)
                 print "Skipping already processed ", subject.name.encode('ascii','ignore')
             except Exception:
                 s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits,stype=subject.type)

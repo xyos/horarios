@@ -1,22 +1,24 @@
 import BO as Models
+
+
 class SubjectDao:
     def __init__(self,sia):
         self.sia = sia 
 
-    def getSubjectsByName(self,name,level,maxResults):
-        data = self.sia.querySubjectsByName(name,level,maxResults)
+    def getSubjectsByName(self, name, level, maxResults):
+        data = self.sia.querySubjectsByName(name, level, maxResults)
         result = []
         for i in data:
             result.append(self._createSubject(i))
-        return result;
+        return result
 
-    def _createSubject(this,data):
-        groups=[]
+    def _createSubject(self,data):
+        groups = []
         return Models.Subject(data["nombre"],data["codigo"],data["creditos"],groups,data["tipologia"])
 
-    def getSubjectByName(this,name,level):
-        data = self.sia.querySubjectsByName(name,level,1)[0]
-        return this.createSubject(data);
+    def getSubjectByName(self, name, level):
+        data = self.sia.querySubjectsByName(name, level, 1)[0]
+        return self.createSubject(data)
 
     def getSubjectByCode(this,code):
         raise Exception("Not implemented for SIA DAOs")

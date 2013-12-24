@@ -13,8 +13,8 @@ class SubjectsServices:
     def getSubjectsByName(self,name,level,maxResults=100):
         dao = self.factory.getSubjectDao()
         subjects = dao.getSubjectsByName(name,level,maxResults)
-        for i in range(0,len(subjects)):
-            subjects[i].gropus = self.getGroups(subjects[i].code)
+        # for i in range(0,len(subjects)):
+        #     subjects[i].gropus = self.getGroups(subjects[i].code)
         return subjects
 
     def getSubjectsByCode(self,code):
