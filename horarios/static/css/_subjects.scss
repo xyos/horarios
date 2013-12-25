@@ -1,0 +1,21 @@
+.subject {
+  .subject-header {
+    padding: 5px;
+
+    button.close {
+      background-color: transparent;
+      float: none;
+    }
+    .check, .name, .close {
+      display: inline-block;
+      padding: 3px;
+      margin: 0;
+      border: 0;
+    }
+    .name {
+      margin-top: auto;
+      margin-bottom: auto;
+      width: 70%;
+    }
+  }
+}

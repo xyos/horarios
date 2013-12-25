@@ -178,6 +178,21 @@
     fill: rgba(127, 140, 141, 0.8);
     cursor: pointer; }
 
+.subject .subject-header {
+  padding: 5px; }
+  .subject .subject-header button.close {
+    background-color: transparent;
+    float: none; }
+  .subject .subject-header .check, .subject .subject-header .name, .subject .subject-header .close {
+    display: inline-block;
+    padding: 3px;
+    margin: 0;
+    border: 0; }
+  .subject .subject-header .name {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 70%; }
+
 .busy {
   color: #c0392b; }
 
