@@ -11,7 +11,7 @@ class Teacher(models.Model):
 
 class Profession(models.Model):
     name = models.CharField(max_length=100)
-    code = models.IntegerField(primary_key=True)
+    code = models.CharField(primary_key=True, max_length=20)
 
 class Group(models.Model):
     schedule = models.CommaSeparatedIntegerField(max_length=100)

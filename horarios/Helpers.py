@@ -78,19 +78,32 @@ class SIA:
 
         return result["result"]["list"]
 
+    @staticmethod
     @cache.region('short_term')
-    def queryGroupsProfessions(this,code,group):
+    def queryGroupsProfessions(code,group):
         import re
-        f = urllib2.urlopen("http://www.sia.unal.edu.co/buscador/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
-        html = f.read().decode("ISO-8859-1")
-        f.close()
+        while True:
+            try:
+                f = urllib2.urlopen("http://www.sia.unal.edu.co/buscador/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
+                html = f.read().decode("ISO-8859-1")
+                break
+            except urllib2.URLError, e:
+                if e.code == 403:
+                    pass
+                else:
+                    logging.warning(str(e))
+                    break
+            except Exception, e:
+                logging.warning(str(e))
+                break
+
         relevantSection = re.compile(r'Los planes de estudio para los cuales se ofrece esta asignatura son:</p><div><ul class="modulelist">(.*)</ul></div>').findall(html)
         professions = []
         if (len(relevantSection)>0):
             professionsHtml = re.compile('<li><p>(.*?)</p></li>').findall(relevantSection[0])
             for i in professionsHtml:
                 data = i.split("-")
-                professions.append((int(data[0]),re.compile('<em>(.*)</em>').findall("".join(data[1:]))[0]))
+                professions.append((data[0].strip(),re.compile('<em>(.*)</em>').findall("".join(data[1:]))[0]))
         return professions
 
 class Generator:
