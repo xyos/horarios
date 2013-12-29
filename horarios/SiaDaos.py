@@ -48,12 +48,12 @@ class GroupDao:
         return groups
 
     @staticmethod
-    def getSchedule(self, group):
+    def getSchedule(group):
         scheduleDict = {}
         for day in Models.DAYS:
             if group["horario_" + day.lower()] != "--":
                 scheduleDict[day] = group["horario_" + day.lower()]
-        return self._parseSchedule(scheduleDict)
+        return GroupDao._parseSchedule(scheduleDict)
 
     def getProfessions(self, code, group):
         professions = []
