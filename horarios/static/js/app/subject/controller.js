@@ -4,7 +4,7 @@
 */
 define(['./module'], function (controllers) {
   'use strict';
-  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService) {
+  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService,ngProgress) {
     /*
      * lists all the currently selected subjects
      */
@@ -26,6 +26,7 @@ define(['./module'], function (controllers) {
      */
     $scope.onSelect  = function($item){
       SubjectService.add($item);
+      ngProgress.start();
     };
     /*
      * removes a subject from the selected subjects
@@ -53,6 +54,7 @@ define(['./module'], function (controllers) {
     var emit = function() {
       ScheduleService.setSubjectQuery(SubjectService.getQuery());
       $scope.$emit('scheduleChange');
+      ngProgress.complete();
     };
     /*
      * Formats the input on the typeahead
@@ -60,8 +62,12 @@ define(['./module'], function (controllers) {
     $scope.formatInput = function(){
       return '';
     };
+    /*
+     * checks every 5 seconds for changes if a change is detected it fires
+     * a subject change event
+     */
     $scope.changeGroup = function(){
-      var throttledEmit = _.throttle(emit, 1000, { 'leading': false, 'trailing': true });
+      var throttledEmit = _.throttle(emit, 5000, { 'leading': false, 'trailing': true });
       throttledEmit();
     };
   });

@@ -29,7 +29,7 @@ define(['./module'],function (services){
     // returns a subject from subjects array by code
     var getSubject = function(code){
       var search = subjects.filter(function(subject){
-        return parseInt(subject.code) === parseInt(code);
+        return parseInt(subject.code,10) === parseInt(code,10);
       });
       if (search.length > 0) {
         return search[0];
@@ -70,12 +70,12 @@ define(['./module'],function (services){
         }
       },
       getByCode: function(code){
-        return getSubject(parseInt(code));
+        return getSubject(parseInt(code,10));
       },
       getTooltip: function(subjectCode,groupCode){
 
         var subject = getSubject(subjectCode);
-        var teacherName = "";
+        var teacherName = '';
         _.forEach(subject.teachers,function(teacher){
           _.forEach(teacher.groups,function(group){
             if(group.code === groupCode){
@@ -103,7 +103,7 @@ define(['./module'],function (services){
         subjects.forEach(function(subject){
           var appendOnce = false;
           if ( subject.teachers === null ){
-            return "";
+            return '';
           } else {
             subject.teachers.forEach(function(teacher){
               teacher.groups.forEach(function(group){
@@ -118,7 +118,7 @@ define(['./module'],function (services){
             });
           }
         });
-        if(query.length > 0) query = query.substring(1);
+        if(query.length > 0) {query = query.substring(1);}
         return query;
       }
     };
