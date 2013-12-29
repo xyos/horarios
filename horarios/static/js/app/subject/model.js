@@ -4,7 +4,6 @@
 * Subject model definition
 */
 define(['./module'], function (models) {
-  'use strict';
   /**
    * Creates a new Subject based on subject code
    */

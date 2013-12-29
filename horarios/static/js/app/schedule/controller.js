@@ -69,7 +69,7 @@ define(['./module'], function (controllers) {
     };
 
   });
-  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService) {
+  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService, SubjectService) {
     /*
      * retrieves the schedules from the service
      */
@@ -107,6 +107,7 @@ define(['./module'], function (controllers) {
      */
     var lastQuery = '';
     $rootScope.$on('scheduleChange', function (event, query) {
+      ScheduleService.setSubjectQuery(SubjectService.getQuery());
       console.log('event fired');
       if (ScheduleService.getQuery() !== lastQuery) {
         ScheduleService.fetch(query).then(function () {
