@@ -69,7 +69,7 @@ define(['./module'], function (controllers) {
     };
 
   });
-  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService, SubjectService) {
+  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService, SubjectService, ngProgress) {
     /*
      * retrieves the schedules from the service
      */
@@ -115,6 +115,7 @@ define(['./module'], function (controllers) {
           $scope.index = 0;
           $scope.currentPage = 0;
           $scope.$emit('activeScheduleChange');
+          ngProgress.complete();
           lastQuery = ScheduleService.getQuery();
         });
       }
