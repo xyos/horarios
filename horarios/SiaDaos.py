@@ -3,16 +3,17 @@ import BO as Models
 
 class SubjectDao:
     def __init__(self,sia):
-        self.sia = sia 
+        self.sia = sia
 
     def getSubjectsByName(self, name, level, maxResults):
         data = self.sia.querySubjectsByName(name, level, maxResults)
         result = []
         for i in data:
-            result.append(self._createSubject(i))
+            result.append(self.createSubject(i))
         return result
 
-    def _createSubject(self,data):
+    @staticmethod
+    def createSubject(data):
         groups = []
         return Models.Subject(data["nombre"],data["codigo"],data["creditos"],groups,data["tipologia"])
 
@@ -32,8 +33,8 @@ class GroupDao:
         groups = []
         groupsData = self.sia.queryGroupsBySubjectCode(code)
         for group in groupsData:
-            schedule = self.getSchedule(groupsData)
-            professions = self.getProfessions(code,group["codigo"])
+            schedule = self.getSchedule(group)
+            professions = self.getProfessions(code, group["codigo"])
             groups.append(
                 Models.Group(group["codigo"],
                              group["nombredocente"],
