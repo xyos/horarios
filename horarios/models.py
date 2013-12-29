@@ -7,7 +7,7 @@ class Subject(models.Model):
     stype = models.CharField(max_length=10)
 
 class Teacher(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
 class Profession(models.Model):
     name = models.CharField(max_length=100)
