@@ -108,7 +108,6 @@ define(['./module'], function (controllers) {
     var lastQuery = '';
     $rootScope.$on('scheduleChange', function (event, query) {
       ScheduleService.setSubjectQuery(SubjectService.getQuery());
-      console.log('event fired');
       if (ScheduleService.getQuery() !== lastQuery) {
         ScheduleService.fetch(query).then(function () {
           $scope.schedules = ScheduleService.getList();
