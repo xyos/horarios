@@ -2,6 +2,7 @@ import json
 import logging
 import httplib
 import urllib2
+from django.core.exceptions import ValidationError
 from BO import Subject,Group,Schedule
 siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
 siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
@@ -117,35 +118,54 @@ class Generator:
 
 
 class DatabaseCreator:
-    def __init__(self,sia):
+
+    def __init__(self, sia):
         self.sia = sia
 
     def getSubjects(self,letters):
 
-        def createSubject(subject,groups):
+        def createSubject(subject, groups):
             print "Processing ", subject.name.encode('ascii','ignore'), subject.code
             try:
                 djangoModels.Subject.objects.get(code__exact=subject.code)
                 print "Skipping already processed ", subject.name.encode('ascii','ignore')
             except Exception:
-                s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits,stype=subject.type)
-                for i in groups:
-                    t,created = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
-                    g = djangoModels.Group.objects.create(teacher=t,subject=s,code=i.code,schedule=i.schedule)
-                    g.save()
-                    for j in i.professions:
-                        p,created = djangoModels.Profession.objects.get_or_create(code=j.code,name=j.name.strip())
+                s = djangoModels.Subject.objects.create(
+                    name=subject.name,
+                    code=subject.code,
+                    credits=subject.credits,
+                    stype=subject.type
+                )
+
+                for j in groups:
+                    t, created = djangoModels.Teacher.objects.get_or_create(name=j.teacher)
+                    g = djangoModels.Group.objects.create(
+                        teacher=t,
+                        subject=s,
+                        code=j.code,
+                        schedule=j.schedule
+                    )
+                    try:
+                        g.full_clean()
+                        g.save()
+                    except ValidationError as e:
+                        logging.warning('Validation error' + e.message)
+
+                    for j in j.professions:
+                        p, created = djangoModels.Profession.objects.get_or_create(code=j.code, name=j.name.strip())
                         g.professions.add(p)
-                    g.save()
-
-
+                    try:
+                        g.full_clean()
+                        g.save()
+                    except ValidationError as e:
+                        logging.warning('Validation error' + e.message)
 
         dao = SiaDaos.SubjectDao(self.sia)
         gDao = SiaDaos.GroupDao(self.sia)
         for j in letters:
-            print "Synchronizing letter",j
-            for i in dao.getSubjectsByName(j,"",1000000):
-                createSubject(i,gDao.getGroupsBySubjectCode(i.code))
+            print "Synchronizing letter", j
+            for i in dao.getSubjectsByName(j, "", 1000000):
+                createSubject(i, gDao.getGroupsBySubjectCode(i.code))
 
 def syncsia():
     c = DatabaseCreator(SIA())
