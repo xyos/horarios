@@ -15,7 +15,7 @@ define(['./module'], function (models) {
     var getTeachers = function(code){
       return $http.get('/api/v1.0/subject/' + code +'/groups/')
       .success(function(result){
-        $rootScope.$emit('scheduleChange');
+        $rootScope.$broadcast('scheduleChange');
         return result;
       })
       .error(function(){
