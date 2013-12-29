@@ -54,7 +54,11 @@ define(['./module'], function (controllers) {
     var emit = function() {
       ScheduleService.setSubjectQuery(SubjectService.getQuery());
       $scope.$emit('scheduleChange');
-      ngProgress.set(50);
+      if(ngProgress.status() === 0){
+      } else if(ngProgress.status() < 50){
+        ngProgress.set(50);
+      }
+
     };
     /*
      * Formats the input on the typeahead
