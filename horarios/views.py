@@ -3,13 +3,10 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.gzip import gzip_page
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
-@gzip_page
 def home(request):
     """
     this will render the home page
@@ -48,7 +45,7 @@ def do_deploy(request):
 
     return HttpResponse(simplejson.dumps(out_json), content_type='application/json')
 
-@gzip_page
+
 @csrf_exempt
 def random_schedules(request):
     """
@@ -73,7 +70,6 @@ def random_schedules(request):
     serializer = ScheduleSerializer()
     return HttpResponse(serializer.serialize(s[0]), content_type='application/json')
 
-@gzip_page
 @csrf_exempt
 def autocomplete_subject(request):
     """
@@ -98,7 +94,7 @@ def autocomplete_subject(request):
     return HttpResponse(serializer.serialize(subjects), content_type='application/json')
 
 
-@gzip_page
+
 class RandomScheduleView(APIView):
     def get(self, request, *args, **kw):
         import facades
@@ -114,7 +110,6 @@ class RandomScheduleView(APIView):
         serializer = ScheduleSerializer()
         return Response(serializer.serialize(s), status = status.HTTP_200_OK)
 
-@gzip_page
 class SubjectAutocompleteView(APIView):
     def get(self, request, *args , **kw):
         name = kw['name']
@@ -124,7 +119,6 @@ class SubjectAutocompleteView(APIView):
         serializer = SimpleSubjectsSerializer()
         return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
 
-@gzip_page
 class GroupsView(APIView):
     def get(self, request, *args , **kw):
         code = kw['subjectCode']
@@ -134,7 +128,7 @@ class GroupsView(APIView):
         serializer = GroupSerializer()
         return Response(serializer.serialize(groups), status = status.HTTP_200_OK)
 
-@gzip_page
+
 def getScheduleFromQuery(subjects,busy):
 
     def parseSubjects(string):
@@ -163,7 +157,6 @@ def getScheduleFromQuery(subjects,busy):
     import facades
     return facades.getSchedulesByQuery(parseSubjects(subjects),parseBusy(busy));
 
-@gzip_page
 class SchedulesView(APIView):
     def get(self, request, *args , **kw):
         subjects = kw['subjects']
