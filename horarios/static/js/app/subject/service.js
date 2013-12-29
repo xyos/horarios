@@ -53,6 +53,9 @@ define(['./module'],function (services){
           }
         }
       },
+      /*
+       * returns true or false if the subject is new
+       */
       add : function(item){
         /*
          * Searching in the subjects array
@@ -67,6 +70,9 @@ define(['./module'],function (services){
           };
           var subject = new Subject(s);
           subjects.push(subject);
+          return true;
+        } else {
+          return false;
         }
       },
       getByCode: function(code){
