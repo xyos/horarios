@@ -4,6 +4,7 @@ require.config({
     'domReady' : './libs/requirejs-domready/domReady',
     'angular' : './libs/angular/angular',
     'angular-ui-router' : './libs/angular-ui-router/release/angular-ui-router',
+    'ng-progress' : './libs/ngprogress/build/ngProgress.min',
     'angular-bootstrap' : './libs/angular-bootstrap/ui-bootstrap-tpls',
     'lodash' : './libs/lodash/dist/lodash'
 
@@ -19,6 +20,10 @@ require.config({
     'angular-bootstrap' : {
       deps: ['angular'],
       exports: 'angular-bootstrap'
+    },
+    'ng-progress' : {
+      deps: ['angular'],
+      exports: 'ng-progress'
     }
   },
   priority : [
