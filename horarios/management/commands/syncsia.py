@@ -122,6 +122,10 @@ class ThreadGroup(threading.Thread):
                 code=group["codigo"],
                 schedule=GroupDao.getSchedule(group)
             )
+        try:
+            g.save()
+        except Exception, e:
+            self.stderr.write(str(e))
         professions_array = SIA.queryGroupsProfessions(subject.code, group["codigo"])
         for profession in professions_array:
             p, created = Profession.objects.get_or_create(
