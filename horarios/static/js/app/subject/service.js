@@ -96,7 +96,7 @@ define(['./module'],function (services){
         return getSubject(subjectCode).name
           .toLowerCase()
           .replace(/(?!\b\w)([a-z]*)((\b )|\.|$)/g, '')
-          .toUpperCase();
+          .toUpperCase().substring(0,8);
       },
       autoComplete : function(name){
         return $http.get('/api/v1.0/subject/autocomplete/' + name + '/?format=json')
