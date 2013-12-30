@@ -1,8 +1,8 @@
 from django.db import models
 
 class Subject(models.Model):
-    name = models.CharField(max_length=100)
-    code = models.IntegerField()
+    name = models.CharField(max_length=200)
+    code = models.IntegerField(primary_key=True)
     credits = models.IntegerField()
     stype = models.CharField(max_length=10)
 
