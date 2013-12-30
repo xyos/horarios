@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 s.name = subject["nombre"]
                 s.stype = subject["tipologia"]
 
-            except Group.DoesNotExist:
+            except Subject.DoesNotExist:
                 s = Subject(
                     code=subject["codigo"],
                     credits=subject["creditos"],
@@ -115,7 +115,7 @@ class ThreadGroup(threading.Thread):
             g.subject = subject
             g.schedule = GroupDao.getSchedule(group)
 
-        except Subject.DoesNotExist:
+        except Group.DoesNotExist:
             g = Group(
                 teacher=teacher,
                 subject=subject,
