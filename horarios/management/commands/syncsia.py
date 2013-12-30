@@ -116,7 +116,7 @@ class ThreadGroup(threading.Thread):
             g.schedule = GroupDao.getSchedule(group)
 
         except Group.DoesNotExist:
-            g = Group(
+            g = Group.objects.create(
                 teacher=teacher,
                 subject=subject,
                 code=group["codigo"],

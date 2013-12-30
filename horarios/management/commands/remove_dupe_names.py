@@ -9,7 +9,7 @@ import re
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        dupes = Subject.objects.values("name").annotate(count=Count("id")).order_by().filter(count__gt=1)
+        dupes = Subject.objects.values("name").annotate(count=Count("code")).order_by().filter(count__gt=1)
         pattern = re.compile(r' \| ')
         for item in dupes:
             subjects = Subject.objects.filter(name__iexact=item["name"])
