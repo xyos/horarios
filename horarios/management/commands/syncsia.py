@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 s.name = subject["nombre"]
                 s.stype = subject["tipologia"]
 
-            except Subject.DoesNotExist:
+            except Group.DoesNotExist:
                 s = Subject(
                     code=subject["codigo"],
                     credits=subject["creditos"],
