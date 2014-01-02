@@ -49,8 +49,8 @@ define(['./module'],function (services){
     };
     var mergeSchedule = function(schedule) {
       schedule.parseRows();
-      for(var i = 0; i < activeSchedule.rows.length; i++){
-        for(var j = 0; j < activeSchedule.rows[i].length; j++){
+      for(var i = 0, max = activeSchedule.rows.length; i < max ; i++){
+        for(var j = 0, max2 = activeSchedule.rows[i].length ; j < max2; j++){
           if(activeSchedule.rows[i][j].code !== schedule.rows[i][j].code){
             activeSchedule.rows[i][j] = schedule.rows[i][j];
           }
