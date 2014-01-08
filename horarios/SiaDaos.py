@@ -28,6 +28,24 @@ class SubjectDao:
 class GroupDao:
     def __init__(self,sia):
         self.sia = sia 
+
+    def getSimpleGroupsBySubjectCode(self,code):
+        groups = []
+        groupsData = self.sia.queryGroupsBySubjectCode(code)
+        for group in groupsData:
+            schedule = self.getSchedule(group)
+            professions = None
+            groups.append(
+                Models.Group(group["codigo"],
+                             group["nombredocente"],
+                             schedule,
+                             code,
+                             professions,
+                             group["cuposdisponibles"],
+                             group["cupostotal"]
+                )
+            )
+        return groups
     
     def getGroupsBySubjectCode(self,code):
         groups = []

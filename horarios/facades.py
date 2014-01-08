@@ -16,7 +16,7 @@ def getSubjectsByCode(code):
     return subjectsServices.getSubjectsByCode(code)
 
 def getSchedulesByLists(lists,busy=None):
-    #Generating simple scheudles first will fasten the algorithm
+    #Generating simple scheudles first will speedup the algorithm
     lists = sorted(lists, lambda x,y: 1 if len(x)>len(y) else -1 if len(x)<len(y) else 0)
     from Helpers import Generator
     gen =  Generator()
@@ -29,7 +29,7 @@ def getSchedulesByQuery(query,busy=None):
     """
     lists = []
     for subject in query:
-        groups = subjectsServices.getGroups(subject["code"])
+        groups = subjectsServices.getSimpleGroups(subject["code"])
         if(subject["groups"] != None):
             relevantGroups = []
             for g in groups:
@@ -49,4 +49,4 @@ def getSchedulesBySubjectCodes(subjectsCodes,busy=None):
     return getSchedulesByQuery(query,busy)
 
 def getGroupsBySubjectCode(subjectCode):
-    return subjectsServices.getGroups(subjectCode)
+    return subjectsServices.getSimpleGroups(subjectCode)
