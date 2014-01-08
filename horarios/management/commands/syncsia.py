@@ -91,19 +91,22 @@ class ThreadGroup(threading.Thread):
         while True:
             #grabs subject from queue
             subject = self.queue.get()
-            data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [subject.code, 0]})
-            req = urllib2.Request(settings.SIA_URL + "/JSON-RPC", data, {'Content-Type': 'text/plain'})
-            result = Command.open_req(req)
-            if isinstance(result, int):
-                #putting back the subject into the queue if our request is rejected by the server
-                logging.warning("added back " + str(subject.code) + " to queue")
+            try:
+                data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [subject.code, 0]})
+                req = urllib2.Request(settings.SIA_URL + "/JSON-RPC", data, {'Content-Type': 'text/plain'})
+                result = Command.open_req(req)
+                if isinstance(result, int):
+                    #putting back the subject into the queue if our request is rejected by the server
+                    logging.warning("added back " + str(subject.code) + " to queue")
+                    self.queue.put(subject)
+                else:
+                    print "grupos para " + str(subject.code) + " :" + len(result["result"]["list"]).__str__()
+                    result_groups = result["result"]["list"]
+                    for group in result_groups:
+                        self.update_or_create_group(subject, group)
+                    self.queue.task_done()
+            except Exception:
                 self.queue.put(subject)
-            else:
-                print "grupos para " + str(subject.code) + " :" + len(result["result"]["list"]).__str__()
-                result_groups = result["result"]["list"]
-                for group in result_groups:
-                    self.update_or_create_group(subject, group)
-                self.queue.task_done()
 
     def update_or_create_group(self, subject, group):
         teacher, created = Teacher.objects.get_or_create(
