@@ -1,2 +1,4 @@
-libs/
 node_modules/
+libs/
+tmp/
+main-built.js

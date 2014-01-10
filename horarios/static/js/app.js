@@ -3,9 +3,9 @@
  */
 define([
   'angular',
-  'angular-ui-router',
-  'angular-bootstrap',
-  'ng-progress',
+  'uiRouter',
+  'angularBootstrap',
+  'ngProgress',
   './app/subject/index',
   './app/schedule/index'
 ], function(ng) {
