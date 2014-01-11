@@ -1,4 +1,4 @@
-{% verbatim %}
+{% load static from staticfiles %}
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -46,10 +46,9 @@
     <!--states are shown here-->
     <ui-view></ui-view>
     <hr>
-    <script src="/static/js/libs/requirejs/require.js" data-main="/static/js/main.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js" data-main="{% static "js/main-built.js" %}"></script>
     <script>
       window.name = "NG_DEFER_BOOTSTRAP!";
     </script>
 </body>
 </html>
-{% endverbatim %}
