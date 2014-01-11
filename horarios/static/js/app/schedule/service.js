@@ -31,7 +31,7 @@ define(['./module'],function (services){
       var days = [];
       _.forEach(busyRows, function(hour){
         _.forEach(hour, function(day, index){
-          if(_.isUndefined(days[index])){
+          if(angular.isUndefined(days[index])){
             days[index] = day ? '1':'0';
           } else {
             days[index] += day ? '1':'0';

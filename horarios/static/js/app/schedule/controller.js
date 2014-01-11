@@ -82,7 +82,7 @@ define(['./module'], function (controllers) {
     $scope.currentPage = 0;
     $scope.pageSize = 6;
     $scope.numberOfPages = function () {
-      if (_.isUndefined($scope.schedules)) {
+      if (angular.isUndefined($scope.schedules)) {
         return 1;
       }
       return Math.ceil($scope.schedules.length / $scope.pageSize);

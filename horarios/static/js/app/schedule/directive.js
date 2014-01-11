@@ -41,7 +41,7 @@ define(['./module'], function (directives) {
           return r;
         };
         $scope.numberOfPages = function () {
-          if (_.isUndefined($scope.items)) {
+          if (angular.isUndefined($scope.items)) {
             return 1;
           }
           return Math.ceil($scope.items.length / $scope.pageSize);
