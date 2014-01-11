@@ -5,7 +5,8 @@ define([
   'require',
   'angular',
   './app',
-  './app/routes'
+  './app/routes',
+  './app/template'
 ], function(require,ng) {
   'use strict';
   require(['domReady!','lodash'],function (document){

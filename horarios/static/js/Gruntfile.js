@@ -7,6 +7,20 @@ module.exports = function(grunt) {
     clean: {
       build: ['tmp']
     },
+    //adding templates to javascript file
+    ngtemplates:{
+      app: {
+        cwd: '../../',
+        src: 'static/partials/*.html',
+        dest: 'app/template.js',
+        options: {
+          bootstrap: function (module, script) {
+            return 'define(["../app"],function (templates) { "use strict"; templates.run(["$templateCache", function ($templateCache) {' + script + ' }]);});';
+          },
+          prefix: '/'
+        }
+      }
+    },
     // making requirejs concatenate the files
     shell: {
       requirejs : {
@@ -18,13 +32,6 @@ module.exports = function(grunt) {
       main: {
         src : 'tmp/main.js',
         dest : 'tmp/main-annotate.js'
-      }
-    },
-    //adding templates to javascript file
-    ngtemplates:{
-      app: {
-        src: '../partials/*.html',
-        dest: 'tmp/templates.js'
       }
     },
     //concat templates and main file
@@ -52,6 +59,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-templates');
-  grunt.registerTask('default',['clean','shell','ngmin','ngtemplates','concat','uglify']);
+  grunt.registerTask('default',['clean','ngtemplates','shell','ngmin','concat','uglify']);
 }
 
