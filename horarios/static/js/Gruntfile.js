@@ -51,6 +51,16 @@ module.exports = function(grunt) {
           'main-built.js' : ['tmp/main-built.js']
         }
       }
+    },
+    // watch config
+    watch: {
+      app: {
+        files:['**/*.js', '../partials/*.html'],
+        tasks:['default'],
+        options: {
+          spawn: false
+        }
+      }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -59,6 +69,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-templates');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.registerTask('default',['clean','ngtemplates','shell','ngmin','concat','uglify']);
-}
+
+};
 
