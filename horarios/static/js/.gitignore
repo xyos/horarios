@@ -2,3 +2,4 @@ node_modules/
 libs/
 tmp/
 main-built.js
+app/template.js
