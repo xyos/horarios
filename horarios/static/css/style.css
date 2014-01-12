@@ -218,6 +218,12 @@
 .teacher input[type='checkbox']:checked, .subject input[type='checkbox']:checked {
   background: #abd; }
 
+.hour {
+  width: 15%; }
+
+.sched-cell {
+  width: 12%; }
+
 .busy {
   color: #c0392b; }
 

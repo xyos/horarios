@@ -10,16 +10,16 @@
     <table class="table table-bordered table-condensed" ng-show="!busySelect">
         <thead>
         <tr class="text-center">
-            <th class="text-center">hora</th>
-            <th class="text-center" ng-repeat="day in daysOfWeek">{{ day }}</th>
+            <th class="text-center hour">hora</th>
+            <th class="text-center sched-cell" ng-repeat="day in daysOfWeek">{{ day }}</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in schedule.rows" ng-show="showRow($index)">
+        <tr class="sched-cell" ng-repeat="row in schedule.rows" ng-show="showRow($index)">
             <th>{{ hours[$index] }}</th>
             <td ng-repeat="cell in row track by cell.id"
                 ng-class="{ busy: busy[$parent.$index][$index] }"
-                class="text-center {{ busySelect ? '' : cell.color }}">
+                class="sched-cell text-center {{ busySelect ? '' : cell.color }}">
                   <em>
                       <span ng-show="busy[$parent.$index][$index]"> Ocupado <i class="fa fa-minus-circle"></i></span>
                       <!-- TODO: cambiar esto cuando se autogeneren los horarios -->
@@ -33,8 +33,8 @@
     <table class="table table-bordered table-condensed" ng-show="busySelect">
         <thead>
         <tr class="text-center">
-            <th class="text-center">hora</th>
-            <th class="text-center" ng-repeat="day in daysOfWeek">{{ day }}</th>
+            <th class="text-center hour">hora</th>
+            <th class="text-center sched-cell" ng-repeat="day in daysOfWeek">{{ day }}</th>
         </tr>
         </thead>
         <tbody>
@@ -42,7 +42,7 @@
             <th>{{ hours[$index] }}</th>
             <td ng-repeat="cell in row track by cell.id"
                 ng-class="{ busy: busy[$parent.$index][$index] }"
-                class="text-center {{ busySelect ? '' : cell.color }}"
+                class="sched-cell text-center {{ busySelect ? '' : cell.color }}"
                 ng-click="toggleRow($parent.$index, $index)">
                 <span>
                     <span ng-show="busy[$parent.$index][$index]">Ocupado <i class="fa fa-minus-circle"></i></span>
