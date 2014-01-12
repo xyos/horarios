@@ -19,3 +19,36 @@
     }
   }
 }
+.teacher {
+  color: #222;
+  background-color: #DDD;
+  border-color: #777;
+  border-bottom: 1px;
+  &:hover {
+    background-color: #AAA;
+    cursor: pointer;
+  }
+  .teacher-header {
+    .check, .name {
+      display: inline-block;
+      padding: 3px;
+      margin: 0;
+      border: 0;
+    }
+    .check {
+        margin-left: 5px;
+    }
+  }
+}
+.teacher, .subject {
+  input[type='checkbox'] {
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 2px;
+    border: 2px solid #555;
+  }
+  input[type='checkbox']:checked {
+    background: #abd;
+  }
+}

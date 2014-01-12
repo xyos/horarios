@@ -5,7 +5,6 @@
            typeahead="subject.name for subject in autocomplete($viewValue)" typeahead-loading="isLoading">
     <hr>
     <img src="static/img/loading.gif" ng-show="!!isLoading"/>
-
     <div class="subject" ng-repeat="subject in subjects">
         <div class="subject-header {{ subject.color }}">
             <div class="check">
@@ -30,15 +29,18 @@
         </div>
         <div class="subject-body" ng-animate="'animate'" ng-show="subject.toggle">
 
-            <div class="teacher-group" ng-repeat="teacher in subject.teachers">
-                <div class="teacher-heading" ng-click="teacher.toggle = !teacher.toggle">
-                    <input type="checkbox" ng-checked="true" ng-model="teacher.isChecked"
+            <div class="teacher" ng-repeat="teacher in subject.teachers">
+                <div class="teacher-header">
+                    <div class="check">
+                        <input type="checkbox"
+                           ng-checked="true"
+                           ng-model="teacher.isChecked"
                            ng-change="checkChange(teacher.groups,teacher.isChecked)">
-            <span
-                    tooltip="Haga click para ver los grupos"
-                    ng-init="teacher.toggle=false">
-              {{ teacher.name | humanize }}
-            </span>
+                    </div>
+                    <div class="name"  tooltip="Haga click para ver los grupos" ng-click="teacher.toggle = !teacher.toggle"
+                           ng-init="teacher.toggle=false">
+                               {{ teacher.name | humanize }}
+                    </div>
                 </div>
                 <div class="teacher-body" ng-show="teacher.toggle" ng-animate="'animate'">
                     <div class="group-heading" ng-repeat="group in teacher.groups">

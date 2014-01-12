@@ -71,7 +71,7 @@ define(['./module'], function (controllers) {
      * a subject change event
      */
     $scope.changeGroup = function(){
-      var throttledEmit = _.throttle(emit, 5000, { 'leading': false, 'trailing': true });
+      var throttledEmit = _.throttle(emit, 1500, { 'leading': false, 'trailing': true });
       throttledEmit();
     };
   });
