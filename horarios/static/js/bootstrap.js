@@ -11,11 +11,8 @@ define([
   './app/template'
 ], function(require,ng) {
   'use strict';
-  require(['domReady!','lodash','//www.google-analytics.com/analytics.js'],function (document){
+  require(['domReady!','lodash'],function (document){
     ng.bootstrap(document, ['app']);
     ng.resumeBootstrap();
-    //TODO: make this configurable
-    window.ga('create', 'UA-47728189-1');
-    window.ga('send', 'pageview');
   });
 });
