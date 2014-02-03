@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'horarios',
+    'haystack',
     'south',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
@@ -158,6 +159,14 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+# Haystack configuration
+import os
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
 }
 
 try:

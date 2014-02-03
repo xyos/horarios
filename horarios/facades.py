@@ -4,10 +4,12 @@ globalSia = SIA()
 
 from services import SubjectsServices
 from factories import MixedFactory,SiaFactory
+from haystack.query import SearchQuerySet
 subjectsServices = SubjectsServices(MixedFactory(globalSia))
 
 def autocomplete(query):
-    return subjectsServices.getSubjectsByName(query,"")
+    #return subjectsServices.getSubjectsByName(query,"")
+    return SearchQuerySet().filter(content=query).load_all();
 
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)

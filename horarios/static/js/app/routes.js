@@ -12,7 +12,7 @@ define(['../app'],function (app) {
         })
         .state('schedules',{
           abstract : true,
-          url : '/schedules',
+          url : '/schedules?subjects&busy',
           templateUrl : '/static/partials/schedules.html'
         })
         .state('schedules.ui',{

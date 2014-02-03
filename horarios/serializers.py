@@ -1,15 +1,20 @@
 import BO as Models
 import simplejson as json
+from haystack.query import SearchQuerySet
 class Serializer:
     def __init__(self,serializedClass):
         self.serializedClass = serializedClass
 
     def serialize(self,data):
-        out={}
+        out = {}
         if isinstance(data,list):
             out = []
             for i in data:
                 out.append(self.serialize_single(i))
+        elif isinstance(data, SearchQuerySet):
+            out = []
+            for i in data:
+                out.append(self.serialize_single(i.object))
         elif (data,self.serializedClass):
             out = self.serialize_single(data)
 

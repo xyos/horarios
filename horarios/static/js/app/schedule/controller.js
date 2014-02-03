@@ -126,4 +126,9 @@ define(['./module'], function (controllers) {
       $scope.$apply();
     };
   });
+
+  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope){
+    console.log('hola mundo');
+    console.log($stateParams);
+  });
 });
