@@ -69,7 +69,7 @@ define(['./module'], function (controllers) {
     };
 
   });
-  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService) {
+  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService, SubjectService, ngProgress) {
     /*
      * retrieves the schedules from the service
      */
@@ -82,7 +82,7 @@ define(['./module'], function (controllers) {
     $scope.currentPage = 0;
     $scope.pageSize = 6;
     $scope.numberOfPages = function () {
-      if (_.isUndefined($scope.schedules)) {
+      if (angular.isUndefined($scope.schedules)) {
         return 1;
       }
       return Math.ceil($scope.schedules.length / $scope.pageSize);
@@ -107,6 +107,7 @@ define(['./module'], function (controllers) {
      */
     var lastQuery = '';
     $rootScope.$on('scheduleChange', function (event, query) {
+      ScheduleService.setSubjectQuery(SubjectService.getQuery());
       if (ScheduleService.getQuery() !== lastQuery) {
         ScheduleService.fetch(query).then(function () {
           $scope.schedules = ScheduleService.getList();
@@ -114,6 +115,7 @@ define(['./module'], function (controllers) {
           $scope.index = 0;
           $scope.currentPage = 0;
           $scope.$emit('activeScheduleChange');
+          ngProgress.complete();
           lastQuery = ScheduleService.getQuery();
         });
       }

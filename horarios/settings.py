@@ -6,6 +6,7 @@ TEMPLATE_DEBUG = DEBUG
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 DEPLOY_SCRIPT = "echo 0> /dev/null"
 
+SIA_URL = 'http://www.sia.unal.edu.co/buscador'
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )

@@ -21,14 +21,14 @@ class Migration(SchemaMigration):
         # Adding model 'Teacher'
         db.create_table(u'horarios_teacher', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
         ))
         db.send_create_signal(u'horarios', ['Teacher'])
 
         # Adding model 'Profession'
         db.create_table(u'horarios_profession', (
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('code', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
+            ('code', self.gf('django.db.models.fields.CharField')(max_length=20, primary_key=True)),
         ))
         db.send_create_signal(u'horarios', ['Profession'])
 
@@ -81,7 +81,7 @@ class Migration(SchemaMigration):
         },
         u'horarios.profession': {
             'Meta': {'object_name': 'Profession'},
-            'code': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'}),
+            'code': ('django.db.models.fields.CharField', [], {'max_length': '20', 'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'horarios.subject': {
@@ -95,7 +95,7 @@ class Migration(SchemaMigration):
         u'horarios.teacher': {
             'Meta': {'object_name': 'Teacher'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'})
         }
     }
 

@@ -3,16 +3,17 @@ import BO as Models
 
 class SubjectDao:
     def __init__(self,sia):
-        self.sia = sia 
+        self.sia = sia
 
     def getSubjectsByName(self, name, level, maxResults):
         data = self.sia.querySubjectsByName(name, level, maxResults)
         result = []
         for i in data:
-            result.append(self._createSubject(i))
+            result.append(self.createSubject(i))
         return result
 
-    def _createSubject(self,data):
+    @staticmethod
+    def createSubject(data):
         groups = []
         return Models.Subject(data["nombre"],data["codigo"],data["creditos"],groups,data["tipologia"])
 
@@ -27,35 +28,62 @@ class SubjectDao:
 class GroupDao:
     def __init__(self,sia):
         self.sia = sia 
+
+    def getSimpleGroupsBySubjectCode(self,code):
+        groups = []
+        groupsData = self.sia.queryGroupsBySubjectCode(code)
+        for group in groupsData:
+            schedule = self.getSchedule(group)
+            professions = None
+            groups.append(
+                Models.Group(group["codigo"],
+                             group["nombredocente"],
+                             schedule,
+                             code,
+                             professions,
+                             group["cuposdisponibles"],
+                             group["cupostotal"]
+                )
+            )
+        return groups
     
     def getGroupsBySubjectCode(self,code):
         groups = []
         groupsData = self.sia.queryGroupsBySubjectCode(code)
-        for g in groupsData:
-            schedule = {}
-            if(g["horario_lunes"] != "--"):
-                schedule[Models.DAYS[0]] = g["horario_lunes"]
-            if(g["horario_martes"] != "--"):
-                schedule[Models.DAYS[1]] = g["horario_martes"]
-            if(g["horario_miercoles"] != "--"):
-                schedule[Models.DAYS[2]] = g["horario_miercoles"]
-            if(g["horario_jueves"] != "--"):
-                schedule[Models.DAYS[3]] = g["horario_jueves"]
-            if(g["horario_viernes"] != "--"):
-                schedule[Models.DAYS[4]] = g["horario_viernes"]
-            if(g["horario_sabado"] != "--"):
-                schedule[Models.DAYS[5]] = g["horario_sabado"]
-            if(g["horario_domingo"] != "--"):
-                schedule[Models.DAYS[6]] = g["horario_domingo"]
-            
-            professions = []
-            for i in self.sia.queryGroupsProfessions(code,g["codigo"]):
-                professions.append(Models.Profession(i[0],i[1]))
-
-            groups.append(Models.Group(g["codigo"],g["nombredocente"],self._parseSchedule(schedule),code,professions,g["cuposdisponibles"],g["cupostotal"]))
+        for group in groupsData:
+            schedule = self.getSchedule(group)
+            professions = self.getProfessions(code, group["codigo"])
+            groups.append(
+                Models.Group(group["codigo"],
+                             group["nombredocente"],
+                             schedule,
+                             code,
+                             professions,
+                             group["cuposdisponibles"],
+                             group["cupostotal"]
+                )
+            )
         return groups
 
-    def _parseSchedule(self,scheduleDict):
+    @staticmethod
+    def getSchedule(group):
+        scheduleDict = {}
+        for day in Models.DAYS:
+            if group["horario_" + day.lower()] != "--":
+                scheduleDict[day] = group["horario_" + day.lower()]
+        return GroupDao._parseSchedule(scheduleDict)
+
+    def getProfessions(self, code, group):
+        professions = []
+        for i in self.sia.queryGroupsProfessions(code, group):
+            professions.append(Models.Profession(i[0], i[1]))
+        return professions
+
+
+
+
+    @staticmethod
+    def _parseSchedule(scheduleDict):
         """
                 schedule is a dictionary of {day : begin-end}*
                 returns an array of ints which follows : The i-th (for i = [1,24]) less significant bit represents the time period between i-1 hours and i hours.

@@ -4,11 +4,10 @@
 * Subject model definition
 */
 define(['./module'], function (models) {
-  'use strict';
   /**
    * Creates a new Subject based on subject code
    */
-  models.factory('Subject', function ($http) {
+  models.factory('Subject', function ($http,$rootScope) {
     /**
      * Returns a promise of the teachers and groups from a given subject code
      */
@@ -17,10 +16,10 @@ define(['./module'], function (models) {
       .success(function(result){
         return result;
       })
-      .error(function(data){
+      .error(function(){
         console.log('could not resolve teachers for ' + code);
       });
-    }
+    };
     /**
      * The Subject Object
      * ------------------
@@ -38,14 +37,14 @@ define(['./module'], function (models) {
       var that = this;
       getTeachers(this.code).success(function(data){
         var myTeachers = [];
-        data.forEach(function(item,index){
+        data.forEach(function(item){
           item.isChecked = true;
           var teacher = item.teacher.trim();
-          if (teacher.length < 1) teacher = "Sin profesor asignado";
+          if (teacher.length < 1) {teacher = 'Sin profesor asignado';}
           var found = false;
           for (var i =0; i < myTeachers.length; i++) {
             if (myTeachers[i].name === item.teacher) {
-              var found = true;
+              found = true;
               myTeachers[i].groups.push(item);
               break;
             }
@@ -60,8 +59,9 @@ define(['./module'], function (models) {
           }
         });
         that.teachers = myTeachers;
+        $rootScope.$broadcast('scheduleChange');
       });
-    }
+    };
     return Subject;
   });
 });

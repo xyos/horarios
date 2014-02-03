@@ -1,5 +1,6 @@
 @import "colors";
-
+@import "subjects";
+@import "schedules";
 .busy {
   color: #c0392b;
 }
@@ -106,18 +107,6 @@
 
 }
 
-.teacher-heading {
-  padding: 10px 15px;
-  border-bottom: 0;
-  color: #222;
-  background-color: #DDD;
-  border-color: #777;
-  border-bottom: 1px;
-  &:hover {
-    background-color: #AAA;
-    cursor: pointer;
-  }
-}
 
 .group-heading {
   padding: 10px 15px;

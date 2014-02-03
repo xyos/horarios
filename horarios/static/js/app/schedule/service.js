@@ -31,7 +31,7 @@ define(['./module'],function (services){
       var days = [];
       _.forEach(busyRows, function(hour){
         _.forEach(hour, function(day, index){
-          if(_.isUndefined(days[index])){
+          if(angular.isUndefined(days[index])){
             days[index] = day ? '1':'0';
           } else {
             days[index] += day ? '1':'0';
@@ -49,9 +49,11 @@ define(['./module'],function (services){
     };
     var mergeSchedule = function(schedule) {
       schedule.parseRows();
-      for(var i = 0; i < activeSchedule.rows.length; i++){
-        for(var j = 0; j < activeSchedule.rows[i].length; j++){
-          if(activeSchedule.rows[i][j].code !== schedule.rows[i][j].code){
+      //console.log(schedule.rows);
+      for(var i = 0, max = activeSchedule.rows.length; i < max ; i++){
+        for(var j = 0, max2 = activeSchedule.rows[i].length ; j < max2; j++){
+          if(activeSchedule.rows[i][j].color + activeSchedule.rows[i][j].name !==
+            schedule.rows[i][j].color + schedule.rows[i][j].name){
             activeSchedule.rows[i][j] = schedule.rows[i][j];
           }
         }

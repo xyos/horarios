@@ -2,6 +2,7 @@ import json
 import logging
 import httplib
 import urllib2
+from django.core.exceptions import ValidationError
 from BO import Subject,Group,Schedule
 siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
 siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
@@ -77,19 +78,32 @@ class SIA:
 
         return result["result"]["list"]
 
+    @staticmethod
     @cache.region('short_term')
-    def queryGroupsProfessions(this,code,group):
+    def queryGroupsProfessions(code,group):
         import re
-        f = urllib2.urlopen("http://www.sia.unal.edu.co/buscador/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
-        html = f.read().decode("ISO-8859-1")
-        f.close()
+        while True:
+            try:
+                f = urllib2.urlopen("http://www.sia.unal.edu.co/buscador/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
+                html = f.read().decode("ISO-8859-1")
+                break
+            except urllib2.URLError, e:
+                if e.code == 403:
+                    pass
+                else:
+                    logging.warning(str(e))
+                    break
+            except Exception, e:
+                logging.warning(str(e))
+                break
+
         relevantSection = re.compile(r'Los planes de estudio para los cuales se ofrece esta asignatura son:</p><div><ul class="modulelist">(.*)</ul></div>').findall(html)
         professions = []
         if (len(relevantSection)>0):
             professionsHtml = re.compile('<li><p>(.*?)</p></li>').findall(relevantSection[0])
             for i in professionsHtml:
                 data = i.split("-")
-                professions.append((int(data[0]),re.compile('<em>(.*)</em>').findall("".join(data[1:]))[0]))
+                professions.append((data[0].strip(),re.compile('<em>(.*)</em>').findall("".join(data[1:]))[0]))
         return professions
 
 class Generator:
@@ -117,35 +131,54 @@ class Generator:
 
 
 class DatabaseCreator:
-    def __init__(self,sia):
+
+    def __init__(self, sia):
         self.sia = sia
 
     def getSubjects(self,letters):
 
-        def createSubject(subject,groups):
+        def createSubject(subject, groups):
             print "Processing ", subject.name.encode('ascii','ignore'), subject.code
             try:
                 djangoModels.Subject.objects.get(code__exact=subject.code)
                 print "Skipping already processed ", subject.name.encode('ascii','ignore')
             except Exception:
-                s = djangoModels.Subject.objects.create(name=subject.name,code=subject.code,credits=subject.credits,stype=subject.type)
-                for i in groups:
-                    t,created = djangoModels.Teacher.objects.get_or_create(name=i.teacher)
-                    g = djangoModels.Group.objects.create(teacher=t,subject=s,code=i.code,schedule=i.schedule)
-                    g.save()
-                    for j in i.professions:
-                        p,created = djangoModels.Profession.objects.get_or_create(code=j.code,name=j.name.strip())
+                s = djangoModels.Subject.objects.create(
+                    name=subject.name,
+                    code=subject.code,
+                    credits=subject.credits,
+                    stype=subject.type
+                )
+
+                for j in groups:
+                    t, created = djangoModels.Teacher.objects.get_or_create(name=j.teacher)
+                    g = djangoModels.Group.objects.create(
+                        teacher=t,
+                        subject=s,
+                        code=j.code,
+                        schedule=j.schedule
+                    )
+                    try:
+                        g.full_clean()
+                        g.save()
+                    except ValidationError as e:
+                        logging.warning('Validation error' + e.message)
+
+                    for j in j.professions:
+                        p, created = djangoModels.Profession.objects.get_or_create(code=j.code, name=j.name.strip())
                         g.professions.add(p)
-                    g.save()
-
-
+                    try:
+                        g.full_clean()
+                        g.save()
+                    except ValidationError as e:
+                        logging.warning('Validation error' + e.message)
 
         dao = SiaDaos.SubjectDao(self.sia)
         gDao = SiaDaos.GroupDao(self.sia)
         for j in letters:
-            print "Synchronizing letter",j
-            for i in dao.getSubjectsByName(j,"",1000000):
-                createSubject(i,gDao.getGroupsBySubjectCode(i.code))
+            print "Synchronizing letter", j
+            for i in dao.getSubjectsByName(j, "", 1000000):
+                createSubject(i, gDao.getGroupsBySubjectCode(i.code))
 
 def syncsia():
     c = DatabaseCreator(SIA())

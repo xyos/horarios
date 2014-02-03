@@ -178,6 +178,52 @@
     fill: rgba(127, 140, 141, 0.8);
     cursor: pointer; }
 
+.subject .subject-header {
+  padding: 5px; }
+  .subject .subject-header button.close {
+    background-color: transparent;
+    float: none; }
+  .subject .subject-header .check, .subject .subject-header .name, .subject .subject-header .close {
+    display: inline-block;
+    padding: 3px;
+    margin: 0;
+    border: 0; }
+  .subject .subject-header .name {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 70%; }
+
+.teacher {
+  color: #222;
+  background-color: #DDD;
+  border-color: #777;
+  border-bottom: 1px; }
+  .teacher:hover {
+    background-color: #AAA;
+    cursor: pointer; }
+  .teacher .teacher-header .check, .teacher .teacher-header .name {
+    display: inline-block;
+    padding: 3px;
+    margin: 0;
+    border: 0; }
+  .teacher .teacher-header .check {
+    margin-left: 5px; }
+
+.teacher input[type='checkbox'], .subject input[type='checkbox'] {
+  width: 15px;
+  height: 15px;
+  background: white;
+  border-radius: 2px;
+  border: 2px solid #555; }
+.teacher input[type='checkbox']:checked, .subject input[type='checkbox']:checked {
+  background: #abd; }
+
+.hour {
+  width: 15%; }
+
+.sched-cell {
+  width: 12%; }
+
 .busy {
   color: #c0392b; }
 
@@ -259,17 +305,6 @@
   transform: rotateX(0deg) translatez(30px);
   opacity: 1;
   height: 30px; }
-
-.teacher-heading {
-  padding: 10px 15px;
-  border-bottom: 0;
-  color: #222;
-  background-color: #DDD;
-  border-color: #777;
-  border-bottom: 1px; }
-  .teacher-heading:hover {
-    background-color: #AAA;
-    cursor: pointer; }
 
 .group-heading {
   padding: 10px 15px;

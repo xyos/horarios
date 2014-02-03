@@ -10,6 +10,10 @@ class SubjectsServices:
         dao = self.factory.getGroupDao()
         return dao.getGroupsBySubjectCode(subjectCode)
 
+    def getSimpleGroups(self,subjectCode):
+        dao = self.factory.getGroupDao()
+        return dao.getSimpleGroupsBySubjectCode(subjectCode)
+
     def getSubjectsByName(self,name,level,maxResults=100):
         dao = self.factory.getSubjectDao()
         subjects = dao.getSubjectsByName(name,level,maxResults)

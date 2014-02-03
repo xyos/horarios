@@ -3,26 +3,37 @@ require.config({
   paths: {
     'domReady' : './libs/requirejs-domready/domReady',
     'angular' : './libs/angular/angular',
-    'angular-ui-router' : './libs/angular-ui-router/release/angular-ui-router',
-    'angular-bootstrap' : './libs/angular-bootstrap/ui-bootstrap-tpls',
+    'uiRouter' : './libs/angular-ui-router/release/angular-ui-router',
+    'ngProgress' : './libs/ngprogress/build/ngProgress.min',
+    'angularBootstrap' : './libs/angular-bootstrap/ui-bootstrap-tpls',
     'lodash' : './libs/lodash/dist/lodash'
-
   },
   shim: {
     'angular' : {
       exports: 'angular'
     },
-    'angular-ui-router' : {
+    'domReady' : {
       deps: ['angular'],
-      exports: 'angular-ui-router'
+      exports: 'domReady'
     },
-    'angular-bootstrap' : {
+    'lodash' : {
+      exports: '_'
+    },
+    'angularUiRouter' : {
       deps: ['angular'],
-      exports: 'angular-bootstrap'
+      exports: 'uiRouter'
+    },
+    'angularBootstrap' : {
+      deps: ['angular'],
+      exports: 'angularBootstrap'
+    },
+    'ngProgress' : {
+      deps: ['angular'],
+      exports: 'ngProgress'
     }
   },
   priority : [
-    'angular'
+    'angular', 'lodash', 'domReady'
   ],
   deps : ['./bootstrap']
 });

@@ -1,44 +1,68 @@
 <div ng-controller="SubjectCtrl">
-  <input placeholder="escriba el nombre de la materia" typeahead-input-formatter="formatInput($model)" typeahead-min-length="3" class="form-control" type="text" typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" typeahead-wait-ms="500" typeahead="subject.name for subject in autocomplete($viewValue)" typeahead-loading="isLoading">
-  <hr>
-  <img src="static/img/loading.gif" ng-show="!!isLoading"/>
-  <div class="panel-group">
-    <div class="panel panel-default" ng-animate="'animate'" ng-repeat="subject in subjects">
-      <div class="{{ subject.color }} panel-heading color-panel" ng-click="subject.toggle = !subject.toggle">
-        <input type="checkbox" ng-model="subject.isChecked" ng-checked="true" ng-change="checkChange(subject.teachers,subject.isChecked)">
-        <span
-          tooltip="Haga click para expandir"
-          ng-init="subject.toggle=false">
-          <b>{{subject.name | humanize}}</b> {{ subject.code }}
-        </span>
-        <button class="close" tooltip="Eliminar materia" ng-click="removeSubject(subject.code)"><i class="fa fa-times"></i></button>
-      </div>
-      <div class="subject-body" ng-animate="'animate'" ng-show="subject.toggle">
-        <div class="teacher-group" ng-repeat="teacher in subject.teachers">
-          <div class="teacher-heading" ng-click="teacher.toggle = !teacher.toggle">
-            <input type="checkbox" ng-checked="true" ng-model="teacher.isChecked" ng-change="checkChange(teacher.groups,teacher.isChecked)">
-            <span
-              tooltip="Haga click para ver los grupos"
-              ng-init ="teacher.toggle=false">
-              {{ teacher.name | humanize }}
-            </span>
-          </div>
-          <div class="teacher-body" ng-show="teacher.toggle" ng-animate="'animate'">
-            <div class="group-heading" ng-repeat="group in teacher.groups">
-              <input type="checkbox" ng-checked="true" ng-model="group.isChecked" ng-change="changeGroup()">
-              <span>grupo {{group.code}}</span>
-              <div class="progress">
-                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: {{100*((group.totalShare - group.available)/group.totalShare)}}%">
-                  {{group.totalShare - group.available}}
-                </div>
-                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: {{100*( group.available/group.totalShare)}}%">
-                  {{group.available}}
-                </div>
-              </div>
+    <input placeholder="escriba el nombre de la materia" typeahead-input-formatter="formatInput($model)"
+           typeahead-min-length="3" class="form-control" type="text"
+           typeahead-on-select='onSelect($item, $model, $label)' ng-model="result" typeahead-wait-ms="500"
+           typeahead="subject.name for subject in autocomplete($viewValue)" typeahead-loading="isLoading">
+    <hr>
+    <img src="static/img/loading.gif" ng-show="!!isLoading"/>
+    <div class="subject" ng-repeat="subject in subjects">
+        <div class="subject-header {{ subject.color }}">
+            <div class="check">
+                <input type="checkbox"
+                       ng-model="subject.isChecked"
+                       ng-checked="true"
+                       ng-change="checkChange(subject.teachers,subject.isChecked)">
             </div>
-          </div>
+            <div class="name"
+                 tooltip="Haga click para expandir"
+                 class="btn btn-default"
+                 ng-click="subject.toggle = !subject.toggle"
+                 ng-init="subject.toggle=false">
+                <b>{{ subject.name | humanize }}</b> {{ subject.code }}
+            </div>
+            <div class="close">
+                <button class="close" tooltip="Eliminar materia" ng-click="removeSubject(subject.code)"><i
+                        class="fa fa-times"></i></button>
+            </div>
+
+
         </div>
-      </div>
+        <div class="subject-body" ng-animate="'animate'" ng-show="subject.toggle">
+
+            <div class="teacher" ng-repeat="teacher in subject.teachers">
+                <div class="teacher-header">
+                    <div class="check">
+                        <input type="checkbox"
+                           ng-checked="true"
+                           ng-model="teacher.isChecked"
+                           ng-change="checkChange(teacher.groups,teacher.isChecked)">
+                    </div>
+                    <div class="name"  tooltip="Haga click para ver los grupos" ng-click="teacher.toggle = !teacher.toggle"
+                           ng-init="teacher.toggle=false">
+                               {{ teacher.name | humanize }}
+                    </div>
+                </div>
+                <div class="teacher-body" ng-show="teacher.toggle" ng-animate="'animate'">
+                    <div class="group-heading" ng-repeat="group in teacher.groups">
+                        <input type="checkbox" ng-checked="true" ng-model="group.isChecked"
+                               ng-change="changeGroup()">
+                        <span>grupo {{ group.code }}</span>
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="30"
+                                 aria-valuemin="0" aria-valuemax="100"
+                                 style="width: {{ 100*((group.totalShare - group.available)/group.totalShare)}}%">
+                                {{ group.totalShare - group.available}}
+                            </div>
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="30"
+                                 aria-valuemin="0" aria-valuemax="100"
+                                 style="width: {{ 100*( group.available/group.totalShare)}}%">
+                                {{ group.available }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
