@@ -1,32 +1,38 @@
-from fabric.api import local
+from fabric.api import run, lcd, local
 from fabric.colors import green, red
 import os
 
 
 file_path = os.getcwd()
 
-def prepare_deploy():
-    #local("./manage.py test horarios")
-    local("git add -p && git commit")
-    local("git push")
-
-
 def activate(command):
     if os.name == "nt":
         local("%s/Scripts/activate.bat && " + command, file_path)
     elif os.name == "posix":
-        local("source %s/bin/activate && " + command, file_path)
+        local("/bin/bash -c 'source " + file_path + "/bin/activate && " + command + "'")
 
-def git_pull():
+def deploy():
     "updates the repo"
     print(green("pulling from master"))
-    run("git pull origin master")
+    #local("git pull origin master")
     print(green("installing requirements"))
     activate("pip install -r requirements.txt")
     print(green("syncing the db"))
     activate("python manage.py syncdb")
     print(green("migrating the db"))
     activate("python manage.py migrate")
+    print(green("running grunt"))
+    with lcd(file_path + '/horarios/static/js/'):
+        local("grunt")
+    print(green("building stylesheets"))
+    with lcd(file_path + '/horarios/static/css/'):
+        local("scss style.scss:style.css")
+    print(green("collect static"))
+    activate("python manage.py collectstatic --noinput")
+
+
+
+
 
 
 
