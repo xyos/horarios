@@ -6,14 +6,18 @@ Installation:
 
 clone in git
 
-    #install virtualenv via pip or easy_install, change horarios for your clone dir
+    # Install virtualenv via pip or easy_install
+    # Beginning from the clone directory execute:
     virtualenv horarios
     cd horarios
     source ./bin/activate
+    cd ../
     pip install -r requirements.txt
     cd horarios/static/js/
-    #this step requires node.js and bower (npm install -g bower)
+    #this step requires node.js, bower, and require.js (npm install -g bower && npm install -g requirejs)
+    npm install
     bower install
+    grunt
     cd -
     python manage.py flush
     python manage.py syncdb
