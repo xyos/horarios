@@ -2,7 +2,7 @@ define(['./module'],function (services){
   'use strict';
   services.service('ScheduleService', function($http, $q, Schedule){
     var initialItems = {
-      'busy': [0, 0, 0, 0, 0, 0, 0],
+      'busy': [1048448,1048448, 1048448, 1048448, 1048448, 1048448, 1048448],
       'groups': [{
         code : '',
         schedule :  [1048448, 1048448, 1048448, 1048448, 1048448 ,1048448, 1048448],
@@ -81,7 +81,9 @@ define(['./module'],function (services){
         return $http.get(getScheduleQuery())
         .then(function(response){
           if(_.isEmpty(response.data)){
-            schedules.push(initialSchedule);
+            var s = new Schedule(initialItems);
+            s.index = 0;
+            schedules.push(s);
           }
           response.data.forEach(function(sched,index){
 
