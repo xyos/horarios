@@ -6,10 +6,6 @@ define(['../app'],function (app) {
         $urlRouterProvider
         .otherwise('/schedules');
         $stateProvider
-        .state('home' , {
-          url : '/',
-          template: '<h1>Hello World</h1>'
-        })
         .state('schedules',{
           abstract : true,
           url : '/schedules?subjects&busy',

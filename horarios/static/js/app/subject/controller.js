@@ -37,6 +37,7 @@ define(['./module'], function (controllers) {
      */
     $scope.removeSubject = function(code){
       SubjectService.del(code);
+      $state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
     };
     /*
      * changes the check status for the given children
