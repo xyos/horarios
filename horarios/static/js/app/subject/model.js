@@ -8,26 +8,26 @@ define(['./module'], function (models) {
    * Creates a new Subject based on subject code
    */
   models.factory('Subject', function ($http, $rootScope, $q) {
-    var deferred = $q.defer();
     /**
      * Returns a promise of the teachers and groups from a given subject code
      */
     var getTeachers = function (code) {
-      return $http.get('/api/v1.0/subject/' + code + '/groups/')
-        .error(function () {
+      return $http.get('/api/v1.0/subject/' + code + '/groups/').error(function () {
           console.log('could not resolve teachers for ' + code);
         });
     };
-    var getSubject = function (data, scope) {
+    var getSubject = function (data) {
+      var deferred = $q.defer();
       var subject = {
         code: data.code,
         name: data.name,
-        teachers: null,
+        teachers: {},
         departament: '',
         color: data.color,
         credits: 0
       };
-      getTeachers(data.code).success(function (data) {
+      getTeachers(data.code).then(function (response) {
+        data = response.data;
         var myTeachers = [];
         data.forEach(function (item) {
           item.isChecked = true;
@@ -52,13 +52,15 @@ define(['./module'], function (models) {
             myTeachers.push(myTeacher);
           }
         });
-        subject.teachers = myTeachers;
-        deferred.resolve(subject);
-        $rootScope.$broadcast('scheduleChange');
-
-      });
+        return myTeachers;
+      }).then(function (data) {
+          console.log(data);
+          subject.teachers = data;
+          deferred.resolve(subject);
+          $rootScope.$broadcast('scheduleChange');
+        }
+      );
       return deferred.promise;
-
     };
     return {
       getSubject: getSubject

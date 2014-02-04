@@ -37,10 +37,34 @@ define(['./module'],function (services){
         return false;
       }
     };
+    //
+    var addSubject = function (subject) {
+      var deferred = $q.defer();
+      if(getSubject(subject.code)){
+        deferred.resolve(false);
+      }else{
+        subjects.push(subject);
+        deferred.resolve(true);
+      }
+      return deferred.promise;
+    };
     /*
      * exposing the service methods
      */
     return {
+      add : function(item) {
+        //var isSubject = getSubject(item.code);
+        var s = {
+          name: item.name,
+          code: item.code,
+          departament: 'BIO',
+          color: getColor(item.code)
+        };
+        return Subject.getSubject(s).then(function(subject){
+          console.log(subject);
+          return addSubject(subject);
+        });
+      },
       get : function(){
         return subjects;
       },
@@ -52,33 +76,6 @@ define(['./module'],function (services){
             break;
           }
         }
-      },
-      /*
-       * returns true or false if the subject is new
-       */
-      add : function(item){
-        var deferred = $q.defer();
-        /*
-         * Searching in the subjects array
-         */
-        var isSubject = getSubject(item.code);
-        if(!isSubject){
-          var s = {
-            name : item.name,
-            code : item.code,
-            departament : 'BIO',
-            color: getColor(item.code)
-          };
-          var subject = new Subject.getSubject(s, null);
-
-          subject.then(function(s){
-            subjects.push(s);
-            deferred.resolve(true);
-          });
-        } else {
-          deferred.resolve(false);
-        }
-        return deferred.promise;
       },
       getByCode: function(code){
         return getSubject(parseInt(code,10));

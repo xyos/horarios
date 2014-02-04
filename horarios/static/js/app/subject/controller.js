@@ -25,12 +25,12 @@ define(['./module'], function (controllers) {
      * adds a selected subject to the subjects list
      */
     $scope.onSelect = function ($item) {
-      SubjectService.add($item)
-        .then(function (isSubject) {
-          if(isSubject){
-            ngProgress.start();
-          }
-        });
+      SubjectService.add($item).then(function(added){
+        if(added){
+          ngProgress.start();
+          //$state.go('schedules.ui',{subjects: '33333', busy: '1234'});
+        }
+      });
     };
     /*
      * removes a subject from the selected subjects

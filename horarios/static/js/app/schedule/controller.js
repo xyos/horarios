@@ -129,7 +129,6 @@ define(['./module'], function (controllers) {
   controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService){
     console.log($stateParams);
     if($stateParams.subjects !== null){
-
       var subjects = $stateParams.subjects.split(',');
       console.log(subjects);
     }
