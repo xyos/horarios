@@ -14,7 +14,7 @@ clone in git
     cd ../
     pip install -r requirements.txt
     cd horarios/static/js/
-    #this step requires node.js, bower, and require.js (npm install -g bower && npm install -g requirejs)
+    #this step requires node.js, bower, and require.js (npm install -g bower && npm install -g requirejs & npm intall -g grunt-cli)
     npm install
     bower install
     grunt

@@ -6,3 +6,5 @@ beaker==1.6.4
 icalendar
 pytz
 south
+whoosh
+django-haystack
