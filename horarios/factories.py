@@ -1,6 +1,7 @@
+import Helpers 
 class SiaFactory:
-    def __init__(self,sia):
-        self.sia = sia
+    def __init__(self):
+        self.sia = Helpers.globalSia
     def getSubjectDao(self):
         from SiaDaos import SubjectDao
         return SubjectDao(self.sia)
@@ -17,8 +18,8 @@ class LocalFactory:
         return GroupDao()
 
 class MixedFactory:
-    def __init__(self,sia):
-        self.sia = sia
+    def __init__(self):
+        self.sia = Helpers.globalSia
     def getSubjectDao(self):
         from DjangoDaos import SubjectDao
         return SubjectDao()

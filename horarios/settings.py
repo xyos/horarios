@@ -5,6 +5,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 DEPLOY_SCRIPT = "echo 0> /dev/null"
+DAO_FACTORY = 'factories.MixedFactory' # or factories.SiaFactory , factories.LocalFactory
 
 SIA_URL = 'http://www.sia.unal.edu.co/buscador'
 ADMINS = (

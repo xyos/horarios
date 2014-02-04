@@ -1,10 +1,10 @@
 #Let the facades be a more stable interface to the services
-from Helpers import SIA
-globalSia = SIA()
-
 from services import SubjectsServices
-from factories import MixedFactory,SiaFactory,LocalFactory
-subjectsServices = SubjectsServices(LocalFactory())
+import factories
+from django.conf import settings
+
+FACTORY = eval(settings.DAO_FACTORY)
+subjectsServices = SubjectsServices(FACTORY())
 
 def autocomplete(query):
     return subjectsServices.getSubjectsByName(query,"")
