@@ -7,7 +7,8 @@ define(['./module'], function (models) {
   /**
    * Creates a new Subject based on subject code
    */
-  models.factory('Subject', function ($http,$rootScope) {
+  models.factory('Subject', function ($http,$rootScope, $q) {
+    var deferred = $q.defer();
     /**
      * Returns a promise of the teachers and groups from a given subject code
      */
@@ -20,29 +21,25 @@ define(['./module'], function (models) {
         console.log('could not resolve teachers for ' + code);
       });
     };
-    /**
-     * The Subject Object
-     * ------------------
-     */
-    var Subject = function(data) {
-      // preloads the subject attributes
-      angular.extend(this,{
-        code: null,
-        name: '',
+    var getSubject = function (data, scope) {
+      var subject = {
+        code: data.code,
+        name: data.name,
         teachers: null,
-        departament:'',
-        credits:0
-      });
-      angular.extend(this,data);
-      var that = this;
-      getTeachers(this.code).success(function(data){
+        departament: '',
+        color: data.color,
+        credits: 0
+      };
+      getTeachers(subject.code).success(function (data) {
         var myTeachers = [];
-        data.forEach(function(item){
+        data.forEach(function (item) {
           item.isChecked = true;
           var teacher = item.teacher.trim();
-          if (teacher.length < 1) {teacher = 'Sin profesor asignado';}
+          if (teacher.length < 1) {
+            teacher = 'Sin profesor asignado';
+          }
           var found = false;
-          for (var i =0; i < myTeachers.length; i++) {
+          for (var i = 0; i < myTeachers.length; i++) {
             if (myTeachers[i].name === item.teacher) {
               found = true;
               myTeachers[i].groups.push(item);
@@ -58,10 +55,15 @@ define(['./module'], function (models) {
             myTeachers.push(myTeacher);
           }
         });
-        that.teachers = myTeachers;
+        subject.teachers = myTeachers;
         $rootScope.$broadcast('scheduleChange');
+        deferred.resolve(subject);
       });
+      return deferred.promise;
+
     };
-    return Subject;
+    return {
+      getSubject : getSubject
+    };
   });
 });

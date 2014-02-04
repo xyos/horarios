@@ -4,7 +4,7 @@
 */
 define(['./module'], function (controllers) {
   'use strict';
-  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService,ngProgress) {
+  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService,ngProgress, $state) {
     /*
      * lists all the currently selected subjects
      */
@@ -26,7 +26,9 @@ define(['./module'], function (controllers) {
      */
     $scope.onSelect  = function($item){
       var added = SubjectService.add($item);
-      if (added){ngProgress.start();}
+      if (added){
+        ngProgress.start();
+      }
     };
     /*
      * removes a subject from the selected subjects

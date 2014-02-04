@@ -127,8 +127,19 @@ define(['./module'], function (controllers) {
     };
   });
 
-  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope){
+  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService){
     console.log('hola mundo');
     console.log($stateParams);
+    if($stateParams.subjects !== null){
+
+      var subjects = $stateParams.subjects.split(',');
+      console.log(subjects);
+    }
+
+//    subjects.forEach(function(subject){
+//      var s = subject.split('|');
+//      SubjectService.add({name: 'Algoritmos', code: s[0] });
+//    });
+    document.Subject = SubjectService;
   });
 });

@@ -68,8 +68,11 @@ define(['./module'],function (services){
             departament : 'BIO',
             color: getColor(item.code)
           };
-          var subject = new Subject(s);
-          subjects.push(subject);
+          var subject = new Subject.getSubject(s, null);
+          console.log(subject);
+          subject.then(function(s){
+            subjects.push(s);
+          });
           return true;
         } else {
           return false;
