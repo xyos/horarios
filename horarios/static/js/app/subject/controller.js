@@ -28,7 +28,7 @@ define(['./module'], function (controllers) {
       SubjectService.add($item).then(function(added){
         if(added){
           ngProgress.start();
-          //$state.go('schedules.ui',{subjects: '33333', busy: '1234'});
+          $state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
         }
       });
     };
