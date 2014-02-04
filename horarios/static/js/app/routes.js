@@ -4,7 +4,7 @@ define(['../app'],function (app) {
     ['$stateProvider','$urlRouterProvider',
       function($stateProvider, $urlRouterProvider){
         $urlRouterProvider
-        .otherwise('/');
+        .otherwise('/schedules');
         $stateProvider
         .state('home' , {
           url : '/',
