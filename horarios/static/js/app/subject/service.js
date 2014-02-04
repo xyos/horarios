@@ -57,6 +57,7 @@ define(['./module'],function (services){
        * returns true or false if the subject is new
        */
       add : function(item){
+        var deferred = $q.defer();
         /*
          * Searching in the subjects array
          */
@@ -69,14 +70,15 @@ define(['./module'],function (services){
             color: getColor(item.code)
           };
           var subject = new Subject.getSubject(s, null);
-          console.log(subject);
+
           subject.then(function(s){
             subjects.push(s);
+            deferred.resolve(true);
           });
-          return true;
         } else {
-          return false;
+          deferred.resolve(false);
         }
+        return deferred.promise;
       },
       getByCode: function(code){
         return getSubject(parseInt(code,10));
