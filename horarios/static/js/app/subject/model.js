@@ -1,25 +1,22 @@
 'use strict';
 
 /**
-* Subject model definition
-*/
+ * Subject model definition
+ */
 define(['./module'], function (models) {
   /**
    * Creates a new Subject based on subject code
    */
-  models.factory('Subject', function ($http,$rootScope, $q) {
+  models.factory('Subject', function ($http, $rootScope, $q) {
     var deferred = $q.defer();
     /**
      * Returns a promise of the teachers and groups from a given subject code
      */
-    var getTeachers = function(code){
-      return $http.get('/api/v1.0/subject/' + code +'/groups/')
-      .success(function(result){
-        return result;
-      })
-      .error(function(){
-        console.log('could not resolve teachers for ' + code);
-      });
+    var getTeachers = function (code) {
+      return $http.get('/api/v1.0/subject/' + code + '/groups/')
+        .error(function () {
+          console.log('could not resolve teachers for ' + code);
+        });
     };
     var getSubject = function (data, scope) {
       var subject = {
@@ -30,7 +27,7 @@ define(['./module'], function (models) {
         color: data.color,
         credits: 0
       };
-      getTeachers(subject.code).success(function (data) {
+      getTeachers(data.code).success(function (data) {
         var myTeachers = [];
         data.forEach(function (item) {
           item.isChecked = true;
@@ -56,14 +53,15 @@ define(['./module'], function (models) {
           }
         });
         subject.teachers = myTeachers;
-        $rootScope.$broadcast('scheduleChange');
         deferred.resolve(subject);
+        $rootScope.$broadcast('scheduleChange');
+
       });
       return deferred.promise;
 
     };
     return {
-      getSubject : getSubject
+      getSubject: getSubject
     };
   });
 });

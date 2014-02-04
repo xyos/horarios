@@ -12,7 +12,6 @@ define(['./module'], function (controllers) {
     $scope.busy = [];
     $scope.query = '';
     $scope.$watch('ScheduleService.getQuery()', function (newVal) {
-      console.log(newVal);
       $scope.query = newVal;
     });
     $scope.busySelect = false;
@@ -128,7 +127,6 @@ define(['./module'], function (controllers) {
   });
 
   controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService){
-    console.log('hola mundo');
     console.log($stateParams);
     if($stateParams.subjects !== null){
 

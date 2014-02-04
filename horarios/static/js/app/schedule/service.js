@@ -49,7 +49,7 @@ define(['./module'],function (services){
     };
     var mergeSchedule = function(schedule) {
       schedule.parseRows();
-      //console.log(schedule.rows);
+
       for(var i = 0, max = activeSchedule.rows.length; i < max ; i++){
         for(var j = 0, max2 = activeSchedule.rows[i].length ; j < max2; j++){
           if(activeSchedule.rows[i][j].color + activeSchedule.rows[i][j].name !==
