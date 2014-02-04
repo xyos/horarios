@@ -33,17 +33,17 @@ class GroupDao:
 
     def getSimpleGroupsBySubjectCode(self,code):
         groups = []
-        groupsData = models.Subject.objects.get(code__exact=code)
-        for group in groupsData:
-            professions = None
+        subject = models.Subject.objects.get(code__exact=code)
+        for group in subject.group_set.all():
+            professions = []
             groups.append(
-                Models.Group(group["codigo"],
-                             group["nombredocente"],
-                             schedule,
-                             code,
+                BO.Group(group.code,
+                             group.teacher.name,
+                             group.schedule,
+                             subject.code,
                              professions,
-                             group["cuposdisponibles"],
-                             group["cupostotal"]
+                             0,
+                             0
                 )
             )
         return groups
