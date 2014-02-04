@@ -46,7 +46,7 @@
     <!--states are shown here-->
     <ui-view></ui-view>
     <hr>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js" data-main="{% static "js/main-built.js" %}"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js" data-main="{%  if debug %}{% static "js/tmp/main-built.js" %}{% else %}{% static "js/main-built.js" %}{% endif %}"></script>
     <script>
       window.name = "NG_DEFER_BOOTSTRAP!";
     </script>

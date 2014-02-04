@@ -130,6 +130,10 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+INTERNAL_IPS = ('127.0.0.1',)
+
+TEMPLATE_CONTEXT_PROCESSORS = ("django.core.context_processors.debug",)
+
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
