@@ -14,8 +14,8 @@ def autocomplete(query):
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)
 
-def getSubjectsByCode(code):
-    return subjectsServices.getSubjectsByCode(code)
+def getSubjectByCode(code):
+    return subjectsServices.getSubjectByCode(code)
 
 def getSchedulesByLists(lists,busy=None):
     #Generating simple scheudles first will speedup the algorithm

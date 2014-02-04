@@ -22,7 +22,8 @@ class SubjectDao:
         return self.createSubject(data)
 
     def getSubjectByCode(this,code):
-        raise Exception("Not implemented for SIA DAOs")
+        data = self.sia.querySubjectsByName(code, level, 1)[0]
+        return self.createSubject(data)
 
 
 class GroupDao:

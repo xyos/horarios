@@ -147,7 +147,7 @@ class DatabaseCreator:
                     name=subject.name,
                     code=subject.code,
                     credits=subject.credits,
-                    stype=subject.type
+                    stype=subject.stype
                 )
 
                 for j in groups:
