@@ -4,11 +4,11 @@ import httplib
 import urllib2
 from django.core.exceptions import ValidationError
 from BO import Subject,Group,Schedule
-siaBogotaUrl="http://www.sia.unal.edu.co/buscador"
-siaMedellinUrl="http://sia1.medellin.unal.edu.co:9401/buscador"
-siaUrl=siaBogotaUrl
+from django.conf import settings
+siaUrl=settings.SIA_URL
 import models as djangoModels
 import SiaDaos
+
 
 class SIA:
 
@@ -147,7 +147,7 @@ class DatabaseCreator:
                     name=subject.name,
                     code=subject.code,
                     credits=subject.credits,
-                    stype=subject.type
+                    stype=subject.stype
                 )
 
                 for j in groups:
@@ -256,3 +256,5 @@ def getIcsFromSchedule(schedule):
                 
             #event.add('dtstamp', datetime.datetime(2005,4,4,0,10,0,tzinfo=tz))
     return cal.to_ical()
+
+globalSia = SIA()

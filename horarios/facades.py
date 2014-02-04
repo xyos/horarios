@@ -1,11 +1,11 @@
 #Let the facades be a more stable interface to the services
-from Helpers import SIA
-globalSia = SIA()
-
 from services import SubjectsServices
-from factories import MixedFactory,SiaFactory
+import factories
+from django.conf import settings
 from haystack.query import SearchQuerySet
-subjectsServices = SubjectsServices(MixedFactory(globalSia))
+
+FACTORY = eval(settings.DAO_FACTORY)
+subjectsServices = SubjectsServices(FACTORY())
 
 def autocomplete(query):
     #return subjectsServices.getSubjectsByName(query,"")
@@ -14,8 +14,8 @@ def autocomplete(query):
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)
 
-def getSubjectsByCode(code):
-    return subjectsServices.getSubjectsByCode(code)
+def getSubjectByCode(code):
+    return subjectsServices.getSubjectByCode(code)
 
 def getSchedulesByLists(lists,busy=None):
     #Generating simple scheudles first will speedup the algorithm

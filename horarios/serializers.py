@@ -44,6 +44,19 @@ class SimpleSubjectsSerializer(Serializer):
         out['code'] = subject.code
         return out
 
+class SubjectSerializer(Serializer):
+
+    def __init__(self):
+        Serializer.__init__(self,Models.Subject)
+    
+    def serialize_single(self,s):
+        out = {}
+        out['code'] = s.code
+        out['name'] = s.name
+        out['credits'] = s.credits
+        out['type'] = s.stype
+        return out
+
 class GroupSerializer(Serializer):
 
     def __init__(self):

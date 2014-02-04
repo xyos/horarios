@@ -96,6 +96,14 @@ def autocomplete_subject(request):
     return HttpResponse(serializer.serialize(subjects), content_type='application/json')
 
 
+class SubjectView(APIView):
+    def get(self, request, *args , **kw):
+        code = kw['subjectCode']
+        import facades
+        subject = facades.getSubjectByCode(code)
+        from serializers import SubjectSerializer
+        serializer = SubjectSerializer()
+        return Response(serializer.serialize(subject), status = status.HTTP_200_OK)
 
 class RandomScheduleView(APIView):
     def get(self, request, *args, **kw):

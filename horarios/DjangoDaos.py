@@ -30,3 +30,21 @@ class GroupDao:
                 prof.append(BO.Profession(j.code,j.name))
             groups.append(BO.Group(i.code,i.teacher.name,i.schedule,s.code,prof))
         return groups
+
+    def getSimpleGroupsBySubjectCode(self,code):
+        groups = []
+        subject = models.Subject.objects.get(code__exact=code)
+        for group in subject.group_set.all():
+            professions = []
+            groups.append(
+                BO.Group(group.code,
+                             group.teacher.name,
+                             group.schedule,
+                             subject.code,
+                             professions,
+                             0,
+                             0
+                )
+            )
+        return groups
+

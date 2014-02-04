@@ -7,12 +7,12 @@ class Profession:
         self.code = code
 
 class Subject():
-    def __init__(self,name,code,credits,groups,type):
+    def __init__(self,name,code,credits,groups,stype):
         self.name=name
         self.code=int(code)
         self.credits=int(credits)
         self.groups=groups
-        self.type =type
+        self.stype =stype
     def __str__(self):
         ret = self.name + " has " + str(len(self.groups)) + ":\n"
         for g in self.groups:
