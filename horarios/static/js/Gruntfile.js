@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     // making requirejs concatenate the files
     shell: {
       requirejs : {
-        command : 'r.js.cmd -o build.js'
+        command : 'r.js -o build.js'
       }
     },
     // pre-minifying angularjs files
