@@ -39,9 +39,11 @@ def do_deploy(request):
     out_json = {'status':'failed'}
 
     if payload['ref'] == 'refs/heads/master':
-        DEPLOY_SCRIPT = getattr(settings,"DEPLOY_SCRIPT", "echo 0")
-        subprocess.call(settings.DEPLOY_SCRIPT)
-        out_json = {'status' : 'success'}
+        DEPLOY_SCRIPT = getattr(settings,"DEPLOY_SCRIPT", "pwd")
+        out = subprocess.check_output(settings.DEPLOY_SCRIPT)
+        if not getattr(settings,"DEBUG",False):
+            out = ""
+        out_json = {'status' : 'success', 'output' : out }
 
     return HttpResponse(simplejson.dumps(out_json), content_type='application/json')
 
