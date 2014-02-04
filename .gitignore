@@ -10,7 +10,7 @@ local
 var
 Scripts
 include
-
+horarios/whoosh_index/
 *.un~
 
 *.sqlite
