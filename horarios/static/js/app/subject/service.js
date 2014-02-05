@@ -54,6 +54,7 @@ define(['./module'],function (services){
     return {
       add : function(item) {
         //var isSubject = getSubject(item.code);
+        if(angular.isUndefined(item.name));
         var s = {
           name: item.name,
           code: item.code,
@@ -61,7 +62,6 @@ define(['./module'],function (services){
           color: getColor(item.code)
         };
         return Subject.getSubject(s).then(function(subject){
-          console.log(subject);
           return addSubject(subject);
         });
       },
