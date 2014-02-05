@@ -68,7 +68,7 @@ define(['./module'], function (controllers) {
     };
 
   });
-  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService, SubjectService, ngProgress) {
+  controllers.controller('ScheduleListCtrl', function ($scope, $rootScope, ScheduleService, SubjectService, ngProgress, $location) {
     /*
      * retrieves the schedules from the service
      */
@@ -126,14 +126,34 @@ define(['./module'], function (controllers) {
     };
   });
 
-  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService){
+  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService, $q){
+    //scope.$on('$locationChangeStart', function(ev) {
+      //ev.preventDefault();
+    //});
     if($stateParams.subjects !== null){
       var subjects = $stateParams.subjects.split(',');
     }
-    if(!angular.isUndefined(subjects)){
+    var addSubjects = function(subjects){
+      var deferred = $q.defer();
+      var count = subjects.length;
       subjects.forEach(function(subject){
         var s = subject.split('|');
-        SubjectService.add({code: s[0] });
+        if(!SubjectService.getByCode(s[0])){
+          SubjectService.add({code: s[0] }).then(function(){
+            count--;
+          });
+        }
+        if(count===0){
+          deferred.resolve(true);
+        }
+      });
+      return deferred.promise;
+    }
+    if(!angular.isUndefined(subjects)){
+      addSubjects(subjects).then(function(added){
+        if(added){
+          $rootScope.$broadcast('scheduleChange');
+        }
       });
     }
   });

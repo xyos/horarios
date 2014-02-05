@@ -77,16 +77,15 @@ define(['./module'],function (services){
       },
       reset: reset,
       fetch: function(){
-        schedules = [];
         return $http.get(getScheduleQuery())
         .then(function(response){
+          schedules = [];
           if(_.isEmpty(response.data)){
             var s = new Schedule(initialItems);
             s.index = 0;
             schedules.push(s);
           }
           response.data.forEach(function(sched,index){
-
             var schedule = new Schedule(sched);
             schedule.index = index;
             schedules.push(schedule);

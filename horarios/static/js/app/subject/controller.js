@@ -27,8 +27,9 @@ define(['./module'], function (controllers) {
     $scope.onSelect = function ($item) {
       SubjectService.add($item).then(function(added){
         if(added){
+          ScheduleService.setSubjectQuery(SubjectService.getQuery());
+          $state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
           ngProgress.start();
-          //$state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
         }
       });
     };
@@ -37,7 +38,8 @@ define(['./module'], function (controllers) {
      */
     $scope.removeSubject = function(code){
       SubjectService.del(code);
-      //$state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
+      ScheduleService.setSubjectQuery(SubjectService.getQuery());
+      $state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
     };
     /*
      * changes the check status for the given children
