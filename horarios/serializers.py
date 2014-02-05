@@ -11,13 +11,8 @@ class Serializer:
             out = []
             for i in data:
                 out.append(self.serialize_single(i))
-        elif isinstance(data, SearchQuerySet):
-            out = []
-            for i in data:
-                out.append(self.serialize_single(i.object))
         elif (data,self.serializedClass):
             out = self.serialize_single(data)
-
         return out
 
 class ScheduleSerializer(Serializer):
