@@ -2,14 +2,12 @@
 from services import SubjectsServices
 import factories
 from django.conf import settings
-from haystack.query import SearchQuerySet
 
 FACTORY = eval(settings.DAO_FACTORY)
 subjectsServices = SubjectsServices(FACTORY())
 
 def autocomplete(query):
-    #return subjectsServices.getSubjectsByName(query,"")
-    return SearchQuerySet().filter(content=query).load_all();
+    return subjectsServices.getSubjectsByNameSmart(query,"")
 
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)
