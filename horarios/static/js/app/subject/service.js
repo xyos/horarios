@@ -59,7 +59,8 @@ define(['./module'],function (services){
           name: item.name,
           code: item.code,
           departament: 'BIO',
-          color: getColor(item.code)
+          color: getColor(item.code),
+          groups: item.groups
         };
         return Subject.getSubject(s).then(function(subject){
           return addSubject(subject);
