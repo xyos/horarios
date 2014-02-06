@@ -21,7 +21,7 @@ class SubjectDao:
         data = self.sia.querySubjectsByName(name, level, 1)[0]
         return self.createSubject(data)
 
-    def getSubjectByCode(this,code):
+    def getSubjectByCode(self,code):
         data = self.sia.querySubjectsByName(code, level, 1)[0]
         return self.createSubject(data)
 
