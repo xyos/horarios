@@ -8,6 +8,9 @@ class SiaFactory:
     def getGroupDao(self):
         from SiaDaos import GroupDao
         return GroupDao(self.sia)
+    def getSubjectsRetriever(self):
+        from retrievers import PureRetriever
+        return PureRetriever(self.getSubjectDao())
 
 class LocalFactory:
     def getSubjectDao(self):
@@ -16,6 +19,9 @@ class LocalFactory:
     def getGroupDao(self):
         from DjangoDaos import GroupDao
         return GroupDao()
+    def getSubjectsRetriever(self):
+        from retrievers import HaystackRetriever
+        return HaystackRetriever()
 
 class MixedFactory:
     def __init__(self):
@@ -26,3 +32,6 @@ class MixedFactory:
     def getGroupDao(self):
         from SiaDaos import GroupDao
         return GroupDao(self.sia)
+    def getSubjectsRetriever(self):
+        from retrievers import HaystackRetriever
+        return HaystackRetriever()

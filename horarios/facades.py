@@ -7,7 +7,7 @@ FACTORY = eval(settings.DAO_FACTORY)
 subjectsServices = SubjectsServices(FACTORY())
 
 def autocomplete(query):
-    return subjectsServices.getSubjectsByNameSmart(query,"")
+    return subjectsServices.getSubjectsByName(query,"")
 
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)
