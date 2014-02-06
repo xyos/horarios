@@ -135,17 +135,19 @@ define(['./module'], function (controllers) {
     }
     var addSubjects = function(subjects){
       var deferred = $q.defer();
-      var count = subjects.length;
+      var promises = [];
       subjects.forEach(function(subject){
         var s = subject.split('|');
-        if(!SubjectService.getByCode(s[0])){
-          SubjectService.add({code: s[0] }).then(function(){
-            count--;
-          });
+        var code = s.splice(0,1);
+        var groups = s;
+        console.log(code);
+        console.log(groups);
+        if(!SubjectService.getByCode(code)){
+          promises.push(SubjectService.add({code: code , groups: groups}));
         }
-        if(count===0){
-          deferred.resolve(true);
-        }
+      });
+      $q.all(promises).then(function(){
+        deferred.resolve('true');
       });
       return deferred.promise;
     }
@@ -153,6 +155,7 @@ define(['./module'], function (controllers) {
       addSubjects(subjects).then(function(added){
         if(added){
           $rootScope.$broadcast('scheduleChange');
+          console.log('completed');
         }
       });
     }

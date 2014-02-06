@@ -3,7 +3,7 @@ from horarios.models import Subject
 
 
 class SubjectIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.NgramField(document=True, model_attr='name')
+    text = indexes.EdgeNgramField(document=True, model_attr='name')
 
     def get_model(self):
         return Subject

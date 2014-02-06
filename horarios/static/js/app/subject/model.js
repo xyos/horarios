@@ -38,10 +38,14 @@ define(['./module'], function (models) {
         };
 
         getTeachers(data.code).then(function (response) {
-          var data = response.data;
+          var teachers = response.data;
           var myTeachers = [];
-          data.forEach(function (item) {
-            item.isChecked = true;
+          teachers.forEach(function (item) {
+            if(!angular.isUndefined(data.groups)){
+              item.isChecked = !!(data.groups.indexOf("" + item.code ) + 1);
+            } else {
+              item.isChecked = true;
+            }
             var teacher = item.teacher.trim();
             if (teacher.length < 1) {
               teacher = 'Sin profesor asignado';
@@ -51,6 +55,7 @@ define(['./module'], function (models) {
               if (myTeachers[i].name === item.teacher) {
                 found = true;
                 myTeachers[i].groups.push(item);
+                myTeachers[i].isChecked &= item.isChecked; 
                 break;
               }
             }
@@ -58,11 +63,12 @@ define(['./module'], function (models) {
               var myTeacher = {};
               myTeacher.groups = [];
               myTeacher.name = teacher;
-              myTeacher.isChecked = true;
+              myTeacher.isChecked = item.isChecked;
               myTeacher.groups.push(item);
               myTeachers.push(myTeacher);
             }
           });
+          console.log(myTeachers);
           return myTeachers;
         }).then(function (data) {
           subject.teachers = data;
