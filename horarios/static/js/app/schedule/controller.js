@@ -127,37 +127,17 @@ define(['./module'], function (controllers) {
   });
 
   controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService, $q){
-    //scope.$on('$locationChangeStart', function(ev) {
-      //ev.preventDefault();
-    //});
-    if($stateParams.subjects !== null){
+
+    if ($stateParams.subjects !== null) {
       var subjects = $stateParams.subjects.split(',');
-    }
-    var addSubjects = function(subjects){
-      var deferred = $q.defer();
-      var promises = [];
-      subjects.forEach(function(subject){
-        var s = subject.split('|');
-        var code = s.splice(0,1);
-        var groups = s;
-        console.log(code);
-        console.log(groups);
-        if(!SubjectService.getByCode(code)){
-          promises.push(SubjectService.add({code: code , groups: groups}));
-        }
-      });
-      $q.all(promises).then(function(){
-        deferred.resolve('true');
-      });
-      return deferred.promise;
-    }
-    if(!angular.isUndefined(subjects)){
-      addSubjects(subjects).then(function(added){
-        if(added){
-          $rootScope.$broadcast('scheduleChange');
-          console.log('completed');
-        }
-      });
+      if (!angular.isUndefined(subjects)) {
+        SubjectService.addSubjects(subjects).then(function (added) {
+          if (added) {
+            $rootScope.$broadcast('scheduleChange');
+            console.log('completed');
+          }
+        });
+      }
     }
   });
 });

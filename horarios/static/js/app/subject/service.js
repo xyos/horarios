@@ -38,6 +38,21 @@ define(['./module'],function (services){
       }
     };
     //
+    var add = function (item) {
+      if (angular.isUndefined(item.name)) {
+        item.name = 'Sin Profesor Asignado';
+      }
+      var s = {
+        name: item.name,
+        code: item.code,
+        departament: 'BIO',
+        color: getColor(item.code),
+        groups: item.groups
+      };
+      return Subject.getSubject(s).then(function (subject) {
+        return addSubject(subject);
+      });
+    };
     var addSubject = function (subject) {
       var deferred = $q.defer();
       if(getSubject(subject.code)){
@@ -52,19 +67,24 @@ define(['./module'],function (services){
      * exposing the service methods
      */
     return {
-      add : function(item) {
-        //var isSubject = getSubject(item.code);
-        if(angular.isUndefined(item.name));
-        var s = {
-          name: item.name,
-          code: item.code,
-          departament: 'BIO',
-          color: getColor(item.code),
-          groups: item.groups
-        };
-        return Subject.getSubject(s).then(function(subject){
-          return addSubject(subject);
+      add : add,
+      addSubjects: function (subjects) {
+        var deferred = $q.defer();
+        var promises = [];
+        subjects.forEach(function (subject) {
+          var s = subject.split('|');
+          var code = s.splice(0, 1);
+          var groups = s;
+          console.log(code);
+          console.log(groups);
+          if (!getSubject(parseInt(code,10))) {
+            promises.push(add({code: code, groups: groups}));
+          }
         });
+        $q.all(promises).then(function () {
+          deferred.resolve('true');
+        });
+        return deferred.promise;
       },
       get : function(){
         return subjects;
