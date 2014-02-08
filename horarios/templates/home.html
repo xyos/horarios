@@ -45,11 +45,13 @@
       <div class="container text-center">
         <!--social buttons-->
         <div>
+        {% if not debug %}
           <div id="fb-root"></div>
           <div class="fb-like" style="display: inline-flex;" data-href="http://nomeroben.com" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
           <iframe src="http://ghbtns.com/github-btn.html?user=xyos&repo=horarios&type=watch" allowtransparency="true" frameborder="0" scrolling="0" width="62" height="20"></iframe>
           <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://nomeroben.com/bogota" data-lang="es" data-hashtags="horarioun">Twittear</a>
         </div>
+        {% endif %}
         <div>© 2014 NoMeRoben.com</div>
         <div><strong>Horarios UN</strong> creado por <a href="http://jairosuarez.com">Jairo Suárez</a>, Santiago Pérez</div>
         <div>Código licenciado bajo: <a href="http://opensource.org/licenses/mit-license.html">MIT License</a></div>
@@ -60,6 +62,7 @@
     <script>
       window.name = "NG_DEFER_BOOTSTRAP!";
     </script>
+  {% if not debug %}
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -85,5 +88,6 @@
       fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
     </script>
+  {% endif %}
 </body>
 </html>

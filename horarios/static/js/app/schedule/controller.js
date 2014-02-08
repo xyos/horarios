@@ -133,7 +133,7 @@ define(['./module'], function (controllers) {
       if (!angular.isUndefined(subjects)) {
         SubjectService.addSubjects(subjects).then(function (added) {
           if (added) {
-            $rootScope.$broadcast('scheduleChange');
+            $rootScope.$broadcast('SubjectsAdded');
             console.log('completed');
           }
         });

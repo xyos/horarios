@@ -4,7 +4,7 @@
 */
 define(['./module'], function (controllers) {
   'use strict';
-  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService,ngProgress, $state) {
+  controllers.controller('SubjectCtrl', function ($scope,SubjectService,ScheduleService,ngProgress, $state, $rootScope) {
     /*
      * lists all the currently selected subjects
      */
@@ -81,5 +81,9 @@ define(['./module'], function (controllers) {
       var throttledEmit = _.throttle(emit, 1500, { 'leading': false, 'trailing': true });
       throttledEmit();
     };
+    $scope.$on('SubjectsAdded', function(){
+      console.log('subjects added');
+      window.subject = $scope;
+    });
   });
 });
