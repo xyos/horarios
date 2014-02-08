@@ -20,6 +20,7 @@ clone in git
     cd -
     python manage.py flush
     python manage.py syncdb
+    python manage.py migrate
     python manage.py syncsia
     python manage.py rebuild_index
     python manage.py runserver
