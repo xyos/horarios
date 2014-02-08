@@ -11,7 +11,6 @@ clone in git
     virtualenv horarios
     cd horarios
     source ./bin/activate
-    cd ../
     pip install -r requirements.txt
     cd horarios/static/js/
     #this step requires node.js, bower, and require.js (npm install -g bower && npm install -g requirejs & npm intall -g grunt-cli)
@@ -21,7 +20,10 @@ clone in git
     cd -
     python manage.py flush
     python manage.py syncdb
+    python manage.py migrate
     python manage.py syncsia
+    python manage.py rebuild_index
     python manage.py runserver
+    
 
-for stylesheet development sass 3.3 is required (gem install sass --pre)
+for stylesheet development sass is required `gem install sass`
