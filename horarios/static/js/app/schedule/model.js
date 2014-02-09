@@ -154,8 +154,8 @@ define(['./module'], function (models) {
        */
       var decimalToSchedString = function (value) {
 
-        that.earlyHours = (value & 127) > 0 || false || that.earlyHours;
-        that.lateHours = (value & 15728640) > 0 || false || that.lateHours;
+        //that.earlyHours = (value & 127) > 0 || false || that.earlyHours;
+        //that.lateHours = (value & 15728640) > 0 || false || that.lateHours;
         return ( value + HEADING_ONE ).toString(2).substring(2).split('').reverse().join('');
       };
 

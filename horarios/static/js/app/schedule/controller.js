@@ -19,7 +19,8 @@ define(['./module'], function (controllers) {
     $scope.$watch('busySelect', function (value) {
       if (!value) {
         ScheduleService.setBusy($scope.busy);
-        $scope.$emit('scheduleChange', SubjectService.getQuery());
+        $scope.$emit('ScheduleParamsChange');
+        $scope.$emit('scheduleChange');
       }
     });
     for (var i = 1; i <= 24; i++) {
