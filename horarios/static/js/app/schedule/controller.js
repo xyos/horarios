@@ -19,13 +19,14 @@ define(['./module'], function (controllers) {
     $scope.$watch('busySelect', function (value) {
       if (!value) {
         ScheduleService.setBusy($scope.busy);
+        console.log($scope.busy);
         $scope.$emit('ScheduleParamsChange');
         $scope.$emit('scheduleChange');
       }
     });
+
     for (var i = 1; i <= 24; i++) {
       $scope.hours.push(i - 1 + ':00 - ' + i + ':00');
-      $scope.busy.push([false, false, false, false, false, false, false]);
     }
 
     $scope.schedule = ScheduleService.getActive();
@@ -131,7 +132,9 @@ define(['./module'], function (controllers) {
   });
 
   controllers.controller('ScheduleCtrl', function($scope, ScheduleService, $stateParams, $rootScope, SubjectService, $state){
-    //loads Subject Info from an URL ($stateParams)
+    if ($stateParams.busy !== null){
+      ScheduleService.setBusy(ScheduleService.parseBusy($stateParams.busy));
+    }
     if ($stateParams.subjects !== null) {
       var subjects = $stateParams.subjects.split(',');
       if (!angular.isUndefined(subjects)) {

@@ -16,6 +16,7 @@ define(['./module'],function (services){
 
     var initialSchedule = new Schedule(initialItems);
     initialSchedule.parseRows();
+    var parseBusy = initialSchedule.getBusyFromString;
 
     var schedules = [];
     schedules.push(initialSchedule);
@@ -25,7 +26,7 @@ define(['./module'],function (services){
       schedules.push(initialSchedule);
       activeSchedule = schedules[0];
     };
-    var busyRows = [];
+    var busyRows = parseBusy('0,0,0,0,0,0,0');
 
     var busyQuery = function(){
       var query = '';
@@ -105,6 +106,7 @@ define(['./module'],function (services){
       getBusy: function() {
         return busyRows;
       },
+      parseBusy: parseBusy,
       getBusyQuery: busyQuery,
       getList: function(){
         if(_.isEmpty(schedules)){
