@@ -107,18 +107,21 @@ define(['./module'], function (controllers) {
     var lastQuery = '';
     $rootScope.$on('scheduleChange', function (event, query) {
       ScheduleService.setSubjectQuery(SubjectService.getQuery());
-      if (ScheduleService.getQuery() !== lastQuery) {
-        ScheduleService.fetch(query).then(function () {
-          $scope.schedules = ScheduleService.getList();
-          ScheduleService.setActive(0);
-          $scope.index = 0;
-          $scope.currentPage = 0;
-          $scope.$emit('activeScheduleChange');
-          ngProgress.complete();
-          lastQuery = ScheduleService.getQuery();
-        });
+      if ((ScheduleService.getQuery() !== lastQuery) && !ScheduleService.requestOnProgress) {
+        //ScheduleService.requestOnProgress = true;
+        var request = ScheduleService.fetch(query);
+        if (request) {
+          request.then(function () {
+            $scope.schedules = ScheduleService.getList();
+            ScheduleService.setActive(0);
+            $scope.index = 0;
+            $scope.currentPage = 0;
+            //$scope.$emit('activeScheduleChange');
+            ngProgress.complete();
+            ScheduleService.lastQuery = ScheduleService.getQuery();
+          });
+        }
       }
-
     });
 
     $scope.update = function () {

@@ -61,7 +61,8 @@ define(['./module'],function (services){
       activeSchedule.index = schedule.index;
       return schedule;
     };
-
+    var lastQuery = '';
+    var requestOnProgress = false;
     return {
       getActive: function(){
         return activeSchedule;
@@ -77,20 +78,26 @@ define(['./module'],function (services){
       },
       reset: reset,
       fetch: function(){
-        return $http.get(getScheduleQuery())
-        .then(function(response){
-          schedules = [];
-          if(_.isEmpty(response.data)){
-            var s = new Schedule(initialItems);
-            s.index = 0;
-            schedules.push(s);
-          }
-          response.data.forEach(function(sched,index){
-            var schedule = new Schedule(sched);
-            schedule.index = index;
-            schedules.push(schedule);
-          });
-        });
+        if(!requestOnProgress){
+          requestOnProgress = true;
+          return $http.get(getScheduleQuery())
+            .then(function (response) {
+              schedules = [];
+              if (_.isEmpty(response.data)) {
+                var s = new Schedule(initialItems);
+                s.index = 0;
+                schedules.push(s);
+              }
+              response.data.forEach(function (sched, index) {
+                var schedule = new Schedule(sched);
+                schedule.index = index;
+                schedules.push(schedule);
+              });
+              requestOnProgress = false;
+            });
+        } else {
+          return false;
+        }
       },
       get: function(index){
         return schedules[index];
@@ -98,7 +105,7 @@ define(['./module'],function (services){
       setBusy: function(busy) {
         busyRows = busy;
       },
-      getBusy: function(busy) {
+      getBusy: function() {
         return busyRows;
       },
       getList: function(){
@@ -106,7 +113,9 @@ define(['./module'],function (services){
           reset();
         }
         return schedules;
-      }
+      },
+      lastQuery: lastQuery,
+      requestOnProgress : requestOnProgress
     };
   });
 });
