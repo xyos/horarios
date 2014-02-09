@@ -75,8 +75,6 @@ define(['./module'],function (services){
           var s = subject.split('|');
           var code = s.splice(0, 1);
           var groups = s;
-          console.log(code);
-          console.log(groups);
           if (!getSubject(parseInt(code,10))) {
             promises.push(add({code: code, groups: groups}));
           }

@@ -71,7 +71,6 @@ define(['./module'], function (models) {
               myTeachers.push(myTeacher);
             }
           });
-          console.log(myTeachers);
           return myTeachers;
         }).then(function (data) {
           subject.teachers = data;
