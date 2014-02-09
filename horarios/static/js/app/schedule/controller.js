@@ -126,8 +126,8 @@ define(['./module'], function (controllers) {
     };
   });
 
-  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService, $q){
-
+  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, $state, $location){
+    //loads Subject Info from an URL ($stateParams)
     if ($stateParams.subjects !== null) {
       var subjects = $stateParams.subjects.split(',');
       if (!angular.isUndefined(subjects)) {
@@ -139,5 +139,21 @@ define(['./module'], function (controllers) {
         });
       }
     }
+    // refresh the view if a group is changed
+    $scope.$on('ScheduleParamsChange',function(){
+      console.log('params changed');
+      refresh();
+    });
+    // refresh the schedules
+    var refresh = function(){
+      $state.go('schedules.ui',{subjects: SubjectService.getQuery(),busy: '1234'});
+      window.locat = $location;
+      window.state = $state;
+      window.params = $stateParams;
+    };
+    $rootScope.$on('$stateChangeStart',function(event){
+      //event.preventDefault();
+      console.log("stopped");
+    });
   });
 });

@@ -31,6 +31,8 @@ define(['./module'], function (models) {
           code: s.code,
           name: s.name,
           teachers: {},
+          toggle:false,
+          isChecked:true,
           type: s.type,
           departament: '',
           color: data.color,
@@ -65,6 +67,7 @@ define(['./module'], function (models) {
               myTeacher.name = teacher;
               myTeacher.isChecked = item.isChecked;
               myTeacher.groups.push(item);
+              myTeacher.toggle = false;
               myTeachers.push(myTeacher);
             }
           });

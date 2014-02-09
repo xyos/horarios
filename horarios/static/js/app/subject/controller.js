@@ -28,7 +28,7 @@ define(['./module'], function (controllers) {
       SubjectService.add($item).then(function(added){
         if(added){
           ScheduleService.setSubjectQuery(SubjectService.getQuery());
-          $state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
+          $rootScope.$broadcast('ScheduleParamsChange');
           ngProgress.start();
         }
       });
@@ -39,7 +39,7 @@ define(['./module'], function (controllers) {
     $scope.removeSubject = function(code){
       SubjectService.del(code);
       ScheduleService.setSubjectQuery(SubjectService.getQuery());
-      $state.go('schedules.ui',{subjects: SubjectService.getQuery(), busy: '1234'});
+      $rootScope.$broadcast('ScheduleParamsChange');
     };
     /*
      * changes the check status for the given children
@@ -78,8 +78,9 @@ define(['./module'], function (controllers) {
      * a subject change event
      */
     $scope.changeGroup = function(){
-      var throttledEmit = _.throttle(emit, 1500, { 'leading': false, 'trailing': true });
-      throttledEmit();
+      $rootScope.$broadcast('ScheduleParamsChange');
+      //var throttledEmit = _.throttle(emit, 1500, { 'leading': false, 'trailing': true });
+      //throttledEmit();
     };
     $scope.$on('SubjectsAdded', function(){
       console.log('subjects added');
