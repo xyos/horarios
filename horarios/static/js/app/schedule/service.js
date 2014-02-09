@@ -1,6 +1,6 @@
 define(['./module'],function (services){
   'use strict';
-  
+
   services.service('ScheduleService', function($http, $q, Schedule){
     var initialItems = {
       'busy': [1048448,1048448, 1048448, 1048448, 1048448, 1048448, 1048448],
@@ -105,6 +105,7 @@ define(['./module'],function (services){
       getBusy: function() {
         return busyRows;
       },
+      getBusyQuery: busyQuery,
       getList: function(){
         if(_.isEmpty(schedules)){
           reset();

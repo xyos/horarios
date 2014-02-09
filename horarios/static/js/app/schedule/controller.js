@@ -10,7 +10,7 @@ define(['./module'], function (controllers) {
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     $scope.hours = [];
     $scope.scheduleNumber = ScheduleService.getActive().index;
-    $scope.busy = [];
+    $scope.busy = ScheduleService.getBusy();
     $scope.query = '';
     $scope.$watch('ScheduleService.getQuery()', function (newVal) {
       $scope.query = newVal;
@@ -129,7 +129,7 @@ define(['./module'], function (controllers) {
     };
   });
 
-  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, $state, $location){
+  controllers.controller('ScheduleCtrl', function($scope, ScheduleService, $stateParams, $rootScope, SubjectService, $state){
     //loads Subject Info from an URL ($stateParams)
     if ($stateParams.subjects !== null) {
       var subjects = $stateParams.subjects.split(',');
@@ -143,7 +143,7 @@ define(['./module'], function (controllers) {
     }
     // refresh the view if a group is changed
     $scope.$on('ScheduleParamsChange',function(){
-      $state.go('schedules.ui',{subjects: SubjectService.getQuery(),busy: '1234'});
+      $state.go('schedules.ui',{subjects: SubjectService.getQuery(),busy: ScheduleService.getBusyQuery()});
     });
   });
 });
