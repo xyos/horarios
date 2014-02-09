@@ -1,5 +1,6 @@
 define(['./module'],function (services){
   'use strict';
+  
   services.service('ScheduleService', function($http, $q, Schedule){
     var initialItems = {
       'busy': [1048448,1048448, 1048448, 1048448, 1048448, 1048448, 1048448],
@@ -77,27 +78,23 @@ define(['./module'],function (services){
         mergeSchedule(schedules[index]);
       },
       reset: reset,
-      fetch: function(){
-        if(!requestOnProgress){
-          requestOnProgress = true;
-          return $http.get(getScheduleQuery())
-            .then(function (response) {
-              schedules = [];
-              if (_.isEmpty(response.data)) {
-                var s = new Schedule(initialItems);
-                s.index = 0;
-                schedules.push(s);
-              }
-              response.data.forEach(function (sched, index) {
-                var schedule = new Schedule(sched);
-                schedule.index = index;
-                schedules.push(schedule);
-              });
-              requestOnProgress = false;
+      fetch: function () {
+        requestOnProgress = true;
+        return $http.get(getScheduleQuery())
+          .then(function (response) {
+            schedules = [];
+            if (_.isEmpty(response.data)) {
+              var s = new Schedule(initialItems);
+              s.index = 0;
+              schedules.push(s);
+            }
+            response.data.forEach(function (sched, index) {
+              var schedule = new Schedule(sched);
+              schedule.index = index;
+              schedules.push(schedule);
             });
-        } else {
-          return false;
-        }
+            requestOnProgress = false;
+          });
       },
       get: function(index){
         return schedules[index];

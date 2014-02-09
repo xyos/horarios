@@ -4,6 +4,7 @@
  */
 define(['./module'], function (controllers) {
   'use strict';
+
   controllers.controller('ScheduleDetailCtrl', function ($scope, $rootScope, ScheduleService, SubjectService) {
     $scope.daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
@@ -104,21 +105,20 @@ define(['./module'], function (controllers) {
     /*
      * refresh the view after a subject is changed
      */
-    var lastQuery = '';
-    $rootScope.$on('scheduleChange', function (event, query) {
+    $rootScope.$on('scheduleChange', function () {
+
       ScheduleService.setSubjectQuery(SubjectService.getQuery());
-      if ((ScheduleService.getQuery() !== lastQuery) && !ScheduleService.requestOnProgress) {
+      if (ScheduleService.getQuery() !== ScheduleService.lastQuery) {
         //ScheduleService.requestOnProgress = true;
-        var request = ScheduleService.fetch(query);
+        var request = ScheduleService.fetch();
         if (request) {
           request.then(function () {
             $scope.schedules = ScheduleService.getList();
             ScheduleService.setActive(0);
             $scope.index = 0;
             $scope.currentPage = 0;
-            //$scope.$emit('activeScheduleChange');
+            $scope.$emit('activeScheduleChange');
             ngProgress.complete();
-            ScheduleService.lastQuery = ScheduleService.getQuery();
           });
         }
       }
@@ -136,27 +136,14 @@ define(['./module'], function (controllers) {
       if (!angular.isUndefined(subjects)) {
         SubjectService.addSubjects(subjects).then(function (added) {
           if (added) {
-            $rootScope.$broadcast('SubjectsAdded');
-            console.log('completed');
+            $rootScope.$broadcast('scheduleChange');
           }
         });
       }
     }
     // refresh the view if a group is changed
     $scope.$on('ScheduleParamsChange',function(){
-      console.log('params changed');
-      refresh();
-    });
-    // refresh the schedules
-    var refresh = function(){
       $state.go('schedules.ui',{subjects: SubjectService.getQuery(),busy: '1234'});
-      window.locat = $location;
-      window.state = $state;
-      window.params = $stateParams;
-    };
-    $rootScope.$on('$stateChangeStart',function(event){
-      //event.preventDefault();
-      console.log("stopped");
     });
   });
 });

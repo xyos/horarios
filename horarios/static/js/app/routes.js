@@ -31,4 +31,5 @@ define(['../app'],function (app) {
         }) ;
       }]
   );
+  app.value('$anchorScroll', angular.noop);
 });

@@ -83,8 +83,7 @@ define(['./module'], function (controllers) {
       //throttledEmit();
     };
     $scope.$on('SubjectsAdded', function(){
-      console.log('subjects added');
-      window.subject = $scope;
+
     });
   });
 });
