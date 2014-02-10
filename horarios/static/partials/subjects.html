@@ -10,14 +10,13 @@
             <div class="check">
                 <input type="checkbox"
                        ng-model="subject.isChecked"
-                       ng-checked="true"
                        ng-change="checkChange(subject.teachers,subject.isChecked)">
             </div>
             <div class="name"
                  tooltip="Haga click para expandir"
                  class="btn btn-default"
                  ng-click="subject.toggle = !subject.toggle"
-                 ng-init="subject.toggle=false">
+                 ng-init="subject.toggle">
                 <b>{{ subject.name | humanize }}</b> {{ subject.code }}
             </div>
             <div class="close">
@@ -33,18 +32,17 @@
                 <div class="teacher-header">
                     <div class="check">
                         <input type="checkbox"
-                           ng-checked="true"
+                           ng-checked="teacher.isChecked"
                            ng-model="teacher.isChecked"
                            ng-change="checkChange(teacher.groups,teacher.isChecked)">
                     </div>
-                    <div class="name"  tooltip="Haga click para ver los grupos" ng-click="teacher.toggle = !teacher.toggle"
-                           ng-init="teacher.toggle=false">
+                    <div class="name"  tooltip="Haga click para ver los grupos" ng-click="teacher.toggle = !teacher.toggle">
                                {{ teacher.name | humanize }}
                     </div>
                 </div>
                 <div class="teacher-body" ng-show="teacher.toggle" ng-animate="'animate'">
                     <div class="group-heading" ng-repeat="group in teacher.groups">
-                        <input type="checkbox" ng-checked="true" ng-model="group.isChecked"
+                        <input type="checkbox" ng-checked="group.isChecked" ng-model="group.isChecked"
                                ng-change="changeGroup()">
                         <span>grupo {{ group.code }}</span>
 

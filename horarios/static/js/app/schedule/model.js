@@ -35,7 +35,7 @@ define(['./module'], function (models) {
           if (col === '1') {
             trans[y][x] = schedItem;
           } else {
-            trans[y][x] = {};
+            trans[y][x] = (schedItem === true) ? false : {};
           }
         });
       });
@@ -145,18 +145,25 @@ define(['./module'], function (models) {
     var generator = new ScheduleThumbnail(100, 50);
 
     var Schedule = function (schedItems) {
-
       var that = this;
-      that.url = '';
+      this.getBusyFromString = function(string){
+        var busyRows = [];
+        string.split(',').forEach(function (item) {
+          busyRows.push(decimalToSchedString(item));
+        });
+        return transpose(busyRows, true);
+      };
+
+      this.url = '';
       /*
        * adds the heading zeros and transforms the values to binary for the
        * busy array returns a string
        */
       var decimalToSchedString = function (value) {
 
-        that.earlyHours = (value & 127) > 0 || false || that.earlyHours;
-        that.lateHours = (value & 15728640) > 0 || false || that.lateHours;
-        return ( value + HEADING_ONE ).toString(2).substring(2).split('').reverse().join('');
+        //that.earlyHours = (value & 127) > 0 || false || that.earlyHours;
+        //that.lateHours = (value & 15728640) > 0 || false || that.lateHours;
+        return ( parseInt(value, 10) + HEADING_ONE ).toString(2).substring(2).split('').reverse().join('');
       };
 
       var parsed = false;

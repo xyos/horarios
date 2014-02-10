@@ -4,12 +4,13 @@
  */
 define(['./module'], function (controllers) {
   'use strict';
+
   controllers.controller('ScheduleDetailCtrl', function ($scope, $rootScope, ScheduleService, SubjectService) {
     $scope.daysOfWeek =
       ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
     $scope.hours = [];
     $scope.scheduleNumber = ScheduleService.getActive().index;
-    $scope.busy = [];
+    $scope.busy = ScheduleService.getBusy();
     $scope.query = '';
     $scope.$watch('ScheduleService.getQuery()', function (newVal) {
       $scope.query = newVal;
@@ -18,12 +19,14 @@ define(['./module'], function (controllers) {
     $scope.$watch('busySelect', function (value) {
       if (!value) {
         ScheduleService.setBusy($scope.busy);
-        $scope.$emit('scheduleChange', SubjectService.getQuery());
+        console.log($scope.busy);
+        $scope.$emit('ScheduleParamsChange');
+        $scope.$emit('scheduleChange');
       }
     });
+
     for (var i = 1; i <= 24; i++) {
       $scope.hours.push(i - 1 + ':00 - ' + i + ':00');
-      $scope.busy.push([false, false, false, false, false, false, false]);
     }
 
     $scope.schedule = ScheduleService.getActive();
@@ -104,21 +107,23 @@ define(['./module'], function (controllers) {
     /*
      * refresh the view after a subject is changed
      */
-    var lastQuery = '';
-    $rootScope.$on('scheduleChange', function (event, query) {
-      ScheduleService.setSubjectQuery(SubjectService.getQuery());
-      if (ScheduleService.getQuery() !== lastQuery) {
-        ScheduleService.fetch(query).then(function () {
-          $scope.schedules = ScheduleService.getList();
-          ScheduleService.setActive(0);
-          $scope.index = 0;
-          $scope.currentPage = 0;
-          $scope.$emit('activeScheduleChange');
-          ngProgress.complete();
-          lastQuery = ScheduleService.getQuery();
-        });
-      }
+    $rootScope.$on('scheduleChange', function () {
 
+      ScheduleService.setSubjectQuery(SubjectService.getQuery());
+      if (ScheduleService.getQuery() !== ScheduleService.lastQuery) {
+        //ScheduleService.requestOnProgress = true;
+        var request = ScheduleService.fetch();
+        if (request) {
+          request.then(function () {
+            $scope.schedules = ScheduleService.getList();
+            ScheduleService.setActive(0);
+            $scope.index = 0;
+            $scope.currentPage = 0;
+            $scope.$emit('activeScheduleChange');
+            ngProgress.complete();
+          });
+        }
+      }
     });
 
     $scope.update = function () {
@@ -126,38 +131,23 @@ define(['./module'], function (controllers) {
     };
   });
 
-  controllers.controller('ScheduleCtrl', function($scope, $stateParams, $rootScope, SubjectService, ScheduleService, $q){
-    //scope.$on('$locationChangeStart', function(ev) {
-      //ev.preventDefault();
-    //});
-    if($stateParams.subjects !== null){
+  controllers.controller('ScheduleCtrl', function($scope, ScheduleService, $stateParams, $rootScope, SubjectService, $state){
+    if ($stateParams.busy !== null){
+      ScheduleService.setBusy(ScheduleService.parseBusy($stateParams.busy));
+    }
+    if ($stateParams.subjects !== null) {
       var subjects = $stateParams.subjects.split(',');
+      if (!angular.isUndefined(subjects)) {
+        SubjectService.addSubjects(subjects).then(function (added) {
+          if (added) {
+            $rootScope.$broadcast('scheduleChange');
+          }
+        });
+      }
     }
-    var addSubjects = function(subjects){
-      var deferred = $q.defer();
-      var promises = [];
-      subjects.forEach(function(subject){
-        var s = subject.split('|');
-        var code = s.splice(0,1);
-        var groups = s;
-        console.log(code);
-        console.log(groups);
-        if(!SubjectService.getByCode(code)){
-          promises.push(SubjectService.add({code: code , groups: groups}));
-        }
-      });
-      $q.all(promises).then(function(){
-        deferred.resolve('true');
-      });
-      return deferred.promise;
-    }
-    if(!angular.isUndefined(subjects)){
-      addSubjects(subjects).then(function(added){
-        if(added){
-          $rootScope.$broadcast('scheduleChange');
-          console.log('completed');
-        }
-      });
-    }
+    // refresh the view if a group is changed
+    $scope.$on('ScheduleParamsChange',function(){
+      $state.go('schedules.ui',{subjects: SubjectService.getQuery(),busy: ScheduleService.getBusyQuery()});
+    });
   });
 });

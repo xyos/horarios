@@ -1,5 +1,6 @@
 define(['./module'],function (services){
   'use strict';
+
   services.service('ScheduleService', function($http, $q, Schedule){
     var initialItems = {
       'busy': [1048448,1048448, 1048448, 1048448, 1048448, 1048448, 1048448],
@@ -15,6 +16,7 @@ define(['./module'],function (services){
 
     var initialSchedule = new Schedule(initialItems);
     initialSchedule.parseRows();
+    var parseBusy = initialSchedule.getBusyFromString;
 
     var schedules = [];
     schedules.push(initialSchedule);
@@ -24,7 +26,7 @@ define(['./module'],function (services){
       schedules.push(initialSchedule);
       activeSchedule = schedules[0];
     };
-    var busyRows = [];
+    var busyRows = parseBusy('0,0,0,0,0,0,0');
 
     var busyQuery = function(){
       var query = '';
@@ -61,7 +63,8 @@ define(['./module'],function (services){
       activeSchedule.index = schedule.index;
       return schedule;
     };
-
+    var lastQuery = '';
+    var requestOnProgress = false;
     return {
       getActive: function(){
         return activeSchedule;
@@ -76,21 +79,23 @@ define(['./module'],function (services){
         mergeSchedule(schedules[index]);
       },
       reset: reset,
-      fetch: function(){
+      fetch: function () {
+        requestOnProgress = true;
         return $http.get(getScheduleQuery())
-        .then(function(response){
-          schedules = [];
-          if(_.isEmpty(response.data)){
-            var s = new Schedule(initialItems);
-            s.index = 0;
-            schedules.push(s);
-          }
-          response.data.forEach(function(sched,index){
-            var schedule = new Schedule(sched);
-            schedule.index = index;
-            schedules.push(schedule);
+          .then(function (response) {
+            schedules = [];
+            if (_.isEmpty(response.data)) {
+              var s = new Schedule(initialItems);
+              s.index = 0;
+              schedules.push(s);
+            }
+            response.data.forEach(function (sched, index) {
+              var schedule = new Schedule(sched);
+              schedule.index = index;
+              schedules.push(schedule);
+            });
+            requestOnProgress = false;
           });
-        });
       },
       get: function(index){
         return schedules[index];
@@ -98,15 +103,19 @@ define(['./module'],function (services){
       setBusy: function(busy) {
         busyRows = busy;
       },
-      getBusy: function(busy) {
+      getBusy: function() {
         return busyRows;
       },
+      parseBusy: parseBusy,
+      getBusyQuery: busyQuery,
       getList: function(){
         if(_.isEmpty(schedules)){
           reset();
         }
         return schedules;
-      }
+      },
+      lastQuery: lastQuery,
+      requestOnProgress : requestOnProgress
     };
   });
 });

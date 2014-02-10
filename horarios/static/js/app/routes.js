@@ -8,11 +8,11 @@ define(['../app'],function (app) {
         $stateProvider
         .state('schedules',{
           abstract : true,
-          url : '/schedules?subjects&busy',
+          url : '/schedules',
           templateUrl : '/static/partials/schedules.html'
         })
         .state('schedules.ui',{
-          url : '',
+          url : '?subjects&busy&active',
           views: {
             'subjects@schedules': {
               templateUrl: '/static/partials/subjects.html'
@@ -31,4 +31,5 @@ define(['../app'],function (app) {
         }) ;
       }]
   );
+  app.value('$anchorScroll', angular.noop);
 });
