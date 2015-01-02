@@ -65,18 +65,21 @@ class SIA:
     def queryGroupsBySubjectCode(this,code):
         data = json.dumps({"method": "buscador.obtenerGruposAsignaturas", "params": [code, "0"]})
         req = urllib2.Request(siaUrl + "/JSON-RPC", data, {'Content-Type': 'application/json'})
+        result = None
         try:
             f = urllib2.urlopen(req)
             result = json.loads(f.read())
             f.close()
-        except urllib2.HTTPerror, e:
+        except urllib2.HTTPError, e:
             logging.warning('HTTPError = ' + str(e.code))
         except urllib2.URLError, e:
             logging.warning('URLError = ' + e.reason)
         except httplib.HTTPException, e:
             logging.warn('HTTPException')
-
-        return result["result"]["list"]
+        if result:
+            return result["result"]["list"]
+        else:
+            return []
 
     @staticmethod
     @cache.region('short_term')
