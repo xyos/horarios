@@ -11,6 +11,9 @@ class SiaFactory:
     def getSubjectsRetriever(self):
         from retrievers import PureRetriever
         return PureRetriever(self.getSubjectDao())
+    def getProfessionDao(self):
+        from DjangoDaos import ProfessionDAO
+        return ProfessionDAO()
 
 class LocalFactory:
     def getSubjectDao(self):
@@ -22,6 +25,9 @@ class LocalFactory:
     def getSubjectsRetriever(self):
         from retrievers import HaystackRetriever
         return HaystackRetriever()
+    def getProfessionDao(self):
+        from DjangoDaos import ProfessionDAO
+        return ProfessionDAO()
 
 class MixedFactory:
     def __init__(self):
@@ -35,3 +41,6 @@ class MixedFactory:
     def getSubjectsRetriever(self):
         from retrievers import HaystackRetriever
         return HaystackRetriever()
+    def getProfessionDao(self):
+        from DjangoDaos import ProfessionDAO
+        return ProfessionDAO()

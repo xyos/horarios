@@ -1,6 +1,21 @@
 import BO as Models
 
 
+class ProfessionDAO:
+    def __init__(self,sia):
+        self.sia = sia
+
+    def getProfessions(self):
+        data = self.sia.getProfessions()
+        result = []
+        for i in data:
+            result.append(self.createProfession(i))
+        return result
+
+    @staticmethod
+    def createProfession(data):
+        return Models.Profession(data["name"],data["code"])
+
 class SubjectDao:
     def __init__(self,sia):
         self.sia = sia

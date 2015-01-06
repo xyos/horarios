@@ -96,6 +96,15 @@ def autocomplete_subject(request):
     return HttpResponse(serializer.serialize(subjects), content_type='application/json')
 
 
+class ProfessionsView(APIView):
+    def get(self, request, *args , **kw):
+        import facades
+        professions = facades.getProfessions()
+        from serializers import ProfessionSerializer
+        serializer = ProfessionSerializer()
+	professions = serializer.serialize(professions)
+        return Response(professions, status = status.HTTP_200_OK)
+
 class SubjectView(APIView):
     def get(self, request, *args , **kw):
         code = kw['subjectCode']

@@ -66,3 +66,14 @@ class GroupSerializer(Serializer):
         out['available'] = group.share
         out['totalShare'] = group.totalShare
         return out
+
+class ProfessionSerializer(Serializer):
+
+    def __init__(self):
+        Serializer.__init__(self,Models.Profession)
+    
+    def serialize_single(self,profession):
+        out = {}
+        out['name'] = profession.name
+        out['code'] = profession.code
+        return out

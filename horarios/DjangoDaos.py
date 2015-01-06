@@ -1,5 +1,17 @@
 import BO 
 import models
+class ProfessionDAO:
+    
+    def BOfromDjango(self,data):
+        groups = []
+        return BO.Profession(data.code,data.name)
+
+    def getProfessions(self):
+        professions = []
+        for i in models.Profession.objects.all():
+            professions.append(self.BOfromDjango(i))
+        return professions
+
 class SubjectDao:
     
     def BOfromDjango(self,data):

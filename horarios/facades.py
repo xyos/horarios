@@ -6,6 +6,9 @@ from django.conf import settings
 FACTORY = eval(settings.DAO_FACTORY)
 subjectsServices = SubjectsServices(FACTORY())
 
+def getProfessions():
+    return subjectsServices.getProfessions()
+
 def autocomplete(query):
     return subjectsServices.getSubjectsByName(query,"")
 

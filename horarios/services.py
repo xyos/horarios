@@ -10,6 +10,11 @@ class SubjectsServices:
         dao = self.factory.getGroupDao()
         return dao.getGroupsBySubjectCode(subjectCode)
 
+    def getProfessions(self):
+        dao = self.factory.getProfessionDao()
+        return dao.getProfessions()
+
+
     def getSimpleGroups(self,subjectCode):
         dao = self.factory.getGroupDao()
         return dao.getSimpleGroupsBySubjectCode(subjectCode)
