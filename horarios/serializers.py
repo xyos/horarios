@@ -1,3 +1,11 @@
+from horarios.models import Session
+from rest_framework import serializers
+
+class SessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Session
+        fields = ('url','session')
+
 import BO as Models
 import simplejson as json
 from haystack.query import SearchQuerySet

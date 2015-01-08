@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from horarios.views import SubjectAutocompleteView, RandomScheduleView,GroupsView,SchedulesView,SubjectView,ProfessionsView
+from horarios.views import SubjectAutocompleteView, RandomScheduleView,GroupsView,SchedulesView,SubjectView,ProfessionsView,SessionList,SessionDetail
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     url(r'^api/v1.0/professions/$', ProfessionsView.as_view()),
     url(r'^api/v1.0/schedule/subjects=(?P<subjects>[\d,|]*)&busy=(?P<busy>[\d,]*)$', SchedulesView.as_view() , name='schedules'),
     url(r'^api/v1.0/schedule/subjects=(?P<subjects>[\d,|]*)&busy=(?P<busy>[\d,]*)/(?P<schedule>\d+)/ics$', 'horarios.views.getICS' , name='scheduleICS'),
+    url(r'^api/v1.0/sessions/$',SessionList.as_view()),
+    url(r'^api/v1.0/sessions/(?P<pk>\w+)$',SessionDetail.as_view()),
 
     # url(r'^horarios/', include('horarios.foo.urls')),
 

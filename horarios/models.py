@@ -1,4 +1,6 @@
 from django.db import models
+import json
+import shortuuid
 
 class Subject(models.Model):
     name = models.CharField(max_length=200)
@@ -20,3 +22,9 @@ class Group(models.Model):
     subject = models.ForeignKey(Subject)
     professions = models.ManyToManyField(Profession)
 
+def make_uuid():
+    return shortuuid.ShortUUID().random(length = 10)
+
+class Session(models.Model):
+    url  = models.CharField(primary_key=True, max_length=10, default=make_uuid)
+    session = models.CharField(max_length=10000)

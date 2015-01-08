@@ -6,6 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from horarios.serializers import SessionSerializer
+from horarios.models import Session
 
 def home(request):
     """
@@ -213,3 +216,12 @@ def getICS(request,*args,**kw):
     response = HttpResponse(Helpers.getIcsFromSchedule(s[schedule]),mimetype='application/ics')
     response['Content-Disposition'] = 'attachment; filename=horario.ics' 
     return response
+
+from rest_framework import generics
+class SessionList(generics.CreateAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
+
+class SessionDetail(generics.RetrieveAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
