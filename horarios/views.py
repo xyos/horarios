@@ -147,6 +147,24 @@ class SubjectAutocompleteView(APIView):
         serializer = SimpleSubjectsSerializer()
         return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
 
+class SubjectProfessionAutocompleteView(APIView):
+    def get(self, request, *args , **kw):
+        import json
+        search_term = kw['search_term']
+        try:
+            profession  = int(kw['profession'])
+        except:
+            profession = ""
+        try:
+            subject_type = json.loads(kw['subject_type'])
+        except:
+            subject_type = []
+        import facades
+        subjects = facades.subjectsByNameOrProfession(search_term,profession,subject_type)
+        from serializers import SimpleSubjectsSerializer
+        serializer = SimpleSubjectsSerializer()
+        return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
+
 class GroupsView(APIView):
     def get(self, request, *args , **kw):
         code = kw['subjectCode']

@@ -15,6 +15,9 @@ def autocomplete(query):
 def getSubjectsByName(name,level,maxResults=100):
     return subjectsServices.getSubjectsByName(name,level,maxResults)
 
+def subjectsByNameOrProfession(search_term,profession,subject_type):
+    return subjectsServices.getSubjectsByNameOrProfession(search_term,profession,subject_type)
+
 def getSubjectByCode(code):
     return subjectsServices.getSubjectByCode(code)
 

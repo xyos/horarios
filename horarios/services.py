@@ -31,3 +31,7 @@ class SubjectsServices:
     def getSubjectByCode(self,code):
         dao = self.factory.getSubjectDao()
         return dao.getSubjectByCode(code)
+
+    def getSubjectsByNameOrProfession(self,search_term,profession,subject_type):
+        dao = self.factory.getSubjectDao()
+        return dao.getSearchResults(search_term, profession, subject_type) 
