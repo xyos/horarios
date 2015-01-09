@@ -9,6 +9,55 @@ siaUrl=settings.SIA_URL
 import models as djangoModels
 import SiaDaos
 
+import re
+import string
+
+def sanitize_search_term(term):
+    # Replace all puncuation with spaces.
+    allowed_punctuation = set(['&', '|', '"', "'"])
+    all_punctuation = set(string.punctuation)
+    punctuation = "".join(all_punctuation - allowed_punctuation)
+    term = re.sub(r"[{}]+".format(re.escape(punctuation)), " ", \
+            term)
+
+    # Substitute all double quotes to single quotes.
+    term = term.replace('"', "'")
+    term = re.sub(r"[']+", "'", term)
+
+    # Create regex to find strings within quotes.
+    quoted_strings_re = re.compile(r"('[^']*')")
+    space_between_words_re = re.compile(r'([^ &|])[ ]+([^ &|])')
+    spaces_surrounding_letter_re = re.compile(r'[ ]+([^ &|])[ ]+')
+    multiple_operator_re = re.compile(r"[ &]+(&|\|)[ &]+")
+
+    tokens = quoted_strings_re.split(term)
+    processed_tokens = []
+    for token in tokens:
+        # Remove all surrounding whitespace.
+        token = token.strip()
+
+        if token in ['', "'"]:
+            continue
+
+        if token[0] != "'":
+            # Surround single letters with &'s
+            token = spaces_surrounding_letter_re.sub(r' & \1 & ', token)
+
+            # Specify '&' between words that have neither | or & specified.
+            token = space_between_words_re.sub(r'\1 & \2', token)
+
+            # Add a prefix wildcard to every search term.
+            token = re.sub(r'([^ &|]+)', r'\1:*', token)
+
+        processed_tokens.append(token)
+
+    term = " & ".join(processed_tokens)
+
+    # Replace ampersands or pipes surrounded by ampersands.
+    term = multiple_operator_re.sub(r" \1 ", term)
+
+    # Escape single quotes
+    return term.replace("'", "''")
 
 class SIA:
 
@@ -208,7 +257,6 @@ def getIcsFromSchedule(schedule):
             beginning = datetime.datetime(datetime.date.today().year,02,01,0,0,0,tzinfo=tz)
         else:
             beginning = datetime.datetime(datetime.date.today().year,07,01,0,0,0,tzinfo=tz)
-            
         for i in range(0,len(BO.DAYS)):
             starts[i] = next_weekday(beginning,i)
 
@@ -256,7 +304,6 @@ def getIcsFromSchedule(schedule):
                 endHour = 24
                 cal.add_component(getEvent(startHour,endHour,i))
                 activeChunk=False
-                
             #event.add('dtstamp', datetime.datetime(2005,4,4,0,10,0,tzinfo=tz))
     return cal.to_ical()
 

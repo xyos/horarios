@@ -1,5 +1,6 @@
 import BO 
 import models
+from Helpers import sanitize_search_term
 class ProfessionDAO:
     
     def BOfromDjango(self,data):
@@ -29,6 +30,32 @@ class SubjectDao:
 
     def getSubjectByCode(self,code):
         return self.BOfromDjango(models.Subject.objects.get(code__exact=code))
+
+    def getSearchResults(self, search_term="", profession="", subject_type=[]):
+        subjects = []
+        if search_term == "":
+            if profession == "":
+                pass
+            else:
+                query = models.Subject.objects.filter(
+                        group__in=models.Group.objects.filter(professions__code=profession))
+                if len(subject_type) != 0:
+                    query = query.filter(stype__in=subject_type)
+                query = query.distinct()
+                for i in query:
+                    subjects.append(self.BOfromDjango(i))
+        else:
+            search_term = sanitize_search_term(search_term)
+            query = models.Subject.objects.extra(
+                    where=["name @@ to_tsquery('sp', %s)"], params=[search_term])
+            if profession != "":
+                query = query.filter(group__in=models.Group.objects.filter(professions__code=profession))
+            if len(subject_type) != 0:
+                query = query.filter(stype__in=subject_type)
+            query = query.distinct()
+            for i in query:
+                subjects.append(self.BOfromDjango(i))
+        return subjects
 
 
 class GroupDao:

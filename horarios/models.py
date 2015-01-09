@@ -27,4 +27,4 @@ def make_uuid():
 
 class Session(models.Model):
     url  = models.CharField(primary_key=True, max_length=10, default=make_uuid)
-    session = models.CharField(max_length=10000)
+    session = models.CharField(max_length=500000)
