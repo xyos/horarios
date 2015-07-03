@@ -1,10 +1,19 @@
-from horarios.models import Session
+from horarios.models import Session, Subject, Group, Profession
 from rest_framework import serializers
 
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
-        fields = ('url','session')
+
+class GroupSerializer(serializers.ModelSerializer):
+    teacher = serializers.StringRelatedField()
+    class Meta:
+        model = Group
+
+class SubjectSerializer(serializers.ModelSerializer):
+    groups = GroupSerializer(many=True, read_only=True)
+    class Meta:
+        model =  Subject
 
 import BO as Models
 
@@ -33,54 +42,4 @@ class ScheduleSerializer(Serializer):
         for g in schedule.groups:
             out['groups'].append({"code":g.code,"subject":g.subjectCode,"schedule":g.schedule})
         out['busy'] = schedule.busy
-        return out
-
-class SimpleSubjectsSerializer(Serializer):
-
-    def __init__(self):
-        Serializer.__init__(self,Models.Subject)
-    
-    def serialize_single(self,subject):
-        out = {}
-        out['name'] = subject.name
-        out['code'] = subject.code
-        return out
-
-class SubjectSerializer(Serializer):
-
-    def __init__(self):
-        Serializer.__init__(self,Models.Subject)
-    
-    def serialize_single(self,s):
-        out = {}
-        out['code'] = s.code
-        out['name'] = s.name
-        out['credits'] = s.credits
-        out['type'] = s.stype
-        return out
-
-class GroupSerializer(Serializer):
-
-    def __init__(self):
-        Serializer.__init__(self,Models.Group)
-    
-    def serialize_single(self,group):
-        out = {}
-        out['teacher'] = group.teacher
-        out['code'] = group.code
-        out['schedule'] = group.schedule
-        out['subject'] = group.subjectCode
-        out['available'] = group.share
-        out['totalShare'] = group.totalShare
-        return out
-
-class ProfessionSerializer(Serializer):
-
-    def __init__(self):
-        Serializer.__init__(self,Models.Profession)
-    
-    def serialize_single(self,profession):
-        out = {}
-        out['name'] = profession.name
-        out['code'] = profession.code
         return out

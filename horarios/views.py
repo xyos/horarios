@@ -7,8 +7,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from horarios.serializers import SessionSerializer
-from horarios.models import Session
+from horarios.serializers import SessionSerializer, SubjectSerializer, GroupSerializer
+from horarios.models import Session, Subject, Group
+from rest_framework import generics
+from rest_framework.permissions import IsAdminUser
 
 def home(request):
     """
@@ -51,54 +53,6 @@ def do_deploy(request):
     return HttpResponse(simplejson.dumps(out_json), content_type='application/json')
 
 
-@csrf_exempt
-def random_schedules(request):
-    """
-    Random schedule generator
-    :param request: JSON encoded payload sent by github.
-    """
-
-    from django.http import HttpResponse, Http404
-
-    if request.method != 'GET':
-        raise Http404
-    import facades
-    a = facades.getSubjectsByName("Algoritmos","PRE")[0]
-    b = facades.getSubjectsByName("Seguridad en redes","PRE")[0]
-    c = facades.getSubjectsByName("Lenguajes de programacion","PRE")[0]
-
-    s = [a.code,b.code,c.code]
-
-    s = facades.getSchedulesBySubjectCodes(s)
-
-    from serializers import ScheduleSerializer
-    serializer = ScheduleSerializer()
-    return HttpResponse(serializer.serialize(s[0]), content_type='application/json')
-
-@csrf_exempt
-def autocomplete_subject(request):
-    """
-    :param request: JSON with a name parameter
-    """
-    import simplejson
-
-    from django.http import HttpResponse, Http404
-
-    if request.method != 'POST':
-        raise Http404
-
-    request_data = simplejson.loads(request.body)
-    if "name" in request_data:
-        data = request_data["name"]
-        import facades
-        subjects = facades.autocomplete(data)
-    
-    from serializers import SimpleSubjectsSerializer
-    serializer = SimpleSubjectsSerializer()
-
-    return HttpResponse(serializer.serialize(subjects), content_type='application/json')
-
-
 class ProfessionsView(APIView):
     def get(self, request, *args , **kw):
         import facades
@@ -107,45 +61,6 @@ class ProfessionsView(APIView):
         serializer = ProfessionSerializer()
 	professions = serializer.serialize(professions)
         return Response(professions, status = status.HTTP_200_OK)
-
-class SubjectView(APIView):
-    def get(self, request, *args , **kw):
-        code = kw['subjectCode']
-        import facades
-        subject = facades.getSubjectByCode(code)
-        from serializers import SubjectSerializer
-        serializer = SubjectSerializer()
-	subject = serializer.serialize(subject)
-        groups = facades.getGroupsBySubjectCode(code)
-        from serializers import GroupSerializer
-        serializer = GroupSerializer()
-        groups = serializer.serialize(groups)
-	subject["groups"] = groups
-        return Response(subject, status = status.HTTP_200_OK)
-
-class RandomScheduleView(APIView):
-    def get(self, request, *args, **kw):
-        import facades
-        a = facades.getSubjectsByName("Algoritmos","PRE")[0]
-        b = facades.getSubjectsByName("Seguridad en redes","PRE")[0]
-        c = facades.getSubjectsByName("Lenguajes de programacion","PRE")[0]
-
-        s = [a.code,b.code,c.code]
-
-        s = facades.getSchedulesBySubjectCodes(s)
-
-        from serializers import ScheduleSerializer
-        serializer = ScheduleSerializer()
-        return Response(serializer.serialize(s), status = status.HTTP_200_OK)
-
-class SubjectAutocompleteView(APIView):
-    def get(self, request, *args , **kw):
-        name = kw['name']
-        import facades
-        subjects = facades.autocomplete(name)
-        from serializers import SimpleSubjectsSerializer
-        serializer = SimpleSubjectsSerializer()
-        return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
 
 class SubjectProfessionAutocompleteView(APIView):
     def get(self, request, *args , **kw):
@@ -164,16 +79,6 @@ class SubjectProfessionAutocompleteView(APIView):
         from serializers import SimpleSubjectsSerializer
         serializer = SimpleSubjectsSerializer()
         return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
-
-class GroupsView(APIView):
-    def get(self, request, *args , **kw):
-        code = kw['subjectCode']
-        import facades
-        groups = facades.getGroupsBySubjectCode(code)
-        from serializers import GroupSerializer
-        serializer = GroupSerializer()
-        return Response(serializer.serialize(groups), status = status.HTTP_200_OK)
-
 
 def getScheduleFromQuery(subjects,busy):
 
@@ -235,11 +140,20 @@ def getICS(request,*args,**kw):
     response['Content-Disposition'] = 'attachment; filename=horario.ics' 
     return response
 
-from rest_framework import generics
-class SessionList(generics.CreateAPIView):
+class SessionList(generics.ListCreateAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
+    permission_classes = (IsAdminUser,)
 
 class SessionDetail(generics.RetrieveAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
+
+class SubjectList(generics.ListCreateAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+    permission_classes = (IsAdminUser,)
+
+class SubjectDetail(generics.RetrieveAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
