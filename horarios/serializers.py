@@ -7,8 +7,7 @@ class SessionSerializer(serializers.ModelSerializer):
         fields = ('url','session')
 
 import BO as Models
-import simplejson as json
-from haystack.query import SearchQuerySet
+
 class Serializer:
     def __init__(self,serializedClass):
         self.serializedClass = serializedClass
