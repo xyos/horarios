@@ -12,7 +12,7 @@ Scripts
 include
 horarios/whoosh_index/
 *.un~
-
+env/
 *.sqlite
 
 database.sqlite
