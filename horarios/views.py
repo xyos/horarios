@@ -7,8 +7,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from horarios.serializers import SessionSerializer, SubjectSerializer, GroupSerializer
-from horarios.models import Session, Subject, Group
+from horarios.serializers import SessionSerializer, SubjectSerializer, GroupSerializer, ProfessionSerializer
+from horarios.models import Session, Subject, Group, Profession
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 
@@ -51,16 +51,6 @@ def do_deploy(request):
         out_json = {'status' : 'success', 'output' : out }
 
     return HttpResponse(simplejson.dumps(out_json), content_type='application/json')
-
-
-class ProfessionsView(APIView):
-    def get(self, request, *args , **kw):
-        import facades
-        professions = facades.getProfessions()
-        from serializers import ProfessionSerializer
-        serializer = ProfessionSerializer()
-	professions = serializer.serialize(professions)
-        return Response(professions, status = status.HTTP_200_OK)
 
 class SubjectProfessionAutocompleteView(APIView):
     def get(self, request, *args , **kw):
@@ -140,7 +130,7 @@ def getICS(request,*args,**kw):
     response['Content-Disposition'] = 'attachment; filename=horario.ics' 
     return response
 
-class SessionList(generics.ListCreateAPIView):
+class SessionList(generics.ListAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
     permission_classes = (IsAdminUser,)
@@ -149,7 +139,7 @@ class SessionDetail(generics.RetrieveAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
-class SubjectList(generics.ListCreateAPIView):
+class SubjectList(generics.ListAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
     permission_classes = (IsAdminUser,)
@@ -157,3 +147,7 @@ class SubjectList(generics.ListCreateAPIView):
 class SubjectDetail(generics.RetrieveAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+    
+class ProfessionList(generics.ListAPIView):
+    queryset = Profession.objects.all()
+    serializer_class = ProfessionSerializer

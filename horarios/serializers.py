@@ -1,6 +1,10 @@
 from horarios.models import Session, Subject, Group, Profession
 from rest_framework import serializers
 
+class ProfessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profession
+
 class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
