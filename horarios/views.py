@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from horarios.serializers import SessionSerializer, SubjectSerializer, GroupSerializer, ProfessionSerializer
+from horarios.serializers import SessionSerializer, SubjectSimpleSerializer, SubjectSerializer, GroupSerializer, ProfessionSerializer
 from horarios.models import Session, Subject, Group, Profession
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
@@ -27,7 +27,7 @@ def do_deploy(request):
     This is initiated by a push on the master branch on github.
     :param request: JSON encoded payload sent by github.
     """
-    import simplejson
+    import json
     import subprocess
 
     from django.http import HttpResponse, Http404
@@ -39,7 +39,7 @@ def do_deploy(request):
     if not 'payload' in request.POST.keys():
         raise Http404
 
-    payload = simplejson.loads(request.POST['payload'])
+    payload = json.loads(request.POST['payload'])
 
     out_json = {'status':'failed'}
 
@@ -50,7 +50,7 @@ def do_deploy(request):
             out = ""
         out_json = {'status' : 'success', 'output' : out }
 
-    return HttpResponse(simplejson.dumps(out_json), content_type='application/json')
+    return HttpResponse(json.dumps(out_json), content_type='application/json')
 
 class SubjectProfessionAutocompleteView(APIView):
     def get(self, request, *args , **kw):
@@ -64,11 +64,10 @@ class SubjectProfessionAutocompleteView(APIView):
             subject_type = json.loads(kw['subject_type'])
         except:
             subject_type = []
-        import facades
-        subjects = facades.subjectsByNameOrProfession(search_term,profession,subject_type)
-        from serializers import SimpleSubjectsSerializer
-        serializer = SimpleSubjectsSerializer()
-        return Response(serializer.serialize(subjects), status = status.HTTP_200_OK)
+        queryset = Subject.autocomplete(search_term,profession,subject_type)
+        print queryset
+        serializer = SubjectSimpleSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 def getScheduleFromQuery(subjects,busy):
 
@@ -111,24 +110,6 @@ class SchedulesView(APIView):
         from serializers import ScheduleSerializer
         serializer = ScheduleSerializer()
         return Response(serializer.serialize(s), status = status.HTTP_200_OK)
-
-def getICS(request,*args,**kw):
-    from django.http import HttpResponse
-    subjects = kw['subjects']
-    busy = kw['busy']
-    schedule = int(kw['schedule'])
-    if(len(subjects)<1):
-        return Response([], status = status.HTTP_200_OK)
-    try:
-        s = getScheduleFromQuery(subjects,busy)
-    except Exception:
-        return Response([], status = status.HTTP_200_OK)
-    if(len(s) < schedule):
-        return HttpResponse("Wrong schedule number. There are " + str(len(s)) + " < " + str(schedule) + " schedules", status = status.HTTP_200_OK)
-    import Helpers
-    response = HttpResponse(Helpers.getIcsFromSchedule(s[schedule]),mimetype='application/ics')
-    response['Content-Disposition'] = 'attachment; filename=horario.ics' 
-    return response
 
 class SessionList(generics.ListAPIView):
     queryset = Session.objects.all()
