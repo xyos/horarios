@@ -136,7 +136,7 @@ class SIA:
         import re
         while True:
             try:
-                f = urllib2.urlopen("http://www.sia.unal.edu.co/buscador/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
+                f = urllib2.urlopen(siaUrl + "/service/groupInfo.pub?cod_asignatura=" + str(code) + "&grp=" + str(group))
                 html = f.read().decode("ISO-8859-1")
                 break
             except urllib2.URLError, e:
