@@ -10,6 +10,8 @@ class Subject(models.Model):
 
 class Teacher(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    def __unicode__(self):
+        return self.name
 
 class Profession(models.Model):
     name = models.CharField(max_length=100)
@@ -18,8 +20,8 @@ class Profession(models.Model):
 class Group(models.Model):
     schedule = models.CommaSeparatedIntegerField(max_length=100)
     code = models.IntegerField()
-    teacher = models.ForeignKey(Teacher)
-    subject = models.ForeignKey(Subject)
+    teacher = models.ForeignKey(Teacher, related_name='groups')
+    subject = models.ForeignKey(Subject, related_name='groups')
     professions = models.ManyToManyField(Profession)
 
 def make_uuid():
