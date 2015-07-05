@@ -154,26 +154,3 @@ class SIA:
                 data = i.split("-")
                 professions.append((data[0].strip(),re.compile('<em>(.*)</em>').findall("".join(data[1:]))[0]))
         return professions
-
-class Generator:
-    def generateSchedulesFromSubjects(self,listOfSubjects):
-        groups = []
-        for s in listOfSubjects:
-            groups.append(s.groups)
-        self.generateSchedule(groups)
-
-    def generateSchedule(self,listOfListOfGroups,busy=None):
-        result = []
-        if(len(listOfListOfGroups) == 0):
-            return [Schedule(busy)]
-
-        listOfGroups = listOfListOfGroups.pop()
-        subSchedules = self.generateSchedule(listOfListOfGroups,busy)
-        for group in listOfGroups:
-            for schedule in subSchedules:
-                if(schedule._isCompatible(group)):
-                    result.append(schedule.clone().addGroup(group))
-
-        if(len(result) == 0):
-            raise Exception("No schedule can be generated" )
-        return result

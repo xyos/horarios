@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from horarios.views import SchedulesView, ProfessionList, SessionList, SessionDetail, SubjectList, SubjectDetail, SubjectProfessionAutocompleteView
+from horarios.views import ProfessionList, SessionList, SessionDetail, SubjectList, SubjectDetail, SubjectProfessionAutocompleteView
 from django.contrib import admin
 
 urlpatterns = patterns('',
@@ -9,7 +9,6 @@ urlpatterns = patterns('',
     url(r'^api/v1.0/subjects/$', SubjectList.as_view()),
     url(r'^api/v1.0/subjects/(?P<pk>\w+)$',SubjectDetail.as_view()),
     url(r'^api/v1.0/professions/$', ProfessionList.as_view()),
-    url(r'^api/v1.0/schedule/subjects=(?P<subjects>[\d,|]*)&busy=(?P<busy>[\d,]*)$', SchedulesView.as_view()),
     url(r'^api/v1.0/sessions/$',SessionList.as_view()),
     url(r'^api/v1.0/sessions/(?P<pk>\w+)$',SessionDetail.as_view()),
     url(r'^admin/', include(admin.site.urls)),

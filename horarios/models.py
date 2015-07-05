@@ -10,12 +10,18 @@ class Subject(models.Model):
     stype = models.CharField(max_length=10)
     @staticmethod
     def autocomplete(search_term="", profession="", subject_type=[]):
+        print "Search"
+        print search_term
+        print "profession"
+        print profession == ""
+        print "stype"
+        print subject_type
         if search_term == "":
             if profession == "":
-                return Subject.objects.none()
+                return Subject.objects.all()
             else:
                 query = Subject.objects.filter(
-                    group__in=Group.objects.filter(professions__code=profession))
+                    groups__in=Group.objects.filter(professions__code=profession))
                 if len(subject_type) != 0:
                     query = query.filter(stype__in=subject_type)
                 return query.distinct()
