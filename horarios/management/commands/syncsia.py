@@ -11,7 +11,7 @@ from httplib import HTTPException
 from horarios.helpers import SIA
 from django.conf import settings
 
-DAYS=["LUNES","MARTES","MIERCOLES","JUEVES","VIERNES","SABADO","DOMINGO"]
+DAYS=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"]
 
 def _parseSchedule(scheduleDict):
     """
@@ -40,9 +40,9 @@ def _parseSchedule(scheduleDict):
 def getSchedule(group):
     scheduleDict = {}
     for day in DAYS:
-        if group["horario_" + day.lower()] != "--":
+        if group["horario_" + day] != "--":
             scheduleDict[day] = group["horario_" + day.lower()]
-        return _parseSchedule(scheduleDict)
+    return _parseSchedule(scheduleDict)
 
 class Command(BaseCommand):
     args = '<subject_id subject_id ...>'
@@ -55,9 +55,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         codes = list(args);
         subjects = self.get_subjects(codes)
-        print subjects
-        print options
-        self.sync()
+        self.sync(subjects)
 
     def get_subjects(self,codes):
         subjects = dict()
