@@ -8,5 +8,5 @@ class Command(BaseCommand):
         Group.objects.all().delete()
         Teacher.objects.all().delete()
         Profession.objects.all().delete()
-        Subjects.objects.all().delete()
+        Subject.objects.all().delete()
         print("cleared!")
